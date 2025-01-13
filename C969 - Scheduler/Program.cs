@@ -1,6 +1,7 @@
 ﻿using C969___Scheduler.Database;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,6 +20,9 @@ namespace C969___Scheduler
             Application.SetCompatibleTextRenderingDefault(false);
 
             DBConnection.startConnection(); //opens database connection before form opens
+
+            CultureInfo culture = CultureInfo.CurrentCulture;
+
             Application.Run(new Form1());
             DBConnection.endConnection(); //closes connection when form closes. 
         }
