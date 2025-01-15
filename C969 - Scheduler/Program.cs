@@ -24,6 +24,7 @@ namespace C969___Scheduler
             CultureInfo culture = CultureInfo.CurrentCulture;
 
             Application.Run(new Form1());
+            
             DBConnection.endConnection(); //closes connection when form closes. 
         }
     }
