@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using C969___Scheduler.Entity_Classes;
 using System.Data.SqlClient;
 using C969___Scheduler.Database;
+using System.IO;
 
 
 
@@ -29,7 +30,7 @@ namespace C969___Scheduler
             // Get the timezone of the application - is this even needed here or do only on appointment section?
             // May move this elsewhere later 
             string localZone = TimeZone.CurrentTimeZone.StandardName;
-            string currentTime = DateTime.Now.ToString("hh:mm tt");
+            
 
             // sets language of login form to spanish if detected
             if (CultureInfo.CurrentCulture.Name == "es-MX")
@@ -42,7 +43,7 @@ namespace C969___Scheduler
 
             // DEBUG MESSAGEBOX
             MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}"); //for culture info
-            MessageBox.Show($"Current timezone is {localZone}\n Time is currently {currentTime}"); // for timezone
+            //MessageBox.Show($"Current timezone is {localZone}\n Time is currently {currentTime}"); // for timezone
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
@@ -58,12 +59,24 @@ namespace C969___Scheduler
 
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 DataTable dtable = new DataTable();
-                adapter.Fill(dtable); 
+                adapter.Fill(dtable);
 
-                if(dtable.Rows.Count > 0)
+
+                // log file?
+                string path = @"C:\Users\Public\Documents\Login_History.txt";
+                // need timestamp and username 
+                string logUser = txtUsername.Text;
+                string currentTime = DateTime.Now.ToString(); 
+                
+
+                
+
+                if (dtable.Rows.Count > 0)
                 {
-                    MessageBox.Show("match found"); 
-                    
+                    //MessageBox.Show("match found");
+
+                    File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
+
                     // load next form here
                     MainForm mainForm = new MainForm();
 
@@ -83,7 +96,9 @@ namespace C969___Scheduler
                     else
                     {
                         MessageBox.Show("Invalid Login", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                     }
+                    File.AppendAllText(path, $"User {logUser} failed to login at {currentTime}\n");
                 }
 
             }
