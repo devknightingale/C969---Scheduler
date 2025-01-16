@@ -26,9 +26,10 @@ namespace C969___Scheduler
             // centers login form 
             StartPosition = FormStartPosition.CenterScreen; 
 
-
-            // debug message
-            MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}");
+            // Get the timezone of the application - is this even needed here or do only on appointment section?
+            // May move this elsewhere later 
+            string localZone = TimeZone.CurrentTimeZone.StandardName;
+            string currentTime = DateTime.Now.ToString("hh:mm tt");
 
             // sets language of login form to spanish if detected
             if (CultureInfo.CurrentCulture.Name == "es-MX")
@@ -36,7 +37,12 @@ namespace C969___Scheduler
                 lblUsername.Text = "Usario:";
                 lblPassword.Text = "Contraseña:";
             }
-            
+
+
+
+            // DEBUG MESSAGEBOX
+            MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}"); //for culture info
+            MessageBox.Show($"Current timezone is {localZone}\n Time is currently {currentTime}"); // for timezone
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
