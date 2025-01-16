@@ -23,21 +23,24 @@ namespace C969___Scheduler
         public Form1()
         {
             InitializeComponent();
+            // centers login form 
+            StartPosition = FormStartPosition.CenterScreen; 
+
+
+            // debug message
+            MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}");
 
             // sets language of login form to spanish if detected
-            MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}");
-            if(CultureInfo.CurrentCulture.Name == "es-MX")
+            if (CultureInfo.CurrentCulture.Name == "es-MX")
             {
                 lblUsername.Text = "Usario:";
                 lblPassword.Text = "Contraseña:";
             }
-            StartPosition = FormStartPosition.CenterScreen; //centers form
+            
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            //creates new user object based on input in text fields 
-            User user = new User(txtUsername.Text, txtPassword.Text);
 
             try
             {
@@ -66,7 +69,15 @@ namespace C969___Scheduler
                 }
                 else
                 {
-                    MessageBox.Show("Invalid Login", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                    if (CultureInfo.CurrentCulture.Name == "es-MX")
+                    {
+                        MessageBox.Show("Inicio de sesión inválido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid Login", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
 
             }
