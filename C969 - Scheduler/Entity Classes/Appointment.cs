@@ -28,8 +28,6 @@ namespace C969___Scheduler.Entity_Classes
         // create a bindinglist for the data grid view?
         public static BindingList<Appointment> Appointments = new BindingList<Appointment>(); 
 
-        // need to fill the appointment list now... maybe a sql query then loop through to add each?
-
 
     }
 

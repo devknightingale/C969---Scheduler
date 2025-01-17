@@ -42,7 +42,7 @@ namespace C969___Scheduler
 
 
             // DEBUG MESSAGEBOX
-            MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}"); //for culture info
+            //MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}"); //for culture info
             //MessageBox.Show($"Current timezone is {localZone}\n Time is currently {currentTime}"); // for timezone
         }
 

@@ -27,7 +27,7 @@ namespace C969___Scheduler
             // maybe use a sql query on initiation to grab the appointments, then fill the dgv with it?
             try
             {
-                string apptQuery = $"SELECT * FROM Appointment";
+                string apptQuery = $"SELECT appointmentId, customerId, title FROM appointment";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
