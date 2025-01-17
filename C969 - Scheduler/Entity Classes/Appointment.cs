@@ -25,9 +25,7 @@ namespace C969___Scheduler.Entity_Classes
         public DateTime start { get; set; }
         public DateTime end { get; set; }
 
-        // create a bindinglist for the data grid view?
-        public static BindingList<Appointment> Appointments = new BindingList<Appointment>(); 
-
+      
 
     }
 

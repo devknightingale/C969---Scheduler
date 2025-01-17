@@ -12,6 +12,7 @@ namespace C969___Scheduler.Entity_Classes
         public string username { get; set; }
         public string password { get; set; }    
 
+
         public User()
         {
             username = string.Empty;

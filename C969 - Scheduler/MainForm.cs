@@ -27,7 +27,7 @@ namespace C969___Scheduler
             // maybe use a sql query on initiation to grab the appointments, then fill the dgv with it?
             try
             {
-                string apptQuery = $"SELECT appointmentId, customerId, title FROM appointment";
+                string apptQuery = $"SELECT appointmentId, customerId, title, start FROM appointment";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
@@ -37,6 +37,8 @@ namespace C969___Scheduler
                 BindingSource apptBindingSource = new BindingSource();
                 apptBindingSource.DataSource = apptTable;
                 dgvAppointments.DataSource = apptBindingSource;
+
+                dgvAppointments.Columns[3].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
             }
             catch
             {
@@ -44,12 +46,22 @@ namespace C969___Scheduler
             }
             
 
+            // COMBO BOX 
+            // Drop down list of users in the application, starts on the default value of "ALL" 
+            // need to create a binding source of users - will this work for the evaluator?
+
 
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit(); 
+        }
+
+        private void usersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form userForm = new UserForm();
+            userForm.Show(); 
         }
     }
 }
