@@ -106,7 +106,7 @@ namespace C969___Scheduler
             {
                 //display error message if login is invalid, DEPENDENT UPON LANGUAGE
             
-                MessageBox.Show("Error");
+                MessageBox.Show("Error on login form");
             }
 
         }
