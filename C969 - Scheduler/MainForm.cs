@@ -54,9 +54,13 @@ namespace C969___Scheduler
             }
             
 
-            // COMBO BOX 
-            // Drop down list of users in the application, starts on the default value of "ALL" 
-            // need to create a binding source of users - will this work for the evaluator?
+            // FOR THE COMBO BOX FUNCTIONALITY: 
+            // Want to make it so that "Appointments" is the default value, and thus default data grid shown 
+            // but when "Customers" is selected, the data grid changes to the customer dgv view. 
+            // Buttons such as Add/Update/Delete will have to be coded such that it checks which type of 
+            // item it is grabbing from the data grid before opening the Add/Update/Delete forms. 
+            // But this will keep me from having to make like 17 forms 
+            // Should I do GUI first or start the coding for Appointments Add/Update/Delete functionality?
 
 
         }
