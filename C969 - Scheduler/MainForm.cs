@@ -18,6 +18,14 @@ namespace C969___Scheduler
         public MainForm()
         {
             InitializeComponent();
+            List<string> comboBoxItems = new List<string>();
+            comboBoxItems.Add("Appointments");
+            comboBoxItems.Add("Customers");
+
+            comboBox1.DataSource = comboBoxItems;
+            comboBox1.SelectedIndex = 0;
+
+
 
             //maximizes main form
             WindowState = FormWindowState.Maximized;
@@ -58,10 +66,7 @@ namespace C969___Scheduler
             Application.Exit(); 
         }
 
-        private void usersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form userForm = new UserForm();
-            userForm.Show(); 
-        }
+       
+
     }
 }

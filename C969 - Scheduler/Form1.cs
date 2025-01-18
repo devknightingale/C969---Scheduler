@@ -111,5 +111,12 @@ namespace C969___Scheduler
             }
 
         }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) { 
+                btnSubmit_Click(this, new EventArgs());
+            }
+        }
     }
 }
