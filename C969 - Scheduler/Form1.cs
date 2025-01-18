@@ -76,12 +76,13 @@ namespace C969___Scheduler
                     //MessageBox.Show("match found");
 
                     File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
-
+                    
                     // load next form here
                     MainForm mainForm = new MainForm();
 
                     //will close entire application when main form is closed
                     mainForm.FormClosed += (s, args) => this.Close(); 
+                    
                     mainForm.Show();
                     this.Hide(); // hides the login form so its not visible when main form is open 
                     

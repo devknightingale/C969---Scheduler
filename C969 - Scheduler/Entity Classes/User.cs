@@ -17,7 +17,12 @@ namespace C969___Scheduler.Entity_Classes
         {
             username = string.Empty;
         }
+        public User(string loginUsername)
+        {
+            username = loginUsername;
+           
 
+        }
         public User(string loginUsername, string loginPassword)
         {
             username = loginUsername;
