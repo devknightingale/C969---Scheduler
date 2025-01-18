@@ -34,6 +34,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnCreateUser = new System.Windows.Forms.Button();
             this.btnCancelNewUser = new System.Windows.Forms.Button();
+            this.lblUsernameVal = new System.Windows.Forms.Label();
+            this.lblPasswordVal = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtNewUsername
@@ -42,13 +44,16 @@
             this.txtNewUsername.Name = "txtNewUsername";
             this.txtNewUsername.Size = new System.Drawing.Size(133, 20);
             this.txtNewUsername.TabIndex = 0;
+            this.txtNewUsername.Leave += new System.EventHandler(this.txtNewUsername_Leave);
             // 
             // txtNewPassword
             // 
-            this.txtNewPassword.Location = new System.Drawing.Point(126, 90);
+            this.txtNewPassword.Location = new System.Drawing.Point(126, 102);
             this.txtNewPassword.Name = "txtNewPassword";
             this.txtNewPassword.Size = new System.Drawing.Size(133, 20);
             this.txtNewPassword.TabIndex = 1;
+            this.txtNewPassword.UseSystemPasswordChar = true;
+            this.txtNewPassword.Leave += new System.EventHandler(this.txtNewPassword_Leave);
             // 
             // label1
             // 
@@ -62,7 +67,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(52, 93);
+            this.label2.Location = new System.Drawing.Point(52, 105);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 3;
@@ -70,16 +75,17 @@
             // 
             // btnCreateUser
             // 
-            this.btnCreateUser.Location = new System.Drawing.Point(214, 142);
+            this.btnCreateUser.Location = new System.Drawing.Point(216, 159);
             this.btnCreateUser.Name = "btnCreateUser";
             this.btnCreateUser.Size = new System.Drawing.Size(75, 23);
             this.btnCreateUser.TabIndex = 4;
             this.btnCreateUser.Text = "Create User";
             this.btnCreateUser.UseVisualStyleBackColor = true;
+            this.btnCreateUser.Click += new System.EventHandler(this.btnCreateUser_Click);
             // 
             // btnCancelNewUser
             // 
-            this.btnCancelNewUser.Location = new System.Drawing.Point(76, 142);
+            this.btnCancelNewUser.Location = new System.Drawing.Point(76, 159);
             this.btnCancelNewUser.Name = "btnCancelNewUser";
             this.btnCancelNewUser.Size = new System.Drawing.Size(75, 23);
             this.btnCancelNewUser.TabIndex = 5;
@@ -87,11 +93,35 @@
             this.btnCancelNewUser.UseVisualStyleBackColor = true;
             this.btnCancelNewUser.Click += new System.EventHandler(this.btnCancelNewUser_Click);
             // 
+            // lblUsernameVal
+            // 
+            this.lblUsernameVal.AutoSize = true;
+            this.lblUsernameVal.Enabled = false;
+            this.lblUsernameVal.ForeColor = System.Drawing.Color.Red;
+            this.lblUsernameVal.Location = new System.Drawing.Point(123, 74);
+            this.lblUsernameVal.Name = "lblUsernameVal";
+            this.lblUsernameVal.Size = new System.Drawing.Size(197, 13);
+            this.lblUsernameVal.TabIndex = 6;
+            this.lblUsernameVal.Text = "Username must be at least 5 characters.";
+            // 
+            // lblPasswordVal
+            // 
+            this.lblPasswordVal.AutoSize = true;
+            this.lblPasswordVal.Enabled = false;
+            this.lblPasswordVal.ForeColor = System.Drawing.Color.Red;
+            this.lblPasswordVal.Location = new System.Drawing.Point(123, 125);
+            this.lblPasswordVal.Name = "lblPasswordVal";
+            this.lblPasswordVal.Size = new System.Drawing.Size(195, 13);
+            this.lblPasswordVal.TabIndex = 7;
+            this.lblPasswordVal.Text = "Password must be at least 5 characters.";
+            // 
             // AddUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(382, 194);
+            this.ClientSize = new System.Drawing.Size(382, 217);
+            this.Controls.Add(this.lblPasswordVal);
+            this.Controls.Add(this.lblUsernameVal);
             this.Controls.Add(this.btnCancelNewUser);
             this.Controls.Add(this.btnCreateUser);
             this.Controls.Add(this.label2);
@@ -113,5 +143,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnCreateUser;
         private System.Windows.Forms.Button btnCancelNewUser;
+        private System.Windows.Forms.Label lblUsernameVal;
+        private System.Windows.Forms.Label lblPasswordVal;
     }
 }
