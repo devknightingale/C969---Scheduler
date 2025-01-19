@@ -70,7 +70,53 @@ namespace C969___Scheduler
             Application.Exit(); 
         }
 
-       
+        private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex == 0)
+            {
+                try
+                {
+                    string apptQuery = $"SELECT appointmentId, customerId, title, start FROM appointment";
 
+                    MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
+                    MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
+                    DataTable apptTable = new DataTable();
+                    appAdapter.Fill(apptTable);
+
+                    BindingSource apptBindingSource = new BindingSource();
+                    apptBindingSource.DataSource = apptTable;
+                    dgvAppointments.DataSource = apptBindingSource;
+
+                    dgvAppointments.Columns[3].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
+                }
+                catch
+                {
+                    MessageBox.Show("Failed to load appointments", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                try
+                {
+                    string customerQuery = $"SELECT customer.customerId, customer.customerName, address.address, address.phone FROM customer LEFT JOIN address ON customer.addressId = address.addressId ORDER BY customer.customerName";
+
+                    MySqlCommand customerCmd = new MySqlCommand(customerQuery, DBConnection.conn);
+                    MySqlDataAdapter customerAdapter = new MySqlDataAdapter(customerCmd);
+                    DataTable customerTable = new DataTable();
+                    customerAdapter.Fill(customerTable);
+
+                    BindingSource customerBindingSource = new BindingSource();
+                    customerBindingSource.DataSource = customerTable;
+                    dgvAppointments.DataSource = customerBindingSource;
+
+
+                }
+                catch
+                {
+                    MessageBox.Show("Failed to load customers", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            
+        }
     }
 }
