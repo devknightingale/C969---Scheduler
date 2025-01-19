@@ -21,6 +21,7 @@ namespace C969___Scheduler
 {
     public partial class Form1 : Form
     {
+        
         public Form1()
         {
             InitializeComponent();
@@ -40,7 +41,7 @@ namespace C969___Scheduler
             }
 
 
-
+            
             // DEBUG MESSAGEBOX
             //MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}"); //for culture info
             //MessageBox.Show($"Current timezone is {localZone}\n Time is currently {currentTime}"); // for timezone
@@ -65,6 +66,7 @@ namespace C969___Scheduler
                 // log file?
                 string path = @"C:\Users\Public\Documents\Login_History.txt";
                 // need timestamp and username 
+                // how do i send this user to the next form???
                 string logUser = txtUsername.Text;
                 string currentTime = DateTime.Now.ToString(); 
                 
@@ -76,7 +78,7 @@ namespace C969___Scheduler
                     //MessageBox.Show("match found");
 
                     File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
-                    
+
                     // load next form here
                     MainForm mainForm = new MainForm();
 

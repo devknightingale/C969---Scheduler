@@ -1,4 +1,5 @@
 ﻿using C969___Scheduler.Database;
+using C969___Scheduler.Entity_Classes;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
