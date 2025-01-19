@@ -70,35 +70,24 @@ namespace C969___Scheduler
             comboBox1.DataSource = comboBoxItems;
             comboBox1.SelectedIndex = 0;
 
-            
-
             //maximizes main form
             WindowState = FormWindowState.Maximized;
 
 
-            // this loads the default appointment view. the handling for the customer/appointment grid switch is below
-            // there has to be a way to put these into methods and just call them... 
+            // this loads the default appointment view. 
             LoadAppointmentGrid(); 
-            
-
-            // FOR THE COMBO BOX FUNCTIONALITY: 
-            // Want to make it so that "Appointments" is the default value, and thus default data grid shown 
-            // but when "Customers" is selected, the data grid changes to the customer dgv view. 
-            // Buttons such as Add/Update/Delete will have to be coded such that it checks which type of 
-            // item it is grabbing from the data grid before opening the Add/Update/Delete forms. 
-            // But this will keep me from having to make like 17 forms 
-            // Should I do GUI first or start the coding for Appointments Add/Update/Delete functionality?
-
 
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // ensures the entire application is closed when main form is closed
             Application.Exit(); 
         }
 
         private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            // changes the grid from customers to appointments and vice versa based on dropdown selection
             if (comboBox1.SelectedIndex == 0)
             {
                 LoadAppointmentGrid(); 
