@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Common;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,31 +16,15 @@ namespace C969___Scheduler
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        public void LoadAppointmentGrid()
         {
-            InitializeComponent();
-            List<string> comboBoxItems = new List<string>();
-            comboBoxItems.Add("Appointments");
-            comboBoxItems.Add("Customers");
-
-            comboBox1.DataSource = comboBoxItems;
-            comboBox1.SelectedIndex = 0;
-
-
-
-            //maximizes main form
-            WindowState = FormWindowState.Maximized;
-            
-
-            // in order to grab the appointments for the default dgv view, 
-            // maybe use a sql query on initiation to grab the appointments, then fill the dgv with it?
             try
             {
                 string apptQuery = $"SELECT appointmentId, customerId, title, start FROM appointment";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
-                DataTable apptTable = new DataTable(); 
+                DataTable apptTable = new DataTable();
                 appAdapter.Fill(apptTable);
 
                 BindingSource apptBindingSource = new BindingSource();
@@ -52,6 +37,48 @@ namespace C969___Scheduler
             {
                 MessageBox.Show("ERROR WITH THE DATAGRID");
             }
+        }
+        public void LoadCustomerGrid()
+        {
+            try
+            {
+                string customerQuery = $"SELECT customer.customerId, customer.customerName, address.address, address.phone FROM customer LEFT JOIN address ON customer.addressId = address.addressId ORDER BY customer.customerName";
+
+                MySqlCommand customerCmd = new MySqlCommand(customerQuery, DBConnection.conn);
+                MySqlDataAdapter customerAdapter = new MySqlDataAdapter(customerCmd);
+                DataTable customerTable = new DataTable();
+                customerAdapter.Fill(customerTable);
+
+                BindingSource customerBindingSource = new BindingSource();
+                customerBindingSource.DataSource = customerTable;
+                dgvAppointments.DataSource = customerBindingSource;
+
+
+            }
+            catch
+            {
+                MessageBox.Show("Failed to load customers", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public MainForm()
+        {
+            InitializeComponent();
+            List<string> comboBoxItems = new List<string>();
+            comboBoxItems.Add("Appointments");
+            comboBoxItems.Add("Customers");
+
+            comboBox1.DataSource = comboBoxItems;
+            comboBox1.SelectedIndex = 0;
+
+            
+
+            //maximizes main form
+            WindowState = FormWindowState.Maximized;
+
+
+            // this loads the default appointment view. the handling for the customer/appointment grid switch is below
+            // there has to be a way to put these into methods and just call them... 
+            LoadAppointmentGrid(); 
             
 
             // FOR THE COMBO BOX FUNCTIONALITY: 
@@ -74,47 +101,11 @@ namespace C969___Scheduler
         {
             if (comboBox1.SelectedIndex == 0)
             {
-                try
-                {
-                    string apptQuery = $"SELECT appointmentId, customerId, title, start FROM appointment";
-
-                    MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
-                    MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
-                    DataTable apptTable = new DataTable();
-                    appAdapter.Fill(apptTable);
-
-                    BindingSource apptBindingSource = new BindingSource();
-                    apptBindingSource.DataSource = apptTable;
-                    dgvAppointments.DataSource = apptBindingSource;
-
-                    dgvAppointments.Columns[3].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
-                }
-                catch
-                {
-                    MessageBox.Show("Failed to load appointments", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                LoadAppointmentGrid(); 
             }
             else
             {
-                try
-                {
-                    string customerQuery = $"SELECT customer.customerId, customer.customerName, address.address, address.phone FROM customer LEFT JOIN address ON customer.addressId = address.addressId ORDER BY customer.customerName";
-
-                    MySqlCommand customerCmd = new MySqlCommand(customerQuery, DBConnection.conn);
-                    MySqlDataAdapter customerAdapter = new MySqlDataAdapter(customerCmd);
-                    DataTable customerTable = new DataTable();
-                    customerAdapter.Fill(customerTable);
-
-                    BindingSource customerBindingSource = new BindingSource();
-                    customerBindingSource.DataSource = customerTable;
-                    dgvAppointments.DataSource = customerBindingSource;
-
-
-                }
-                catch
-                {
-                    MessageBox.Show("Failed to load customers", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                LoadCustomerGrid(); 
             }
             
         }
