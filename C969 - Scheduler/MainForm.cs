@@ -71,7 +71,7 @@ namespace C969___Scheduler
             comboBox1.SelectedIndex = 0;
 
             //maximizes main form
-            WindowState = FormWindowState.Maximized;
+            //WindowState = FormWindowState.Maximized;
 
 
             // this loads the default appointment view. 

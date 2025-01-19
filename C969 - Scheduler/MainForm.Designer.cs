@@ -40,6 +40,9 @@ namespace C969___Scheduler
             this.dgvAppointments = new System.Windows.Forms.DataGridView();
             this.mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btnAddNew = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
             this.SuspendLayout();
@@ -84,7 +87,7 @@ namespace C969___Scheduler
             this.valerieVolkToolStripMenuItem,
             this.josephFeltonToolStripMenuItem});
             this.addTestUsersToolStripMenuItem.Name = "addTestUsersToolStripMenuItem";
-            this.addTestUsersToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.addTestUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addTestUsersToolStripMenuItem.Text = "Add Test Users";
             // 
             // valerieVolkToolStripMenuItem
@@ -132,11 +135,41 @@ namespace C969___Scheduler
             this.comboBox1.TabIndex = 2;
             this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
             // 
+            // btnAddNew
+            // 
+            this.btnAddNew.Location = new System.Drawing.Point(39, 59);
+            this.btnAddNew.Name = "btnAddNew";
+            this.btnAddNew.Size = new System.Drawing.Size(75, 23);
+            this.btnAddNew.TabIndex = 3;
+            this.btnAddNew.Text = "Add";
+            this.btnAddNew.UseVisualStyleBackColor = true;
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Location = new System.Drawing.Point(39, 104);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(75, 23);
+            this.btnUpdate.TabIndex = 4;
+            this.btnUpdate.Text = "Update";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(39, 151);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 5;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnDelete);
+            this.Controls.Add(this.btnUpdate);
+            this.Controls.Add(this.btnAddNew);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.dgvAppointments);
             this.Controls.Add(this.menuStrip1);
@@ -163,5 +196,8 @@ namespace C969___Scheduler
         private System.Windows.Forms.ToolStripMenuItem josephFeltonToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBox1;
         public System.Windows.Forms.DataGridView dgvAppointments;
+        private System.Windows.Forms.Button btnAddNew;
+        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Button btnDelete;
     }
 }
