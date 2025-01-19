@@ -130,6 +130,7 @@ namespace C969___Scheduler
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(118, 21);
             this.comboBox1.TabIndex = 2;
+            this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
             // 
             // MainForm
             // 
@@ -155,12 +156,12 @@ namespace C969___Scheduler
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem menuFile;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.DataGridView dgvAppointments;
         private MySql.Data.MySqlClient.MySqlCommand mySqlCommand1;
         private System.Windows.Forms.ToolStripMenuItem evaluatorShortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addTestUsersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem valerieVolkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem josephFeltonToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBox1;
+        public System.Windows.Forms.DataGridView dgvAppointments;
     }
 }
