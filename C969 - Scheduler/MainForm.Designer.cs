@@ -43,6 +43,8 @@ namespace C969___Scheduler
             this.btnAddNew = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.lblLoggedInMessage = new System.Windows.Forms.Label();
+            this.lblUsername = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
             this.SuspendLayout();
@@ -87,7 +89,7 @@ namespace C969___Scheduler
             this.valerieVolkToolStripMenuItem,
             this.josephFeltonToolStripMenuItem});
             this.addTestUsersToolStripMenuItem.Name = "addTestUsersToolStripMenuItem";
-            this.addTestUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addTestUsersToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.addTestUsersToolStripMenuItem.Text = "Add Test Users";
             // 
             // valerieVolkToolStripMenuItem
@@ -162,11 +164,31 @@ namespace C969___Scheduler
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             // 
+            // lblLoggedInMessage
+            // 
+            this.lblLoggedInMessage.AutoSize = true;
+            this.lblLoggedInMessage.Location = new System.Drawing.Point(715, 6);
+            this.lblLoggedInMessage.Name = "lblLoggedInMessage";
+            this.lblLoggedInMessage.Size = new System.Drawing.Size(32, 13);
+            this.lblLoggedInMessage.TabIndex = 6;
+            this.lblLoggedInMessage.Text = "User:";
+            // 
+            // lblUsername
+            // 
+            this.lblUsername.AutoSize = true;
+            this.lblUsername.Location = new System.Drawing.Point(753, 6);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.Size = new System.Drawing.Size(35, 13);
+            this.lblUsername.TabIndex = 7;
+            this.lblUsername.Text = "label1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblUsername);
+            this.Controls.Add(this.lblLoggedInMessage);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnAddNew);
@@ -199,5 +221,7 @@ namespace C969___Scheduler
         private System.Windows.Forms.Button btnAddNew;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Label lblLoggedInMessage;
+        private System.Windows.Forms.Label lblUsername;
     }
 }

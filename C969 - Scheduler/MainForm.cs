@@ -61,7 +61,7 @@ namespace C969___Scheduler
                 MessageBox.Show("Failed to load customers", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        public MainForm()
+        public MainForm(User activeUser)
         {
             InitializeComponent();
             List<string> comboBoxItems = new List<string>();
@@ -76,10 +76,18 @@ namespace C969___Scheduler
 
 
             // this loads the default appointment view. 
-            LoadAppointmentGrid(); 
+            LoadAppointmentGrid();
 
+            //testing that user log in works 
+            lblUsername.Text = activeUser.username; 
+            MessageBox.Show($"Logged in user is currently {activeUser.username}");
         }
 
+        string activeName; 
+        public void RetrieveData(Object objPassedFromParent)
+        {
+            objPassedFromParent = objPassedFromParent.ToString();
+        }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // ensures the entire application is closed when main form is closed

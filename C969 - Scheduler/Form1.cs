@@ -21,17 +21,17 @@ namespace C969___Scheduler
 {
     public partial class Form1 : Form
     {
-        
+
         public Form1()
         {
             InitializeComponent();
             // centers login form 
-            StartPosition = FormStartPosition.CenterScreen; 
+            StartPosition = FormStartPosition.CenterScreen;
 
             // Get the timezone of the application - is this even needed here or do only on appointment section?
             // May move this elsewhere later 
             string localZone = TimeZone.CurrentTimeZone.StandardName;
-            
+
 
             // sets language of login form to spanish if detected
             if (CultureInfo.CurrentCulture.Name == "es-MX")
@@ -41,11 +41,13 @@ namespace C969___Scheduler
             }
 
 
-            
+
             // DEBUG MESSAGEBOX
             //MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}"); //for culture info
             //MessageBox.Show($"Current timezone is {localZone}\n Time is currently {currentTime}"); // for timezone
         }
+
+
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -78,9 +80,10 @@ namespace C969___Scheduler
                     //MessageBox.Show("match found");
 
                     File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
-
+                    User activeUser = new User(logUser); 
                     // load next form here
-                    MainForm mainForm = new MainForm();
+                    MainForm mainForm = new MainForm(activeUser);
+                   
 
                     //will close entire application when main form is closed
                     mainForm.FormClosed += (s, args) => this.Close(); 
