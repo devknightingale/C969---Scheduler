@@ -145,6 +145,7 @@ namespace C969___Scheduler
             this.btnAddNew.TabIndex = 3;
             this.btnAddNew.Text = "Add";
             this.btnAddNew.UseVisualStyleBackColor = true;
+            this.btnAddNew.Click += new System.EventHandler(this.btnAddNew_Click);
             // 
             // btnUpdate
             // 

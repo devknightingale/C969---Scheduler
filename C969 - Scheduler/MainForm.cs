@@ -1,5 +1,6 @@
 ﻿using C969___Scheduler.Database;
 using C969___Scheduler.Entity_Classes;
+using C969___Scheduler.Supplementary_Forms;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,12 @@ namespace C969___Scheduler
                 LoadCustomerGrid(); 
             }
             
+        }
+
+        private void btnAddNew_Click(object sender, EventArgs e)
+        {
+            AddAppointment addAppt = new AddAppointment();
+            addAppt.Show(); 
         }
     }
 }
