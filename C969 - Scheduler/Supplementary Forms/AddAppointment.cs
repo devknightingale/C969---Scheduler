@@ -28,6 +28,11 @@ namespace C969___Scheduler.Supplementary_Forms
 
             // INSERT INTO appointment(customerId, userId, title, description, location, contact, url, type, start, end, createDate, createdBy, lastUpdateBy)
             // VALUES(1, 1, "test appt", "testing appointment add", "Cincinnati", "Contact", "N/A", "Consultation", CAST("2025-01-20 12:00:00" as DATETIME), CAST("2025-01-20 12:15:00" as DATETIME), NOW(), "test", "test")
+
+               // THOUGHTS: 
+               // Use one form "ADDAPPOINTMENT" for both adding and updating appointment. 
+               // Perhaps two constructors? One that does not take an argument for the add form, one that takes appointment id for update 
+        
         }
     }
 }
