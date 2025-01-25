@@ -41,6 +41,8 @@ namespace C969___Scheduler.Supplementary_Forms
 
 
             // APPOINTMENT CONSULTANT COMBO BOX 
+            // Should change this to a list of User objects so i can access the user Id
+            // but to do that will need sql command right? 
             List<string> listUser = new List<string>
             {
                 "test", "admin"
@@ -59,6 +61,11 @@ namespace C969___Scheduler.Supplementary_Forms
             cbApptLocation.DataSource = listLocation;
             cbApptLocation.SelectedIndex = 0;
 
+            // CUSTOMER COMBO BOX 
+
+            // will need to create a combo box via using sql to build the list of customer objects from the database 
+
+
             /*************************/
             /*** END FORM CONTROLS ***/
             /*************************/
@@ -73,17 +80,21 @@ namespace C969___Scheduler.Supplementary_Forms
 
 
            
-            DateTime apptDate = dateTimePicker1.Value.ToUniversalTime(); 
-            
+             
+            // need to get both user and customer Ids... somehow
+            // use sql command to find user matching username, then grab its id? 
+
             string apptUser = cbApptUser.SelectedIndex.ToString();
             string apptTitle = txtTitle.Text;
             string apptDescription = txtDescription.Text;
             string apptLocation = cbApptUser.SelectedIndex.ToString();
+            string apptContact = "not needed"; 
             string apptType = cbApptType.SelectedIndex.ToString();
             DateTime startTime = dateTimePicker1.Value.ToUniversalTime();
             DateTime endTime = dateTimePicker1.Value.AddMinutes(30).ToUniversalTime();
             DateTime createDate = DateTime.Now.ToUniversalTime();
-            
+            string createdBy = UsernameHelper.userNameValue;
+            string lastUpdateBy = UsernameHelper.userNameValue; 
             
             // for the created by etc things, you need to pass the logged in user to the addappointment form 
             // cant figure out how to pass to add form - it cant be accessed in the button click that opens the add form? 

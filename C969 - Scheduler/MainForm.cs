@@ -62,7 +62,7 @@ namespace C969___Scheduler
                 MessageBox.Show("Failed to load customers", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        public MainForm(User activeUser)
+        public MainForm()
         {
             InitializeComponent();
             List<string> comboBoxItems = new List<string>();
@@ -80,8 +80,8 @@ namespace C969___Scheduler
             LoadAppointmentGrid();
 
             //testing that user log in works 
-            lblUsername.Text = activeUser.username; 
-            MessageBox.Show($"Logged in user is currently {activeUser.username}");
+            lblUsername.Text = UsernameHelper.userNameValue; 
+            MessageBox.Show($"Logged in user is currently {UsernameHelper.userNameValue}");
 
             
         }

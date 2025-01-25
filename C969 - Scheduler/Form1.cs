@@ -47,6 +47,10 @@ namespace C969___Scheduler
             //MessageBox.Show($"Current timezone is {localZone}\n Time is currently {currentTime}"); // for timezone
         }
 
+        // testing username retrieval option here
+        public static string testUsername { get; set; }
+
+        // end testing 
 
 
         private void btnSubmit_Click(object sender, EventArgs e)
@@ -80,9 +84,10 @@ namespace C969___Scheduler
                     //MessageBox.Show("match found");
 
                     File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
-                    User activeUser = new User(logUser); 
+                    
+                    UsernameHelper.userNameValue = logUser; 
                     // load next form here
-                    MainForm mainForm = new MainForm(activeUser);
+                    MainForm mainForm = new MainForm();
                    
 
                     //will close entire application when main form is closed
