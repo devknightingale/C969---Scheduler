@@ -74,7 +74,7 @@ namespace C969___Scheduler
 
             //maximizes main form
             //WindowState = FormWindowState.Maximized;
-
+            
 
             // this loads the default appointment view. 
             LoadAppointmentGrid();
@@ -82,13 +82,11 @@ namespace C969___Scheduler
             //testing that user log in works 
             lblUsername.Text = activeUser.username; 
             MessageBox.Show($"Logged in user is currently {activeUser.username}");
-        }
 
-        string activeName; 
-        public void RetrieveData(Object objPassedFromParent)
-        {
-            objPassedFromParent = objPassedFromParent.ToString();
+            
         }
+        
+       
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // ensures the entire application is closed when main form is closed
@@ -111,6 +109,7 @@ namespace C969___Scheduler
 
         private void btnAddNew_Click(object sender, EventArgs e)
         {
+            
             AddAppointment addAppt = new AddAppointment();
             addAppt.Show(); 
         }

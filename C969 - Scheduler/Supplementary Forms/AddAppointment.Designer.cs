@@ -36,8 +36,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cbApptLocation = new System.Windows.Forms.ComboBox();
             this.cbApptType = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtTitle = new System.Windows.Forms.TextBox();
+            this.txtDescription = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -110,19 +110,19 @@
             this.cbApptType.Size = new System.Drawing.Size(136, 21);
             this.cbApptType.TabIndex = 10;
             // 
-            // textBox1
+            // txtTitle
             // 
-            this.textBox1.Location = new System.Drawing.Point(131, 147);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(136, 20);
-            this.textBox1.TabIndex = 11;
+            this.txtTitle.Location = new System.Drawing.Point(131, 147);
+            this.txtTitle.Name = "txtTitle";
+            this.txtTitle.Size = new System.Drawing.Size(136, 20);
+            this.txtTitle.TabIndex = 11;
             // 
-            // textBox2
+            // txtDescription
             // 
-            this.textBox2.Location = new System.Drawing.Point(131, 174);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(136, 20);
-            this.textBox2.TabIndex = 12;
+            this.txtDescription.Location = new System.Drawing.Point(131, 174);
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(136, 20);
+            this.txtDescription.TabIndex = 12;
             // 
             // label5
             // 
@@ -149,8 +149,8 @@
             this.ClientSize = new System.Drawing.Size(393, 246);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtDescription);
+            this.Controls.Add(this.txtTitle);
             this.Controls.Add(this.cbApptType);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cbApptLocation);
@@ -176,8 +176,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbApptLocation;
         private System.Windows.Forms.ComboBox cbApptType;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtTitle;
+        private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
     }
