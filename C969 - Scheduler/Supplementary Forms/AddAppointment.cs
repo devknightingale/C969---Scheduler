@@ -88,7 +88,7 @@ namespace C969___Scheduler.Supplementary_Forms
             string apptTitle = txtTitle.Text;
             string apptDescription = txtDescription.Text;
             string apptLocation = cbApptUser.SelectedIndex.ToString();
-            string apptContact = "not needed"; 
+            //string apptContact = "not needed"; 
             string apptType = cbApptType.SelectedIndex.ToString();
             DateTime startTime = dateTimePicker1.Value.ToUniversalTime();
             DateTime endTime = dateTimePicker1.Value.AddMinutes(30).ToUniversalTime();
