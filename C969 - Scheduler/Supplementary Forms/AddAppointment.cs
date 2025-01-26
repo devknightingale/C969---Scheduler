@@ -1,4 +1,6 @@
-﻿using C969___Scheduler.Entity_Classes;
+﻿using C969___Scheduler.Database;
+using C969___Scheduler.Entity_Classes;
+using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
@@ -26,9 +28,20 @@ namespace C969___Scheduler.Supplementary_Forms
 
 
             // DATE TIME PICKER 
-            dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.CustomFormat = "MM/dd/yyyy hh:mm";
 
+            // TIME PICKER 
+            timePicker.Format = DateTimePickerFormat.Custom;
+            timePicker.CustomFormat = "hh:mm tt";
+            timePicker.ShowUpDown = true;
+
+
+            // DATETIME COMBINER? 
+            //DateTime startTime = datePicker.Value.ToUniversalTime();
+            //DateTime endTime = datePicker.Value.AddMinutes(30).ToUniversalTime();
+            //DateTime createDate = DateTime.Now.ToUniversalTime();
+
+            
+            
 
             // APPOINTMENT TYPE COMBO BOX 
             List<string> listApptType = new List<string>()
@@ -79,19 +92,22 @@ namespace C969___Scheduler.Supplementary_Forms
             // DATETIMEPICKER NEEDS TO BE DISPLAYED IN LOCAL TIME THOUGH? NEEDS TESTING
 
 
-           
-             
-            // need to get both user and customer Ids... somehow
-            // use sql command to find user matching username, then grab its id? 
+            // GET CUSTOMER ID FROM COMBO BOX MAYBE? 
+            // load combo box with list of users sorted alphabetically? then allow drop down selection 
 
-            string apptUser = cbApptUser.SelectedIndex.ToString();
+            
+            // GET USER ID FROM LOGGED IN USER 
+            string query = $"SELECT userId FROM user WHERE userName = '{UsernameHelper.userNameValue}'";
+            MySqlCommand userIdCmd = new MySqlCommand(query, DBConnection.conn);
+            int apptUserId = Convert.ToInt32(userIdCmd.ExecuteScalar());
+            
             string apptTitle = txtTitle.Text;
             string apptDescription = txtDescription.Text;
-            string apptLocation = cbApptUser.SelectedIndex.ToString();
-            //string apptContact = "not needed"; 
+            string apptLocation = cbApptUser.SelectedIndex.ToString(); 
             string apptType = cbApptType.SelectedIndex.ToString();
-            DateTime startTime = dateTimePicker1.Value.ToUniversalTime();
-            DateTime endTime = dateTimePicker1.Value.AddMinutes(30).ToUniversalTime();
+            string startTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.ToString("hh:mm tt");
+            DateTime startTime = DateTime.Parse(startTimeString).ToUniversalTime();
+            DateTime endTime = timePicker.Value.AddMinutes(30).ToUniversalTime();
             DateTime createDate = DateTime.Now.ToUniversalTime();
             string createdBy = UsernameHelper.userNameValue;
             string lastUpdateBy = UsernameHelper.userNameValue; 
@@ -117,6 +133,16 @@ namespace C969___Scheduler.Supplementary_Forms
 
 
 
+        }
+
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            string startTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.ToString("hh:mm tt");
+            DateTime startTimeTest = DateTime.Parse(startTimeString).ToUniversalTime();
+
+
+            
+            // Seems like the controls display in local time but can be converted to UTC for storing in the database 
         }
     }
 }

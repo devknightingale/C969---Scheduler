@@ -9,5 +9,10 @@ namespace C969___Scheduler.Entity_Classes
     public static class UsernameHelper
     {
         public static string userNameValue { get; set; }
+
+        public static List<string> apptTimes = new List<string>()
+        {
+
+        };
     }
 }
