@@ -105,7 +105,7 @@
             this.cbApptLocation.Name = "cbApptLocation";
             this.cbApptLocation.Size = new System.Drawing.Size(200, 21);
             this.cbApptLocation.TabIndex = 8;
-            this.cbApptLocation.SelectionChangeCommitted += new System.EventHandler(this.cbApptLocation_SelectionChangeCommitted);
+            
             // 
             // cbApptType
             // 
@@ -174,7 +174,7 @@
             this.cbCustomerList.Name = "cbCustomerList";
             this.cbCustomerList.Size = new System.Drawing.Size(200, 21);
             this.cbCustomerList.TabIndex = 17;
-            this.cbCustomerList.SelectionChangeCommitted += new System.EventHandler(this.cbCustomerList_SelectionChangeCommitted);
+            
             // 
             // label7
             // 

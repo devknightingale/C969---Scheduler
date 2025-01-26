@@ -18,50 +18,7 @@ namespace C969___Scheduler
 {
     public partial class MainForm : Form
     {
-        public void LoadAppointmentGrid()
-        {
-            try
-            {
-                string apptQuery = $"SELECT appointmentId, customerId, title, start FROM appointment";
-
-                MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
-                MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
-                DataTable apptTable = new DataTable();
-                appAdapter.Fill(apptTable);
-
-                BindingSource apptBindingSource = new BindingSource();
-                apptBindingSource.DataSource = apptTable;
-                dgvAppointments.DataSource = apptBindingSource;
-
-                dgvAppointments.Columns[3].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
-            }
-            catch
-            {
-                MessageBox.Show("ERROR WITH THE DATAGRID");
-            }
-        }
-        public void LoadCustomerGrid()
-        {
-            try
-            {
-                string customerQuery = $"SELECT customer.customerId, customer.customerName, address.address, address.phone FROM customer LEFT JOIN address ON customer.addressId = address.addressId ORDER BY customer.customerName";
-
-                MySqlCommand customerCmd = new MySqlCommand(customerQuery, DBConnection.conn);
-                MySqlDataAdapter customerAdapter = new MySqlDataAdapter(customerCmd);
-                DataTable customerTable = new DataTable();
-                customerAdapter.Fill(customerTable);
-
-                BindingSource customerBindingSource = new BindingSource();
-                customerBindingSource.DataSource = customerTable;
-                dgvAppointments.DataSource = customerBindingSource;
-
-
-            }
-            catch
-            {
-                MessageBox.Show("Failed to load customers", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+       
         public MainForm()
         {
             InitializeComponent();
@@ -77,7 +34,7 @@ namespace C969___Scheduler
             
 
             // this loads the default appointment view. 
-            LoadAppointmentGrid();
+            Helper.LoadAppointmentGrid(dgvAppointments);
 
             //testing that user log in works 
             lblUsername.Text = Helper.userNameValue; 
@@ -97,11 +54,11 @@ namespace C969___Scheduler
             // changes the grid from customers to appointments and vice versa based on dropdown selection
             if (comboBox1.SelectedIndex == 0)
             {
-                LoadAppointmentGrid(); 
+                Helper.LoadAppointmentGrid(dgvAppointments); 
             }
             else
             {
-                LoadCustomerGrid(); 
+                Helper.LoadCustomerGrid(dgvAppointments); 
             }
             
         }
@@ -109,8 +66,38 @@ namespace C969___Scheduler
         private void btnAddNew_Click(object sender, EventArgs e)
         {
             
-            AddAppointment addAppt = new AddAppointment();
-            addAppt.Show(); 
+            AddAppointment addAppt = new AddAppointment(dgvAppointments);
+            addAppt.Show();
+            
+        }
+
+        private void MainForm_Activated(object sender, EventArgs e)
+        {
+            Helper.LoadAppointmentGrid(dgvAppointments);
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (!dgvAppointments.CurrentRow.Selected)
+            {
+                MessageBox.Show("Please select an appointment to delete."); 
+            }
+            else
+            {
+                // this is not grabbing an appointment object. object is null 
+                // what did i do wrong here?
+                // find way to grab the int of cell 0 from the data grid 
+                Appointment apptToDelete = dgvAppointments.CurrentRow.DataBoundItem as Appointment;
+                Helper.deleteAppointment(apptToDelete.appointmentId);
+
+            }
+        }
+
+        private void dgvAppointments_SelectionChanged(object sender, EventArgs e)
+        {
+            Appointment checkAppt = dgvAppointments.CurrentRow.DataBoundItem as Appointment; 
+
+            MessageBox.Show($"Current selection id is {checkAppt.appointmentId}");
         }
     }
 }

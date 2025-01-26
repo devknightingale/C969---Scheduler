@@ -1,4 +1,6 @@
-﻿using C969___Scheduler.Entity_Classes;
+﻿using C969___Scheduler.Database;
+using C969___Scheduler.Entity_Classes;
+using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,7 @@ namespace C969___Scheduler.Supplementary_Forms
 {
     public partial class AddAppointment : Form
     {
-        public AddAppointment()
+        public AddAppointment(DataGridView dgv)
         {
             InitializeComponent();
 
@@ -28,7 +30,7 @@ namespace C969___Scheduler.Supplementary_Forms
 
             // CUSTOMER COMBO BOX 
             string queryCustomers = "SELECT customerName FROM customer ORDER BY customerName ASC";
-            MySqlCommand cmdCustomers = new MySqlCommand(queryCustomers, DBConnection.conn);
+            MySqlCommand cmdCustomers = new MySqlCommand(queryCustomers, DBConnection.conn );
             MySqlDataReader reader = cmdCustomers.ExecuteReader();
 
             while (reader.Read())
@@ -92,43 +94,10 @@ namespace C969___Scheduler.Supplementary_Forms
             /*****   VARIABLES   *****/
             /*************************/
 
-            // NOTE: THIS NEEDS TO BE CONVERTED TO UTC TIME 
-            // DATETIMEPICKER NEEDS TO BE DISPLAYED IN LOCAL TIME THOUGH? NEEDS TESTING
-
-
-            
-
-            string apptTitle = txtTitle.Text;
-            string apptDescription = txtDescription.Text;
-            string apptLocation = cbApptUser.SelectedIndex.ToString();
-            //string apptContact = "not needed"; 
-            string apptType = cbApptType.SelectedIndex.ToString();
-            DateTime startTime = dateTimePicker1.Value.ToUniversalTime();
-            DateTime endTime = dateTimePicker1.Value.AddMinutes(30).ToUniversalTime();
-            DateTime createDate = DateTime.Now.ToUniversalTime();
-            string createdBy = Helper.userNameValue;
-            string lastUpdateBy = Helper.userNameValue; 
-            
-            // for the created by etc things, you need to pass the logged in user to the addappointment form 
-            // cant figure out how to pass to add form - it cant be accessed in the button click that opens the add form? 
 
             /*************************/
             /****  END VARIABLES  ****/
             /*************************/
-
-
-
-            // EXAMPLE SQL COMMAND FOR ADDING APPOINTMENT: 
-            // NOTE: REMEMBER TIMES NEED TO BE CONVERTED TO UTC FOR THE DATABASE 
-
-            // INSERT INTO appointment(customerId, userId, title, description, location, contact, url, type, start, end, createDate, createdBy, lastUpdateBy)
-            // VALUES(1, 1, "test appt", "testing appointment add", "Cincinnati", "Contact", "N/A", "Consultation", CAST("2025-01-20 12:00:00" as DATETIME), CAST("2025-01-20 12:15:00" as DATETIME), NOW(), "test", "test")
-
-            // THOUGHTS: 
-            // Use one form "ADDAPPOINTMENT" for both adding and updating appointment. 
-            // Perhaps two constructors? One that does not take an argument for the add form, one that takes appointment id for update 
-
-
 
         }
 
@@ -170,20 +139,15 @@ namespace C969___Scheduler.Supplementary_Forms
             string createdBy = Helper.userNameValue;
             string lastUpdateBy = Helper.userNameValue;
 
-            Helper.addAppointment(appt); 
+            Helper.addAppointment(appt);
+            this.Close(); 
+            // how to force datagridview to update when add appointment is done?
+            
+
 
             // Seems like the controls display in local time but can be converted to UTC for storing in the database 
         }
 
-        private void cbCustomerList_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            MessageBox.Show($"Selected item is {cbCustomerList.SelectedItem.ToString()}");
-            
-        }
-
-        private void cbApptLocation_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            MessageBox.Show($"Selected item is {cbApptLocation.SelectedItem.ToString()}");
-        }
+        
     }
 }

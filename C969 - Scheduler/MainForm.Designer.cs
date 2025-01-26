@@ -118,6 +118,7 @@ namespace C969___Scheduler
             this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAppointments.Size = new System.Drawing.Size(625, 426);
             this.dgvAppointments.TabIndex = 1;
+            this.dgvAppointments.SelectionChanged += new System.EventHandler(this.dgvAppointments_SelectionChanged);
             // 
             // mySqlCommand1
             // 
@@ -164,6 +165,7 @@ namespace C969___Scheduler
             this.btnDelete.TabIndex = 5;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // lblLoggedInMessage
             // 
@@ -199,6 +201,7 @@ namespace C969___Scheduler
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).EndInit();
