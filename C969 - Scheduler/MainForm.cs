@@ -80,8 +80,8 @@ namespace C969___Scheduler
             LoadAppointmentGrid();
 
             //testing that user log in works 
-            lblUsername.Text = UsernameHelper.userNameValue; 
-            MessageBox.Show($"Logged in user is currently {UsernameHelper.userNameValue}");
+            lblUsername.Text = Helper.userNameValue; 
+            MessageBox.Show($"Logged in user is currently {Helper.userNameValue}");
 
             
         }

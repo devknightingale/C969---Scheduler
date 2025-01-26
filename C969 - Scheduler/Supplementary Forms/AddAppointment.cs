@@ -1,9 +1,12 @@
-﻿using C969___Scheduler.Entity_Classes;
+﻿using C969___Scheduler.Database;
+using C969___Scheduler.Entity_Classes;
+using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Security.Policy;
@@ -25,9 +28,25 @@ namespace C969___Scheduler.Supplementary_Forms
             /*************************/
 
 
-            // DATE TIME PICKER 
-            dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.CustomFormat = "MM/dd/yyyy hh:mm";
+            // CUSTOMER COMBO BOX 
+            string queryCustomers = "SELECT customerName FROM customer ORDER BY customerName ASC";
+            MySqlCommand cmdCustomers = new MySqlCommand(queryCustomers, DBConnection.conn);
+            MySqlDataReader reader = cmdCustomers.ExecuteReader();
+
+            while (reader.Read())
+            {
+                cbCustomerList.Items.Add(reader["customerName"].ToString());
+                
+            }
+            reader.Close();
+            cbCustomerList.SelectedIndex = 0; 
+
+
+
+            // TIME PICKER 
+            timePicker.Format = DateTimePickerFormat.Custom;
+            timePicker.CustomFormat = "hh:mm tt";
+            timePicker.ShowUpDown = true;
 
 
             // APPOINTMENT TYPE COMBO BOX 
@@ -79,22 +98,18 @@ namespace C969___Scheduler.Supplementary_Forms
             // DATETIMEPICKER NEEDS TO BE DISPLAYED IN LOCAL TIME THOUGH? NEEDS TESTING
 
 
-           
-             
-            // need to get both user and customer Ids... somehow
-            // use sql command to find user matching username, then grab its id? 
+            
 
-            string apptUser = cbApptUser.SelectedIndex.ToString();
             string apptTitle = txtTitle.Text;
             string apptDescription = txtDescription.Text;
-            string apptLocation = cbApptUser.SelectedIndex.ToString();
-            //string apptContact = "not needed"; 
+            string apptLocation = cbApptUser.SelectedIndex.ToString(); 
             string apptType = cbApptType.SelectedIndex.ToString();
-            DateTime startTime = dateTimePicker1.Value.ToUniversalTime();
-            DateTime endTime = dateTimePicker1.Value.AddMinutes(30).ToUniversalTime();
+            string startTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.ToString("hh:mm tt");
+            DateTime startTime = DateTime.Parse(startTimeString).ToUniversalTime();
+            DateTime endTime = timePicker.Value.AddMinutes(30).ToUniversalTime();
             DateTime createDate = DateTime.Now.ToUniversalTime();
-            string createdBy = UsernameHelper.userNameValue;
-            string lastUpdateBy = UsernameHelper.userNameValue; 
+            string createdBy = Helper.userNameValue;
+            string lastUpdateBy = Helper.userNameValue; 
             
             // for the created by etc things, you need to pass the logged in user to the addappointment form 
             // cant figure out how to pass to add form - it cant be accessed in the button click that opens the add form? 
@@ -117,6 +132,60 @@ namespace C969___Scheduler.Supplementary_Forms
 
 
 
+        }
+
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+
+
+            Appointment appt = new Appointment();
+
+
+            // GET CUSTOMER ID
+            string queryCustomerId = $"SELECT customerId FROM customer WHERE customerName = '{cbCustomerList.SelectedItem.ToString()}'";
+            MySqlCommand customerIdCmd = new MySqlCommand(queryCustomerId, DBConnection.conn);
+            appt.customerId = (int)customerIdCmd.ExecuteScalar();
+
+
+
+
+            // GET USER ID FROM LOGGED IN USER 
+            string query = $"SELECT userId FROM user WHERE userName = '{Helper.userNameValue}'";
+            MySqlCommand userIdCmd = new MySqlCommand(query, DBConnection.conn);
+            appt.userId = (int)userIdCmd.ExecuteScalar();
+
+
+            // ALL OTHER APPOINTMENT INFO 
+
+            appt.title = txtTitle.Text;
+            appt.description = txtDescription.Text;
+            appt.location = cbApptLocation.SelectedItem.ToString();
+            appt.contact = "not needed"; 
+            appt.type = cbApptType.SelectedItem.ToString();
+            appt.url = "www.example.com"; 
+            string startTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.ToString("hh:mm tt");
+            appt.start = DateTime.Parse(startTimeString).ToUniversalTime();
+            appt.end = timePicker.Value.AddMinutes(30).ToUniversalTime();
+            
+            // these arent in the class definition so they can be set this way instead
+            DateTime createDate = DateTime.Now.ToUniversalTime();
+            string createdBy = Helper.userNameValue;
+            string lastUpdateBy = Helper.userNameValue;
+
+            Helper.addAppointment(appt); 
+
+            // Seems like the controls display in local time but can be converted to UTC for storing in the database 
+        }
+
+        private void cbCustomerList_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Selected item is {cbCustomerList.SelectedItem.ToString()}");
+            
+        }
+
+        private void cbApptLocation_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Selected item is {cbApptLocation.SelectedItem.ToString()}");
         }
     }
 }

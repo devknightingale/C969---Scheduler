@@ -85,7 +85,7 @@ namespace C969___Scheduler
 
                     File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
                     
-                    UsernameHelper.userNameValue = logUser; 
+                    Helper.userNameValue = logUser; 
                     // load next form here
                     MainForm mainForm = new MainForm();
                    
