@@ -1,6 +1,4 @@
-﻿using C969___Scheduler.Database;
-using C969___Scheduler.Entity_Classes;
-using MySql.Data.MySqlClient;
+﻿using C969___Scheduler.Entity_Classes;
 using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
@@ -102,11 +100,11 @@ namespace C969___Scheduler.Supplementary_Forms
 
             string apptTitle = txtTitle.Text;
             string apptDescription = txtDescription.Text;
-            string apptLocation = cbApptUser.SelectedIndex.ToString(); 
+            string apptLocation = cbApptUser.SelectedIndex.ToString();
+            //string apptContact = "not needed"; 
             string apptType = cbApptType.SelectedIndex.ToString();
-            string startTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.ToString("hh:mm tt");
-            DateTime startTime = DateTime.Parse(startTimeString).ToUniversalTime();
-            DateTime endTime = timePicker.Value.AddMinutes(30).ToUniversalTime();
+            DateTime startTime = dateTimePicker1.Value.ToUniversalTime();
+            DateTime endTime = dateTimePicker1.Value.AddMinutes(30).ToUniversalTime();
             DateTime createDate = DateTime.Now.ToUniversalTime();
             string createdBy = Helper.userNameValue;
             string lastUpdateBy = Helper.userNameValue; 
