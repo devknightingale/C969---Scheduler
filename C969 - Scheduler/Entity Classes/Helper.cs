@@ -34,11 +34,25 @@ namespace C969___Scheduler.Entity_Classes
                 DataTable apptTable = new DataTable();
                 appAdapter.Fill(apptTable);
 
+                // how the heck do i convert the times to local before they're loaded into the data grid? 
+
                 BindingSource apptBindingSource = new BindingSource();
                 apptBindingSource.DataSource = apptTable;
                 dgv.DataSource = apptBindingSource;
 
                 dgv.Columns[3].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
+
+                int columnIndex = 3; 
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    string columnValue = dgv[columnIndex, i].Value.ToString();
+                    DateTime columnDateValue = Convert.ToDateTime(columnValue);
+                    DateTime columnDateValueConverted = columnDateValue.ToLocalTime();
+                    dgv[columnIndex, i].Value = columnDateValueConverted; 
+                    // WHOO! this works. Kind of a round about way but. It works. 
+                }
+                
+                
             }
             catch
             {
