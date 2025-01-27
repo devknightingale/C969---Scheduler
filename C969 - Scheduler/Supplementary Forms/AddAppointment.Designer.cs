@@ -44,12 +44,13 @@
             this.btnSubmit = new System.Windows.Forms.Button();
             this.cbCustomerList = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // datePicker
             // 
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datePicker.Location = new System.Drawing.Point(131, 144);
+            this.datePicker.Location = new System.Drawing.Point(131, 69);
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(91, 20);
             this.datePicker.TabIndex = 1;
@@ -57,7 +58,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 150);
+            this.label1.Location = new System.Drawing.Point(12, 75);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(113, 13);
             this.label1.TabIndex = 4;
@@ -66,7 +67,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 173);
+            this.label2.Location = new System.Drawing.Point(12, 98);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(108, 13);
             this.label2.TabIndex = 5;
@@ -75,7 +76,7 @@
             // cbApptUser
             // 
             this.cbApptUser.FormattingEnabled = true;
-            this.cbApptUser.Location = new System.Drawing.Point(131, 197);
+            this.cbApptUser.Location = new System.Drawing.Point(131, 122);
             this.cbApptUser.Name = "cbApptUser";
             this.cbApptUser.Size = new System.Drawing.Size(200, 21);
             this.cbApptUser.TabIndex = 6;
@@ -83,7 +84,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 200);
+            this.label3.Location = new System.Drawing.Point(12, 125);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 7;
@@ -92,7 +93,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 227);
+            this.label4.Location = new System.Drawing.Point(12, 152);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(51, 13);
             this.label4.TabIndex = 9;
@@ -101,23 +102,22 @@
             // cbApptLocation
             // 
             this.cbApptLocation.FormattingEnabled = true;
-            this.cbApptLocation.Location = new System.Drawing.Point(131, 224);
+            this.cbApptLocation.Location = new System.Drawing.Point(131, 149);
             this.cbApptLocation.Name = "cbApptLocation";
             this.cbApptLocation.Size = new System.Drawing.Size(200, 21);
             this.cbApptLocation.TabIndex = 8;
-            
             // 
             // cbApptType
             // 
             this.cbApptType.FormattingEnabled = true;
-            this.cbApptType.Location = new System.Drawing.Point(131, 170);
+            this.cbApptType.Location = new System.Drawing.Point(131, 95);
             this.cbApptType.Name = "cbApptType";
             this.cbApptType.Size = new System.Drawing.Size(200, 21);
             this.cbApptType.TabIndex = 10;
             // 
             // txtTitle
             // 
-            this.txtTitle.Location = new System.Drawing.Point(131, 251);
+            this.txtTitle.Location = new System.Drawing.Point(131, 176);
             this.txtTitle.MaxLength = 50;
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.Size = new System.Drawing.Size(200, 20);
@@ -125,7 +125,7 @@
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(131, 277);
+            this.txtDescription.Location = new System.Drawing.Point(131, 200);
             this.txtDescription.MaxLength = 50;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(200, 20);
@@ -134,7 +134,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 254);
+            this.label5.Location = new System.Drawing.Point(12, 179);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(30, 13);
             this.label5.TabIndex = 13;
@@ -143,7 +143,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 280);
+            this.label6.Location = new System.Drawing.Point(12, 203);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(63, 13);
             this.label6.TabIndex = 14;
@@ -152,44 +152,54 @@
             // timePicker
             // 
             this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.timePicker.Location = new System.Drawing.Point(228, 144);
+            this.timePicker.Location = new System.Drawing.Point(228, 69);
             this.timePicker.Name = "timePicker";
             this.timePicker.Size = new System.Drawing.Size(103, 20);
             this.timePicker.TabIndex = 15;
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(192, 56);
+            this.btnSubmit.Location = new System.Drawing.Point(256, 256);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
             this.btnSubmit.TabIndex = 16;
-            this.btnSubmit.Text = "Check";
+            this.btnSubmit.Text = "Submit";
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
             // cbCustomerList
             // 
             this.cbCustomerList.FormattingEnabled = true;
-            this.cbCustomerList.Location = new System.Drawing.Point(131, 117);
+            this.cbCustomerList.Location = new System.Drawing.Point(131, 41);
             this.cbCustomerList.Name = "cbCustomerList";
             this.cbCustomerList.Size = new System.Drawing.Size(200, 21);
             this.cbCustomerList.TabIndex = 17;
-            
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 120);
+            this.label7.Location = new System.Drawing.Point(12, 44);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(54, 13);
             this.label7.TabIndex = 18;
             this.label7.Text = "Customer:";
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(131, 256);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 19;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // AddAppointment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(369, 323);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.cbCustomerList);
             this.Controls.Add(this.btnSubmit);
@@ -231,5 +241,6 @@
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.ComboBox cbCustomerList;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

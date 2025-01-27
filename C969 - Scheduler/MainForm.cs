@@ -38,7 +38,7 @@ namespace C969___Scheduler
 
             //testing that user log in works 
             lblUsername.Text = Helper.userNameValue; 
-            MessageBox.Show($"Logged in user is currently {Helper.userNameValue}");
+            // MessageBox.Show($"Logged in user is currently {Helper.userNameValue}");
 
             
         }
@@ -78,26 +78,30 @@ namespace C969___Scheduler
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            // technically it should not be possible to not have a row selected since the application starts with a row selected automatically, but just in case... 
             if (!dgvAppointments.CurrentRow.Selected)
             {
                 MessageBox.Show("Please select an appointment to delete."); 
             }
             else
             {
-                // this is not grabbing an appointment object. object is null 
-                // what did i do wrong here?
-                // find way to grab the int of cell 0 from the data grid 
-                Appointment apptToDelete = dgvAppointments.CurrentRow.DataBoundItem as Appointment;
-                Helper.deleteAppointment(apptToDelete.appointmentId);
+                
+                int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
 
+                // confirmation window 
+                DialogResult result = MessageBox.Show("Are you sure you want to delete the selected appointment? This action cannot be undone.", "Confirm Deletion", MessageBoxButtons.YesNo); 
+
+                if (result == DialogResult.Yes)
+                {                   
+                    Helper.deleteAppointment(apptId);
+
+                    // refreshes data grid
+                    Helper.LoadAppointmentGrid(dgvAppointments);
+                }
+                
             }
         }
 
-        private void dgvAppointments_SelectionChanged(object sender, EventArgs e)
-        {
-            Appointment checkAppt = dgvAppointments.CurrentRow.DataBoundItem as Appointment; 
-
-            MessageBox.Show($"Current selection id is {checkAppt.appointmentId}");
-        }
+       
     }
 }

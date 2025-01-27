@@ -118,7 +118,7 @@ namespace C969___Scheduler
             this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAppointments.Size = new System.Drawing.Size(625, 426);
             this.dgvAppointments.TabIndex = 1;
-            this.dgvAppointments.SelectionChanged += new System.EventHandler(this.dgvAppointments_SelectionChanged);
+            
             // 
             // mySqlCommand1
             // 

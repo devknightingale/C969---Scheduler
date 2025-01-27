@@ -148,6 +148,9 @@ namespace C969___Scheduler.Supplementary_Forms
             // Seems like the controls display in local time but can be converted to UTC for storing in the database 
         }
 
-        
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

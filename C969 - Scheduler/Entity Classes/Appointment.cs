@@ -28,7 +28,6 @@ namespace C969___Scheduler.Entity_Classes
         public string username { get; set; }
 
       
-
     }
 
 
