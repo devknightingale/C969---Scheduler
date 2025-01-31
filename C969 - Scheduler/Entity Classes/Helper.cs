@@ -45,11 +45,7 @@ namespace C969___Scheduler.Entity_Classes
                 int columnIndex = 3; 
                 for (int i = 0; i < dgv.Rows.Count; i++)
                 {
-                    string columnValue = dgv[columnIndex, i].Value.ToString();
-                    DateTime columnDateValue = Convert.ToDateTime(columnValue);
-                    DateTime columnDateValueConverted = columnDateValue.ToLocalTime();
-                    dgv[columnIndex, i].Value = columnDateValueConverted; 
-                    // WHOO! this works. Kind of a round about way but. It works. 
+                    dgv[columnIndex, i].Value = Convert.ToDateTime(dgv[columnIndex, i].Value.ToString()).ToLocalTime();
                 }
                 
                 
