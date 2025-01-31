@@ -113,8 +113,10 @@ namespace C969___Scheduler
 
                 int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
 
+
+                 
                 // pull up add appointment form here but need to fill text boxes first? 
-                AddAppointment addAppt = new AddAppointment(dgvAppointments);
+                AddAppointment addAppt = new AddAppointment(dgvAppointments, apptId);
                 //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
                 addAppt.Show();
             }

@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,6 +74,97 @@ namespace C969___Scheduler.Supplementary_Forms
             cbApptUser.SelectedIndex = 0;
 
             
+
+
+            // APPOINTMENT LOCATION COMBO BOX 
+            List<string> listLocation = new List<string>
+            {
+                "In Office", "Virtual", "Phone"
+            };
+
+            cbApptLocation.DataSource = listLocation;
+            cbApptLocation.SelectedIndex = 0;
+
+
+
+            /*************************/
+            /*** END FORM CONTROLS ***/
+            /*************************/
+
+
+            /*************************/
+            /*****   VARIABLES   *****/
+            /*************************/
+
+
+            /*************************/
+            /****  END VARIABLES  ****/
+            /*************************/
+
+        }
+
+
+        /*************************/
+        /****** UPDATE FORM ******/
+        /*************************/
+
+
+        public AddAppointment(DataGridView dgv, int apptId)
+        {
+            InitializeComponent();
+
+            /*************************/
+            /***** FORM CONTROLS *****/
+            /*************************/
+
+
+            // grab appointment first?
+            // THIS NEEDS TO BE A JOIN ON CUSTOMERNAME FROM THE CUSTOMER TABLE 
+            string queryApptUpdate = $"SELECT * FROM appointment WHERE appointmentId = {apptId}";
+            MySqlCommand cmdApptUpdate = new MySqlCommand(queryApptUpdate, DBConnection.conn);
+            MySqlDataReader readerApptUpdate = cmdApptUpdate.ExecuteReader();
+
+            while (readerApptUpdate.Read())
+            {
+                // TEST THIS
+                cbCustomerList.SelectedIndex = cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());
+            }
+            readerApptUpdate.Close(); 
+
+
+            //Appointment apptToUpdate = new Appointment();
+
+
+            // TIME PICKER 
+            timePicker.Format = DateTimePickerFormat.Custom;
+            timePicker.CustomFormat = "hh:mm tt";
+            timePicker.ShowUpDown = true;
+
+
+            // APPOINTMENT TYPE COMBO BOX 
+            List<string> listApptType = new List<string>()
+            {
+                "Consultation", "Presentation", "Scrum"
+            };
+
+            cbApptType.DataSource = listApptType;
+            cbApptType.SelectedIndex = 0;
+
+
+            // APPOINTMENT CONSULTANT COMBO BOX             
+            string queryUsers = "SELECT userName FROM user ORDER BY userName ASC";
+            MySqlCommand cmdUsers = new MySqlCommand(queryUsers, DBConnection.conn);
+            MySqlDataReader readerUsers = cmdUsers.ExecuteReader();
+
+            while (readerUsers.Read())
+            {
+                cbApptUser.Items.Add(readerUsers["userName"].ToString());
+
+            }
+            readerUsers.Close();
+            cbApptUser.SelectedIndex = 0;
+
+
 
 
             // APPOINTMENT LOCATION COMBO BOX 

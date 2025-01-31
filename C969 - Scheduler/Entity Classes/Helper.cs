@@ -27,6 +27,7 @@ namespace C969___Scheduler.Entity_Classes
         {
             try
             {
+                // should update this query to a join to grab customer name instead of customer id 
                 string apptQuery = $"SELECT appointmentId, customerId, title, start FROM appointment";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
