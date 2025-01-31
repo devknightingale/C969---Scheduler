@@ -59,16 +59,20 @@ namespace C969___Scheduler.Supplementary_Forms
             cbApptType.SelectedIndex = 0;
 
 
-            // APPOINTMENT CONSULTANT COMBO BOX 
-            // Should change this to a list of User objects so i can access the user Id
-            // but to do that will need sql command right? 
-            List<string> listUser = new List<string>
-            {
-                "test", "admin"
-            };
+            // APPOINTMENT CONSULTANT COMBO BOX             
+            string queryUsers = "SELECT userName FROM user ORDER BY userName ASC";
+            MySqlCommand cmdUsers = new MySqlCommand(queryUsers, DBConnection.conn);
+            MySqlDataReader readerUsers = cmdUsers.ExecuteReader();
 
-            cbApptUser.DataSource = listUser;
+            while (readerUsers.Read())
+            {
+                cbApptUser.Items.Add(readerUsers["userName"].ToString());
+
+            }
+            readerUsers.Close();
             cbApptUser.SelectedIndex = 0;
+
+            
 
 
             // APPOINTMENT LOCATION COMBO BOX 
@@ -80,9 +84,6 @@ namespace C969___Scheduler.Supplementary_Forms
             cbApptLocation.DataSource = listLocation;
             cbApptLocation.SelectedIndex = 0;
 
-            // CUSTOMER COMBO BOX 
-
-            // will need to create a combo box via using sql to build the list of customer objects from the database 
 
 
             /*************************/

@@ -102,6 +102,22 @@ namespace C969___Scheduler
             }
         }
 
-       
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (!dgvAppointments.CurrentRow.Selected)
+            {
+                MessageBox.Show("Please select an appointment to modify.");
+            }
+            else
+            {
+
+                int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+
+                // pull up add appointment form here but need to fill text boxes first? 
+                AddAppointment addAppt = new AddAppointment(dgvAppointments);
+                //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
+                addAppt.Show();
+            }
+        }
     }
 }

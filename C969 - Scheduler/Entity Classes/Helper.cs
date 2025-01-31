@@ -34,7 +34,7 @@ namespace C969___Scheduler.Entity_Classes
                 DataTable apptTable = new DataTable();
                 appAdapter.Fill(apptTable);
 
-                // how the heck do i convert the times to local before they're loaded into the data grid? 
+                // Converts time displays on appointment grid to local timezone 
 
                 BindingSource apptBindingSource = new BindingSource();
                 apptBindingSource.DataSource = apptTable;

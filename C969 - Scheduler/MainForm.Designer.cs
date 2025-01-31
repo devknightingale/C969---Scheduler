@@ -118,7 +118,6 @@ namespace C969___Scheduler
             this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAppointments.Size = new System.Drawing.Size(625, 426);
             this.dgvAppointments.TabIndex = 1;
-            
             // 
             // mySqlCommand1
             // 
@@ -156,6 +155,7 @@ namespace C969___Scheduler
             this.btnUpdate.TabIndex = 4;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
