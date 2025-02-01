@@ -28,7 +28,7 @@ namespace C969___Scheduler.Entity_Classes
             try
             {
                 // should update this query to a join to grab customer name instead of customer id 
-                string apptQuery = $"SELECT appointmentId, customerId, title, start FROM appointment";
+                string apptQuery = $"SELECT appointment.title as 'Title', appointment.location as 'Location', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant'te FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
@@ -41,9 +41,9 @@ namespace C969___Scheduler.Entity_Classes
                 apptBindingSource.DataSource = apptTable;
                 dgv.DataSource = apptBindingSource;
 
-                dgv.Columns[3].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
+                dgv.Columns[2].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
 
-                int columnIndex = 3; 
+                int columnIndex = 2; 
                 for (int i = 0; i < dgv.Rows.Count; i++)
                 {
                     dgv[columnIndex, i].Value = Convert.ToDateTime(dgv[columnIndex, i].Value.ToString()).ToLocalTime();
@@ -51,9 +51,10 @@ namespace C969___Scheduler.Entity_Classes
                 
                 
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("ERROR WITH THE DATAGRID");
+                // for some reason this throws an exception when enabled despite the grid working? 
+                MessageBox.Show($"Error when filling data grid: {ex}", "ERROR", MessageBoxButtons.OK);
             }
         }
         public static void LoadCustomerGrid(DataGridView dgv)
