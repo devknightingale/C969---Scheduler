@@ -85,18 +85,25 @@ namespace C969___Scheduler
             }
             else
             {
-                
-                int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
 
-                // confirmation window 
-                DialogResult result = MessageBox.Show("Are you sure you want to delete the selected appointment? This action cannot be undone.", "Confirm Deletion", MessageBoxButtons.YesNo); 
+                try
+                {
+                    int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
 
-                if (result == DialogResult.Yes)
-                {                   
-                    Helper.deleteAppointment(apptId);
+                    // confirmation window 
+                    DialogResult result = MessageBox.Show("Are you sure you want to delete the selected appointment? This action cannot be undone.", "Confirm Deletion", MessageBoxButtons.YesNo);
 
-                    // refreshes data grid
-                    Helper.LoadAppointmentGrid(dgvAppointments);
+                    if (result == DialogResult.Yes)
+                    {
+                        Helper.deleteAppointment(apptId);
+
+                        // refreshes data grid
+                        Helper.LoadAppointmentGrid(dgvAppointments);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error when deleting appointment: {ex}", "Error", MessageBoxButtons.OK);
                 }
                 
             }

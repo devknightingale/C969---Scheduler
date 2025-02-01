@@ -31,7 +31,7 @@ namespace C969___Scheduler.Supplementary_Forms
 
             // CUSTOMER COMBO BOX 
             string queryCustomers = "SELECT customerName FROM customer ORDER BY customerName ASC";
-            MySqlCommand cmdCustomers = new MySqlCommand(queryCustomers, DBConnection.conn );
+            MySqlCommand cmdCustomers = new MySqlCommand(queryCustomers, DBConnection.conn);
             MySqlDataReader reader = cmdCustomers.ExecuteReader();
 
             while (reader.Read())
