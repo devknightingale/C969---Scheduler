@@ -1,4 +1,6 @@
 ﻿using C969___Scheduler.Database;
+using C969___Scheduler.Entity_Classes;
+using C969___Scheduler.Supplementary_Forms;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -16,50 +18,7 @@ namespace C969___Scheduler
 {
     public partial class MainForm : Form
     {
-        public void LoadAppointmentGrid()
-        {
-            try
-            {
-                string apptQuery = $"SELECT appointmentId, customerId, title, start FROM appointment";
-
-                MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
-                MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
-                DataTable apptTable = new DataTable();
-                appAdapter.Fill(apptTable);
-
-                BindingSource apptBindingSource = new BindingSource();
-                apptBindingSource.DataSource = apptTable;
-                dgvAppointments.DataSource = apptBindingSource;
-
-                dgvAppointments.Columns[3].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
-            }
-            catch
-            {
-                MessageBox.Show("ERROR WITH THE DATAGRID");
-            }
-        }
-        public void LoadCustomerGrid()
-        {
-            try
-            {
-                string customerQuery = $"SELECT customer.customerId, customer.customerName, address.address, address.phone FROM customer LEFT JOIN address ON customer.addressId = address.addressId ORDER BY customer.customerName";
-
-                MySqlCommand customerCmd = new MySqlCommand(customerQuery, DBConnection.conn);
-                MySqlDataAdapter customerAdapter = new MySqlDataAdapter(customerCmd);
-                DataTable customerTable = new DataTable();
-                customerAdapter.Fill(customerTable);
-
-                BindingSource customerBindingSource = new BindingSource();
-                customerBindingSource.DataSource = customerTable;
-                dgvAppointments.DataSource = customerBindingSource;
-
-
-            }
-            catch
-            {
-                MessageBox.Show("Failed to load customers", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+       
         public MainForm()
         {
             InitializeComponent();
@@ -71,14 +30,19 @@ namespace C969___Scheduler
             comboBox1.SelectedIndex = 0;
 
             //maximizes main form
-            WindowState = FormWindowState.Maximized;
-
+            //WindowState = FormWindowState.Maximized;
+            
 
             // this loads the default appointment view. 
-            LoadAppointmentGrid(); 
+            Helper.LoadAppointmentGrid(dgvAppointments);
 
+            //testing that user log in works 
+            lblUsername.Text = Helper.userNameValue; 
+            // MessageBox.Show($"Logged in user is currently {Helper.userNameValue}");
+
+            
         }
-
+       
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // ensures the entire application is closed when main form is closed
@@ -90,13 +54,79 @@ namespace C969___Scheduler
             // changes the grid from customers to appointments and vice versa based on dropdown selection
             if (comboBox1.SelectedIndex == 0)
             {
-                LoadAppointmentGrid(); 
+                Helper.LoadAppointmentGrid(dgvAppointments); 
             }
             else
             {
-                LoadCustomerGrid(); 
+                Helper.LoadCustomerGrid(dgvAppointments); 
             }
             
+        }
+
+        private void btnAddNew_Click(object sender, EventArgs e)
+        {
+            
+            AddAppointment addAppt = new AddAppointment(dgvAppointments);
+            addAppt.Show();
+            
+        }
+
+        private void MainForm_Activated(object sender, EventArgs e)
+        {
+            Helper.LoadAppointmentGrid(dgvAppointments);
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            // technically it should not be possible to not have a row selected since the application starts with a row selected automatically, but just in case... 
+            if (!dgvAppointments.CurrentRow.Selected)
+            {
+                MessageBox.Show("Please select an appointment to delete."); 
+            }
+            else
+            {
+
+                try
+                {
+                    int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+
+                    // confirmation window 
+                    DialogResult result = MessageBox.Show("Are you sure you want to delete the selected appointment? This action cannot be undone.", "Confirm Deletion", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        Helper.deleteAppointment(apptId);
+
+                        // refreshes data grid
+                        Helper.LoadAppointmentGrid(dgvAppointments);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error when deleting appointment: {ex}", "Error", MessageBoxButtons.OK);
+                }
+                
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (!dgvAppointments.CurrentRow.Selected)
+            {
+                MessageBox.Show("Please select an appointment to modify.");
+            }
+            else
+            {
+
+                int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+
+
+                 
+                // pull up add appointment form here but need to fill text boxes first? 
+                AddAppointment addAppt = new AddAppointment(dgvAppointments, apptId);
+                //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
+                addAppt.Show();
+            }
         }
     }
 }
