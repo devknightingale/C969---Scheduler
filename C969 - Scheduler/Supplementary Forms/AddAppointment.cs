@@ -116,23 +116,29 @@ namespace C969___Scheduler.Supplementary_Forms
             /*************************/
             /***** FORM CONTROLS *****/
             /*************************/
-
-
-            // grab appointment first?
-            // THIS NEEDS TO BE A JOIN ON CUSTOMERNAME FROM THE CUSTOMER TABLE 
-            string queryApptUpdate = $"SELECT * FROM appointment WHERE appointmentId = {apptId}";
-            MySqlCommand cmdApptUpdate = new MySqlCommand(queryApptUpdate, DBConnection.conn);
-            MySqlDataReader readerApptUpdate = cmdApptUpdate.ExecuteReader();
-
-            while (readerApptUpdate.Read())
+            try
             {
-                // TEST THIS
-                cbCustomerList.SelectedIndex = cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());
+                
+                string queryApptUpdate = $"SELECT *, customer.customerName FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId = {apptId}";
+                MySqlCommand cmdApptUpdate = new MySqlCommand(queryApptUpdate, DBConnection.conn);
+                MySqlDataReader readerApptUpdate = cmdApptUpdate.ExecuteReader();
+
+                while (readerApptUpdate.Read())
+                {
+                    // TEST THIS
+                    cbCustomerList.SelectedIndex = cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());
+                }
+                readerApptUpdate.Close();
+
+
+                //Appointment apptToUpdate = new Appointment();
             }
-            readerApptUpdate.Close(); 
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error when showing Update form: {ex}", "Error", MessageBoxButtons.OK);
+            }
 
-
-            //Appointment apptToUpdate = new Appointment();
+            
 
 
             // TIME PICKER 
