@@ -28,7 +28,7 @@ namespace C969___Scheduler.Entity_Classes
             try
             {
                 // should update this query to a join to grab customer name instead of customer id 
-                string apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
+                string apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
@@ -41,9 +41,9 @@ namespace C969___Scheduler.Entity_Classes
                 apptBindingSource.DataSource = apptTable;
                 dgv.DataSource = apptBindingSource;
 
-                dgv.Columns[3].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
+                dgv.Columns[4].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
 
-                int columnIndex = 3; 
+                int columnIndex = 4; 
                 for (int i = 0; i < dgv.Rows.Count; i++)
                 {
                     dgv[columnIndex, i].Value = Convert.ToDateTime(dgv[columnIndex, i].Value.ToString()).ToLocalTime();

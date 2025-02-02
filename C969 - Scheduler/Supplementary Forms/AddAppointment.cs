@@ -118,20 +118,66 @@ namespace C969___Scheduler.Supplementary_Forms
             /*************************/
             try
             {
-                
+                // CUSTOMER COMBO BOX 
+                string queryCustomers = "SELECT customerName FROM customer ORDER BY customerName ASC";
+                MySqlCommand cmdCustomers = new MySqlCommand(queryCustomers, DBConnection.conn);
+                MySqlDataReader reader = cmdCustomers.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    cbCustomerList.Items.Add(reader["customerName"].ToString());
+
+                }
+                reader.Close();
+
+
                 string queryApptUpdate = $"SELECT *, customer.customerName FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId = {apptId}";
                 MySqlCommand cmdApptUpdate = new MySqlCommand(queryApptUpdate, DBConnection.conn);
                 MySqlDataReader readerApptUpdate = cmdApptUpdate.ExecuteReader();
 
                 while (readerApptUpdate.Read())
-                {
-                    // TEST THIS
-                    cbCustomerList.SelectedIndex = cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());
+                {                   
+                    cbCustomerList.SelectedIndex = (int)cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());
                 }
+
+
+
+                Appointment apptToUpdate = new Appointment();
+
+                apptToUpdate.customerId = (int)readerApptUpdate["customerId"];
+                apptToUpdate.userId = (int)readerApptUpdate["userId"];
+                apptToUpdate.title = (string)readerApptUpdate["title"];
+                apptToUpdate.description = (string)readerApptUpdate["description"];
+                apptToUpdate.location = (string)readerApptUpdate["location"];
+                apptToUpdate.type = (string)readerApptUpdate["type"];
+                apptToUpdate.url = (string)readerApptUpdate["url"];
+                apptToUpdate.start = Convert.ToDateTime(readerApptUpdate["start"].ToString());
+                apptToUpdate.end = Convert.ToDateTime(readerApptUpdate["end"].ToString());
+                apptToUpdate.createDate = Convert.ToDateTime(readerApptUpdate["createDate"].ToString());
+                apptToUpdate.createdBy = (string)readerApptUpdate["createdBy"];
+                apptToUpdate.lastUpdate = Convert.ToDateTime(readerApptUpdate["lastUpdate"].ToString());
+                apptToUpdate.lastUpdateBy = (string)readerApptUpdate["lastUpdateBy"];
+
+
+                
+
                 readerApptUpdate.Close();
 
+                // First step: pull Date and time into separate variables for the picker boxes 
+                string dateString = apptToUpdate.start.ToLocalTime().ToString().Substring(0,9);
+                string timeString = apptToUpdate.start.ToLocalTime().ToString().Substring(10);
 
-                //Appointment apptToUpdate = new Appointment();
+                //MessageBox.Show($"{dateString}\n{timeString}");
+                datePicker.Value = Convert.ToDateTime(dateString);
+                timePicker.Value = Convert.ToDateTime(timeString);
+
+                MessageBox.Show(apptToUpdate.type);  
+
+
+                // this is not working properly 
+                cbApptType.SelectedText = apptToUpdate.type;
+
+
             }
             catch (Exception ex)
             {
@@ -202,18 +248,12 @@ namespace C969___Scheduler.Supplementary_Forms
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-
-
             Appointment appt = new Appointment();
-
 
             // GET CUSTOMER ID
             string queryCustomerId = $"SELECT customerId FROM customer WHERE customerName = '{cbCustomerList.SelectedItem.ToString()}'";
             MySqlCommand customerIdCmd = new MySqlCommand(queryCustomerId, DBConnection.conn);
             appt.customerId = (int)customerIdCmd.ExecuteScalar();
-
-
-
 
             // GET USER ID FROM LOGGED IN USER 
             string query = $"SELECT userId FROM user WHERE userName = '{Helper.userNameValue}'";
@@ -237,6 +277,9 @@ namespace C969___Scheduler.Supplementary_Forms
             DateTime createDate = DateTime.Now.ToUniversalTime();
             string createdBy = Helper.userNameValue;
             string lastUpdateBy = Helper.userNameValue;
+
+
+            
 
             Helper.addAppointment(appt);
             this.Close(); 
