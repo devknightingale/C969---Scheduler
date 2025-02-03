@@ -40,7 +40,7 @@ namespace C969___Scheduler.Supplementary_Forms
                 
             }
             reader.Close();
-            cbCustomerList.SelectedIndex = 0; 
+            //cbCustomerList.SelectedIndex = 0; 
 
 
 
@@ -51,13 +51,24 @@ namespace C969___Scheduler.Supplementary_Forms
 
 
             // APPOINTMENT TYPE COMBO BOX 
-            List<string> listApptType = new List<string>()
-            {
-                "Consultation", "Presentation", "Scrum"
-            };
+            //List<string> listApptType = new List<string>()
+            //{
+                //"Consultation", "Presentation", "Scrum"
+            //};
 
-            cbApptType.DataSource = listApptType;
-            cbApptType.SelectedIndex = 0;
+            //cbApptType.DataSource = listApptType;
+            //cbApptType.SelectedIndex = 0;
+
+            string queryApptType = "SELECT type FROM appointment ORDER BY type ASC";
+            MySqlCommand cmdApptType = new MySqlCommand(queryApptType, DBConnection.conn);
+            MySqlDataReader readerApptType = cmdApptType.ExecuteReader();
+
+            while (readerApptType.Read())
+            {
+                cbApptType.Items.Add(readerApptType["type"].ToString());
+
+            }
+            readerApptType.Close();
 
 
             // APPOINTMENT CONSULTANT COMBO BOX             
@@ -130,7 +141,17 @@ namespace C969___Scheduler.Supplementary_Forms
                 }
                 reader.Close();
 
+                // Testing combo appt type adding 
+                string queryApptType = "SELECT DISTINCT type FROM appointment ORDER BY type ASC"; 
+                MySqlCommand cmdApptType = new MySqlCommand(queryApptType, DBConnection.conn);
+                MySqlDataReader readerApptType = cmdApptType.ExecuteReader();
 
+                while (readerApptType.Read())
+                {
+                    cbApptType.Items.Add(readerApptType["type"].ToString());
+                }
+                readerApptType.Close(); 
+                
                 string queryApptUpdate = $"SELECT *, customer.customerName FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId = {apptId}";
                 MySqlCommand cmdApptUpdate = new MySqlCommand(queryApptUpdate, DBConnection.conn);
                 MySqlDataReader readerApptUpdate = cmdApptUpdate.ExecuteReader();
@@ -138,8 +159,9 @@ namespace C969___Scheduler.Supplementary_Forms
                 while (readerApptUpdate.Read())
                 {                   
                     cbCustomerList.SelectedIndex = (int)cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());
+                    
+                        
                 }
-
 
 
                 Appointment apptToUpdate = new Appointment();
@@ -158,11 +180,16 @@ namespace C969___Scheduler.Supplementary_Forms
                 apptToUpdate.lastUpdate = Convert.ToDateTime(readerApptUpdate["lastUpdate"].ToString());
                 apptToUpdate.lastUpdateBy = (string)readerApptUpdate["lastUpdateBy"];
 
-
                 
+
 
                 readerApptUpdate.Close();
 
+                cbApptType.SelectedIndex = cbApptType.FindString(apptToUpdate.type.ToString());
+
+                
+
+                MessageBox.Show($"Appointment type is {apptToUpdate.type} of type {apptToUpdate.type.GetType()}\ncbItems type is {cbApptType.Items.GetType()}");
                 // First step: pull Date and time into separate variables for the picker boxes 
                 string dateString = apptToUpdate.start.ToLocalTime().ToString().Substring(0,9);
                 string timeString = apptToUpdate.start.ToLocalTime().ToString().Substring(10);
@@ -171,11 +198,14 @@ namespace C969___Scheduler.Supplementary_Forms
                 datePicker.Value = Convert.ToDateTime(dateString);
                 timePicker.Value = Convert.ToDateTime(timeString);
 
-                MessageBox.Show(apptToUpdate.type);  
+                
 
 
                 // this is not working properly 
-                cbApptType.SelectedText = apptToUpdate.type;
+                //int testIndex = (int)cbApptType.FindStringExact(apptToUpdate.type);
+                //MessageBox.Show($"{testIndex}");
+
+                
 
 
             }
@@ -193,15 +223,7 @@ namespace C969___Scheduler.Supplementary_Forms
             timePicker.ShowUpDown = true;
 
 
-            // APPOINTMENT TYPE COMBO BOX 
-            List<string> listApptType = new List<string>()
-            {
-                "Consultation", "Presentation", "Scrum"
-            };
-
-            cbApptType.DataSource = listApptType;
-            cbApptType.SelectedIndex = 0;
-
+            
 
             // APPOINTMENT CONSULTANT COMBO BOX             
             string queryUsers = "SELECT userName FROM user ORDER BY userName ASC";
