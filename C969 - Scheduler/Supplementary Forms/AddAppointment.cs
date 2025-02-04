@@ -59,7 +59,7 @@ namespace C969___Scheduler.Supplementary_Forms
             //cbApptType.DataSource = listApptType;
             //cbApptType.SelectedIndex = 0;
 
-            string queryApptType = "SELECT type FROM appointment ORDER BY type ASC";
+            string queryApptType = "SELECT DISTINCT type FROM appointment ORDER BY type ASC";
             MySqlCommand cmdApptType = new MySqlCommand(queryApptType, DBConnection.conn);
             MySqlDataReader readerApptType = cmdApptType.ExecuteReader();
 
@@ -72,7 +72,7 @@ namespace C969___Scheduler.Supplementary_Forms
 
 
             // APPOINTMENT CONSULTANT COMBO BOX             
-            string queryUsers = "SELECT userName FROM user ORDER BY userName ASC";
+            string queryUsers = "SELECT DISTINCT userName FROM user ORDER BY userName ASC";
             MySqlCommand cmdUsers = new MySqlCommand(queryUsers, DBConnection.conn);
             MySqlDataReader readerUsers = cmdUsers.ExecuteReader();
 
@@ -141,7 +141,7 @@ namespace C969___Scheduler.Supplementary_Forms
                 }
                 reader.Close();
 
-                // Testing combo appt type adding 
+                // APPOINTMENT TYPE COMBO BOX 
                 string queryApptType = "SELECT DISTINCT type FROM appointment ORDER BY type ASC"; 
                 MySqlCommand cmdApptType = new MySqlCommand(queryApptType, DBConnection.conn);
                 MySqlDataReader readerApptType = cmdApptType.ExecuteReader();
@@ -150,7 +150,8 @@ namespace C969___Scheduler.Supplementary_Forms
                 {
                     cbApptType.Items.Add(readerApptType["type"].ToString());
                 }
-                readerApptType.Close(); 
+                readerApptType.Close();
+
                 
                 string queryApptUpdate = $"SELECT *, customer.customerName FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId = {apptId}";
                 MySqlCommand cmdApptUpdate = new MySqlCommand(queryApptUpdate, DBConnection.conn);
@@ -158,9 +159,7 @@ namespace C969___Scheduler.Supplementary_Forms
 
                 while (readerApptUpdate.Read())
                 {                   
-                    cbCustomerList.SelectedIndex = (int)cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());
-                    
-                        
+                    cbCustomerList.SelectedIndex = (int)cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());  
                 }
 
 
@@ -185,11 +184,11 @@ namespace C969___Scheduler.Supplementary_Forms
 
                 readerApptUpdate.Close();
 
-                cbApptType.SelectedIndex = cbApptType.FindString(apptToUpdate.type.ToString());
+                
 
                 
 
-                MessageBox.Show($"Appointment type is {apptToUpdate.type} of type {apptToUpdate.type.GetType()}\ncbItems type is {cbApptType.Items.GetType()}");
+                
                 // First step: pull Date and time into separate variables for the picker boxes 
                 string dateString = apptToUpdate.start.ToLocalTime().ToString().Substring(0,9);
                 string timeString = apptToUpdate.start.ToLocalTime().ToString().Substring(10);
@@ -198,14 +197,32 @@ namespace C969___Scheduler.Supplementary_Forms
                 datePicker.Value = Convert.ToDateTime(dateString);
                 timePicker.Value = Convert.ToDateTime(timeString);
 
-                
+                // Set appointment type to match that of appointment to update
+                cbApptType.SelectedIndex = cbApptType.FindString(apptToUpdate.type.ToString());
+
+                // Set consultant according to who is the user on the appointment 
+                // Have to grab username first 
+
+                string queryUsernameMatch = $"SELECT user.userName FROM appointment INNER JOIN user ON user.userId = appointment.userId WHERE appointmentId = {apptId}";
+                MySqlCommand cmdUsernameMatch = new MySqlCommand(queryUsernameMatch, DBConnection.conn);
+                string username = (string)cmdUsernameMatch.ExecuteScalar();
+                cbApptUser.SelectedIndex = (int)cbApptUser.FindString(username);
+
+                MessageBox.Show($"Apptuser index is {(int)cbApptUser.FindString(username)}");
+
+                //MySqlDataReader readerUsernameMatch = cmdUsernameMatch.ExecuteReader();
 
 
-                // this is not working properly 
-                //int testIndex = (int)cbApptType.FindStringExact(apptToUpdate.type);
-                //MessageBox.Show($"{testIndex}");
+                //while (readerUsernameMatch.Read()) {
+                //                    string username = readerUsernameMatch["userName"].ToString();
+                //  cbApptUser.SelectedIndex = (int)cbApptUser.FindString(readerUsernameMatch/["userName"].ToString());
+                //}
+                //readerUsernameMatch.Close();
 
-                
+
+
+
+
 
 
             }
@@ -278,7 +295,8 @@ namespace C969___Scheduler.Supplementary_Forms
             appt.customerId = (int)customerIdCmd.ExecuteScalar();
 
             // GET USER ID FROM LOGGED IN USER 
-            string query = $"SELECT userId FROM user WHERE userName = '{Helper.userNameValue}'";
+            // THIS IS INCORRECT: it is grabbing the currently logged in user instead of the user that is selected in the combo box. 
+            string query = $"SELECT userId FROM user WHERE userName = '{cbApptUser.SelectedItem.ToString()}'";
             MySqlCommand userIdCmd = new MySqlCommand(query, DBConnection.conn);
             appt.userId = (int)userIdCmd.ExecuteScalar();
 
