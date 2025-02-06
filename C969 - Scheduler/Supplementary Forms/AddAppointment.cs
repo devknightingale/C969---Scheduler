@@ -50,26 +50,13 @@ namespace C969___Scheduler.Supplementary_Forms
             timePicker.ShowUpDown = true;
 
 
-            // APPOINTMENT TYPE COMBO BOX 
-            //List<string> listApptType = new List<string>()
-            //{
-                //"Consultation", "Presentation", "Scrum"
-            //};
-
-            //cbApptType.DataSource = listApptType;
-            //cbApptType.SelectedIndex = 0;
-
-            string queryApptType = "SELECT DISTINCT type FROM appointment ORDER BY type ASC";
-            MySqlCommand cmdApptType = new MySqlCommand(queryApptType, DBConnection.conn);
-            MySqlDataReader readerApptType = cmdApptType.ExecuteReader();
-
-            while (readerApptType.Read())
+            List<string> apptTypeList = new List<string>()
             {
-                cbApptType.Items.Add(readerApptType["type"].ToString());
+                "Consultation", "Presentation", "Scrum"
+            };
 
-            }
-            readerApptType.Close();
-
+            cbApptType.DataSource = apptTypeList;
+            cbApptType.SelectedIndex = 0; 
 
             // APPOINTMENT CONSULTANT COMBO BOX             
             string queryUsers = "SELECT DISTINCT userName FROM user ORDER BY userName ASC";
@@ -78,7 +65,7 @@ namespace C969___Scheduler.Supplementary_Forms
 
             while (readerUsers.Read())
             {
-                cbApptUser.Items.Add(readerUsers["userName"].ToString());
+                cbApptUser.Items.Add(readerUsers["userName"]);
 
             }
             readerUsers.Close();
@@ -94,7 +81,7 @@ namespace C969___Scheduler.Supplementary_Forms
             };
 
             cbApptLocation.DataSource = listLocation;
-            cbApptLocation.SelectedIndex = 0;
+//            cbApptLocation.SelectedIndex = 0;
 
 
 
@@ -152,7 +139,21 @@ namespace C969___Scheduler.Supplementary_Forms
                 }
                 readerApptType.Close();
 
+                // APPOINTMENT CONSULTANT COMBO BOX
                 
+                string queryUpdateUsers = "SELECT DISTINCT userName FROM user ORDER BY userName ASC";
+                MySqlCommand cmdUpdateUsers = new MySqlCommand(queryUpdateUsers, DBConnection.conn);
+                MySqlDataReader readerUpdateUsers = cmdUpdateUsers.ExecuteReader();
+                
+
+                while (readerUpdateUsers.Read())
+                {
+                    cbApptUser.Items.Add(readerUpdateUsers["userName"].ToString());
+
+                }
+                readerUpdateUsers.Close();
+
+
                 string queryApptUpdate = $"SELECT *, customer.customerName FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId = {apptId}";
                 MySqlCommand cmdApptUpdate = new MySqlCommand(queryApptUpdate, DBConnection.conn);
                 MySqlDataReader readerApptUpdate = cmdApptUpdate.ExecuteReader();
@@ -162,6 +163,7 @@ namespace C969___Scheduler.Supplementary_Forms
                     cbCustomerList.SelectedIndex = (int)cbCustomerList.FindStringExact(readerApptUpdate["customerName"].ToString());  
                 }
 
+                
 
                 Appointment apptToUpdate = new Appointment();
 
@@ -179,20 +181,18 @@ namespace C969___Scheduler.Supplementary_Forms
                 apptToUpdate.lastUpdate = Convert.ToDateTime(readerApptUpdate["lastUpdate"].ToString());
                 apptToUpdate.lastUpdateBy = (string)readerApptUpdate["lastUpdateBy"];
 
-                
-
-
                 readerApptUpdate.Close();
 
                 
 
                 
-
+                // SETTING ALL THE VALUES IN THE FORM FROM THE APPTID
                 
                 // First step: pull Date and time into separate variables for the picker boxes 
                 string dateString = apptToUpdate.start.ToLocalTime().ToString().Substring(0,9);
-                string timeString = apptToUpdate.start.ToLocalTime().ToString().Substring(10);
+                string timeString = apptToUpdate.start.ToLocalTime().ToString().Substring(9);
 
+                
                 //MessageBox.Show($"{dateString}\n{timeString}");
                 datePicker.Value = Convert.ToDateTime(dateString);
                 timePicker.Value = Convert.ToDateTime(timeString);
@@ -206,24 +206,30 @@ namespace C969___Scheduler.Supplementary_Forms
                 string queryUsernameMatch = $"SELECT user.userName FROM appointment INNER JOIN user ON user.userId = appointment.userId WHERE appointmentId = {apptId}";
                 MySqlCommand cmdUsernameMatch = new MySqlCommand(queryUsernameMatch, DBConnection.conn);
                 string username = (string)cmdUsernameMatch.ExecuteScalar();
-                cbApptUser.SelectedIndex = (int)cbApptUser.FindString(username);
+                cbApptUser.SelectedIndex = (int)cbApptUser.FindStringExact(username.ToString());
 
-                MessageBox.Show($"Apptuser index is {(int)cbApptUser.FindString(username)}");
+                // APPOINTMENT LOCATION COMBO BOX 
 
-                //MySqlDataReader readerUsernameMatch = cmdUsernameMatch.ExecuteReader();
-
-
-                //while (readerUsernameMatch.Read()) {
-                //                    string username = readerUsernameMatch["userName"].ToString();
-                //  cbApptUser.SelectedIndex = (int)cbApptUser.FindString(readerUsernameMatch/["userName"].ToString());
-                //}
-                //readerUsernameMatch.Close();
+                // APPOINTMENT LOCATION COMBO BOX 
+                string queryUpdateLocation = "SELECT DISTINCT location FROM appointment ORDER BY location ASC";
+                MySqlCommand cmdUpdateLocation = new MySqlCommand(queryUpdateLocation, DBConnection.conn);
+                MySqlDataReader readerUpdateLocation = cmdUpdateLocation.ExecuteReader();
 
 
+                while (readerUpdateLocation.Read())
+                {
+                    cbApptLocation.Items.Add(readerUpdateLocation["location"].ToString());
+
+                }
+                readerUpdateLocation.Close();
 
 
-
-
+                // Set location according to appointment location 
+                cbApptLocation.SelectedIndex = (int)cbApptLocation.FindString(apptToUpdate.location.ToString());
+                
+                // Textboxes
+                txtDescription.Text = apptToUpdate.description.ToString();
+                txtTitle.Text = apptToUpdate.title.ToString();
 
             }
             catch (Exception ex)
@@ -231,43 +237,11 @@ namespace C969___Scheduler.Supplementary_Forms
                 MessageBox.Show($"Error when showing Update form: {ex}", "Error", MessageBoxButtons.OK);
             }
 
-            
-
 
             // TIME PICKER 
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.CustomFormat = "hh:mm tt";
             timePicker.ShowUpDown = true;
-
-
-            
-
-            // APPOINTMENT CONSULTANT COMBO BOX             
-            string queryUsers = "SELECT userName FROM user ORDER BY userName ASC";
-            MySqlCommand cmdUsers = new MySqlCommand(queryUsers, DBConnection.conn);
-            MySqlDataReader readerUsers = cmdUsers.ExecuteReader();
-
-            while (readerUsers.Read())
-            {
-                cbApptUser.Items.Add(readerUsers["userName"].ToString());
-
-            }
-            readerUsers.Close();
-            cbApptUser.SelectedIndex = 0;
-
-
-
-
-            // APPOINTMENT LOCATION COMBO BOX 
-            List<string> listLocation = new List<string>
-            {
-                "In Office", "Virtual", "Phone"
-            };
-
-            cbApptLocation.DataSource = listLocation;
-            cbApptLocation.SelectedIndex = 0;
-
-
 
             /*************************/
             /*** END FORM CONTROLS ***/
