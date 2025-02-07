@@ -56,7 +56,7 @@ namespace C969___Scheduler
             this.evaluatorShortcutsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(882, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -110,13 +110,12 @@ namespace C969___Scheduler
             this.dgvAppointments.AllowUserToDeleteRows = false;
             this.dgvAppointments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAppointments.Dock = System.Windows.Forms.DockStyle.Right;
-            this.dgvAppointments.Location = new System.Drawing.Point(175, 24);
+            this.dgvAppointments.Location = new System.Drawing.Point(163, 27);
             this.dgvAppointments.MultiSelect = false;
             this.dgvAppointments.Name = "dgvAppointments";
             this.dgvAppointments.ReadOnly = true;
             this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAppointments.Size = new System.Drawing.Size(625, 426);
+            this.dgvAppointments.Size = new System.Drawing.Size(707, 426);
             this.dgvAppointments.TabIndex = 1;
             // 
             // mySqlCommand1
@@ -189,7 +188,7 @@ namespace C969___Scheduler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(882, 450);
             this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.lblLoggedInMessage);
             this.Controls.Add(this.btnDelete);

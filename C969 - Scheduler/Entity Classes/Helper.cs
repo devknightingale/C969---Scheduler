@@ -18,7 +18,7 @@ namespace C969___Scheduler.Entity_Classes
 
         public static int userIdValue { get; set; }
 
-
+        public static int apptIdValue { get; set; }
         /**********************/
         /***** DATA  GRID *****/
         /**********************/
@@ -124,7 +124,7 @@ namespace C969___Scheduler.Entity_Classes
             return apptId;
 
         }
-
+        
         public static int deleteAppointment(int apptId)
         {
             
