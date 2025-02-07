@@ -147,6 +147,8 @@ namespace C969___Scheduler.Entity_Classes
        
 
         // CUSTOMER PROCEDURES 
+
+
     }
 
     
