@@ -48,7 +48,26 @@ namespace C969___Scheduler.Supplementary_Forms
             // TIME PICKER 
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.CustomFormat = "hh:mm tt";
+
+            // need to convert the local time to EST time, then restrict times in the timepicker to est time? 
+            // local time to est conversion 
+            TimeZoneInfo localTime = TimeZoneInfo.Local;
+            TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+
+            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("17:00:00"), estTimeZone);
+            DateTime startBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("09:00:00"), estTimeZone);
+            
+            DateTime endBusinessHoursLocal = TimeZoneInfo.ConvertTime(endBusinessHoursEST, localTime);
+            DateTime startBusinessHoursLocal = TimeZoneInfo.ConvertTime(startBusinessHoursEST, localTime); 
+            // debug message box
+            MessageBox.Show($"Testing times:\nEnd of Business EST: {endBusinessHoursEST}\nEnd of Business Local: {endBusinessHoursLocal}");
+
+            // time picker formatting 
             timePicker.ShowUpDown = true;
+            timePicker.MinDate = startBusinessHoursLocal;
+            timePicker.MaxDate = endBusinessHoursLocal;
+
+            
 
 
             List<string> apptTypeList = new List<string>()

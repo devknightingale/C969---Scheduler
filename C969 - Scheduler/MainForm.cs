@@ -200,9 +200,9 @@ namespace C969___Scheduler
             {
                 Helper.BoldDates(selectedDay, this);
 
-                string yearNum = selectedDay.ToString().Substring(6, 4);
-                string dayNum = selectedDay.ToString().Substring(3, 2);
-                string monthNum = selectedDay.ToString().Substring(0, 2);
+                string yearNum = selectedDay.ToString("yyyy-MM-dd HH:mm:ss").Substring(0, 4);
+                string dayNum = selectedDay.ToString("yyyy-MM-dd HH:mm:ss").Substring(8, 2);
+                string monthNum = selectedDay.ToString("yyyy-MM-dd HH:mm:ss").Substring(5, 2);
                 string startDate =  yearNum + "-" + monthNum + "-" + dayNum + " 00:00:00";
                 string endDate = yearNum + "-" + monthNum + "-" + dayNum + " 23:59:59";
                 //FIX ME: LoadAppointmentGrid for the DAY SELECTED only 
@@ -213,13 +213,17 @@ namespace C969___Scheduler
             else if (cbTimePeriod.SelectedItem.ToString() == "Weekly")
             {
                 Helper.GetWeekDates(selectedDay, this);
-                string yearNum = selectedDay.ToString().Substring(6, 4);
-                string dayNum = selectedDay.ToString().Substring(3, 2);
-                string monthNum = selectedDay.ToString().Substring(0, 2);
-                string startDate = yearNum + "-" + monthNum + "-" + dayNum + " 00:00:00";
-                string endDate = yearNum + "-" + monthNum + "-" + dayNum + " 23:59:59";
-                Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
+                
+                string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd HH:mm:ss");
+                string endDate = apptCalendar.BoldedDates[apptCalendar.BoldedDates.Length - 1].ToString("yyyy-MM-dd HH:mm:ss");
+                string yearNum = startDate.Substring(0, 4);
+                string dayNum = startDate.Substring(8, 2);
+                string monthNum = startDate.Substring(5, 2);
 
+
+                startDate = yearNum + "-" + monthNum + "-" + dayNum + " 00:00:00";
+                endDate = yearNum + "-" + endDate.Substring(5,2) + "-" + endDate.Substring(8,2) + " 23:59:59";
+                Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
                 //FIX ME: LoadAppointmentGrid for the WEEK SELECTED only 
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Monthly")

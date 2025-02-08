@@ -30,7 +30,7 @@ namespace C969___Scheduler
 
             // Get the timezone of the application - is this even needed here or do only on appointment section?
             // May move this elsewhere later 
-            string localZone = TimeZone.CurrentTimeZone.StandardName;
+            string localZone = Helper.GetLocalZone();
 
 
             // sets language of login form to spanish if detected

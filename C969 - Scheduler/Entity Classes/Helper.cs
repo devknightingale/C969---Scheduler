@@ -24,7 +24,10 @@ namespace C969___Scheduler.Entity_Classes
         /**********************/
         /***** DATA  GRID *****/
         /**********************/
-
+        public static string GetLocalZone()
+        {
+            return TimeZone.CurrentTimeZone.StandardName;
+        }
         public static void LoadAppointmentGrid(DataGridView dgv)
         {
             string apptQuery = "";
@@ -72,6 +75,8 @@ namespace C969___Scheduler.Entity_Classes
             // fix me: need to pass in startDate and endDate instead of a code 
             try
             {
+                DateTime startDateTime = Convert.ToDateTime(startDate);
+                DateTime endDateTime = Convert.ToDateTime(endDate); 
                 // should update this query to a join to grab customer name instead of customer id 
                 apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId WHERE appointment.start BETWEEN '{startDate}' AND '{endDate}'";
 
