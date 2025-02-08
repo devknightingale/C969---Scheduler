@@ -27,10 +27,13 @@ namespace C969___Scheduler.Entity_Classes
 
         public static void LoadAppointmentGrid(DataGridView dgv)
         {
+            string apptQuery = "";
+            
+            // fix me: need to pass in startDate and endDate instead of a code 
             try
             {
                 // should update this query to a join to grab customer name instead of customer id 
-                string apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
+                apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
@@ -52,6 +55,46 @@ namespace C969___Scheduler.Entity_Classes
                 }
                 
                 
+            }
+            catch (Exception ex)
+            {
+                // for some reason this throws an exception when enabled despite the grid working? 
+                MessageBox.Show($"Error when filling data grid: {ex}", "ERROR", MessageBoxButtons.OK);
+            }
+        }
+
+        public static void LoadAppointmentGrid(DataGridView dgv, string startDate, string endDate)
+        {
+            string apptQuery = "";
+            // FIX ME: extract just the date, then change the time to 12:00:00 PM for start and 11:59:00 PM for end respectively 
+            MessageBox.Show($"Start time is {startDate}\n End date is {endDate}");
+
+            // fix me: need to pass in startDate and endDate instead of a code 
+            try
+            {
+                // should update this query to a join to grab customer name instead of customer id 
+                apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId WHERE appointment.start BETWEEN '{startDate}' AND '{endDate}'";
+
+                MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
+                MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
+                DataTable apptTable = new DataTable();
+                appAdapter.Fill(apptTable);
+
+                // Converts time displays on appointment grid to local timezone 
+
+                BindingSource apptBindingSource = new BindingSource();
+                apptBindingSource.DataSource = apptTable;
+                dgv.DataSource = apptBindingSource;
+
+                dgv.Columns[4].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
+
+                int columnIndex = 4;
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    dgv[columnIndex, i].Value = Convert.ToDateTime(dgv[columnIndex, i].Value.ToString()).ToLocalTime();
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -186,6 +229,7 @@ namespace C969___Scheduler.Entity_Classes
                 mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
                 mainForm.apptCalendar.UpdateBoldedDates();
 
+                
             }
             else if (selectedDate.DayOfWeek == DayOfWeek.Monday)
             {

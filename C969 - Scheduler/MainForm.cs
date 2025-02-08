@@ -192,17 +192,33 @@ namespace C969___Scheduler
         {
 
             DateTime selectedDay = apptCalendar.SelectionStart;
+            
+
             // FIX ME: Should call different versions of the BoldDates() function depending on if the selection is daily, monthly, or weekly. 
             // FIX ME: LoadAppointmentGrid() needs rewriting to account for different versions of the grid ex day week or month. the only change will be in the SQL statement. figure out how to implement this maybe pass in an int, which corresponds to the version ex 1 = daily, 2 = weekly, 3 = monthly, then in LoadAppointmentGrid(), just check for that number and use the appropriate version  
             if (cbTimePeriod.SelectedItem.ToString() == "Daily")
             {
                 Helper.BoldDates(selectedDay, this);
 
+                string yearNum = selectedDay.ToString().Substring(6, 4);
+                string dayNum = selectedDay.ToString().Substring(3, 2);
+                string monthNum = selectedDay.ToString().Substring(0, 2);
+                string startDate =  yearNum + "-" + monthNum + "-" + dayNum + " 00:00:00";
+                string endDate = yearNum + "-" + monthNum + "-" + dayNum + " 23:59:59";
                 //FIX ME: LoadAppointmentGrid for the DAY SELECTED only 
+
+                Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
+
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Weekly")
             {
                 Helper.GetWeekDates(selectedDay, this);
+                string yearNum = selectedDay.ToString().Substring(6, 4);
+                string dayNum = selectedDay.ToString().Substring(3, 2);
+                string monthNum = selectedDay.ToString().Substring(0, 2);
+                string startDate = yearNum + "-" + monthNum + "-" + dayNum + " 00:00:00";
+                string endDate = yearNum + "-" + monthNum + "-" + dayNum + " 23:59:59";
+                Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
 
                 //FIX ME: LoadAppointmentGrid for the WEEK SELECTED only 
             }
@@ -210,7 +226,7 @@ namespace C969___Scheduler
             {
                 //FIX ME: Make the BoldDates(month) function, then call it here
                 // will need to get current month, and daysinmonth, then assign those to selectionstart/selection end. pass in start, end, mainform 
-
+                //Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
                 //FIX ME: LoadAppointmentGrid for the MONTH SELECTED only 
             }
             else
