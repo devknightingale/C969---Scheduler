@@ -70,7 +70,7 @@ namespace C969___Scheduler.Entity_Classes
         {
             string apptQuery = "";
             // FIX ME: extract just the date, then change the time to 12:00:00 PM for start and 11:59:00 PM for end respectively 
-            MessageBox.Show($"Start time is {startDate}\n End date is {endDate}");
+            
 
             // fix me: need to pass in startDate and endDate instead of a code 
             try
@@ -310,10 +310,9 @@ namespace C969___Scheduler.Entity_Classes
             {
                 // this would be saturday 
                
-                DateTime startDate = selectedDate.AddDays(-7);
+                DateTime startDate = selectedDate.AddDays(-6);
                 DateTime endDate = selectedDate;
-                MessageBox.Show($"Start date is {startDate.ToString()}\n End date is {endDate.ToString()}");
-                //testing this 
+                
                 for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
                 {
                     boldedSelection.Add(selectedDates);

@@ -146,27 +146,33 @@ namespace C969___Scheduler
         {
             List<DateTime> boldedSelection = new List<DateTime>();
             DateTime selectedDate = apptCalendar.SelectionStart;
+            
             DateTime todaysDate = DateTime.Now; 
             // Have the calendar default to current day/week/month depending on which is selected here 
 
             if (cbTimePeriod.SelectedItem.ToString() == "Daily")
             {
                 // FIX ME: Default to select current day. 
-                MessageBox.Show($"Selected is {cbTimePeriod.SelectedItem.ToString()}");
-                Helper.BoldDates(todaysDate, this); 
                 
+                Helper.BoldDates(todaysDate, this);
+                string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd") + " 00:00:00";
+                string endDate = apptCalendar.BoldedDates[apptCalendar.BoldedDates.Length - 1].ToString("yyyy-MM-dd 23:59:59");
+                Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
 
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Weekly")
             {
                               
-                MessageBox.Show($"Selected is {cbTimePeriod.SelectedItem.ToString()}");
+                
 
                 // Bold current week only. Use GetWeekDates() to grab the dates. 
                 
-                Helper.GetWeekDates(todaysDate, this); 
-
+                Helper.GetWeekDates(todaysDate, this);
+                string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd") + " 00:00:00";
+                string endDate = apptCalendar.BoldedDates[apptCalendar.BoldedDates.Length - 1].ToString("yyyy-MM-dd 23:59:59");
                 // FIX ME: Check if WEEKLY is selected, then load appointment grid for that WEEKS appointment that is selected on the calendar control
+
+                Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
 
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Monthly")
