@@ -8,7 +8,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -143,136 +145,41 @@ namespace C969___Scheduler
         private void cbTimePeriod_SelectionChangeCommitted(object sender, EventArgs e)
         {
             List<DateTime> boldedSelection = new List<DateTime>();
+            DateTime selectedDate = apptCalendar.SelectionStart;
+            DateTime todaysDate = DateTime.Now; 
+            // Have the calendar default to current day/week/month depending on which is selected here 
 
             if (cbTimePeriod.SelectedItem.ToString() == "Daily")
             {
-                // FIX ME: Check if DAILY is selected, then load appointment grid for that DAYS appointment that is selected on the calendar control
+                // FIX ME: Default to select current day. 
                 MessageBox.Show($"Selected is {cbTimePeriod.SelectedItem.ToString()}");
-
-                for (DateTime selectedDates = apptCalendar.SelectionRange.Start; selectedDates <= apptCalendar.SelectionRange.End; selectedDates = selectedDates.AddDays(1))
-                {
-                    boldedSelection.Add(selectedDates);
-                }
-                apptCalendar.BoldedDates = boldedSelection.ToArray();
-                apptCalendar.UpdateBoldedDates();
+                Helper.BoldDates(todaysDate, this); 
+                
 
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Weekly")
             {
-                //   There has to be a more concise way to do this: 
-                // Try grabbing the week number from the calendar somehow, then bolding that week? if possible. Might be less code involved 
-
-                // FIX ME: Check if WEEKLY is selected, then load appointment grid for that WEEKS appointment that is selected on the calendar control
+                              
                 MessageBox.Show($"Selected is {cbTimePeriod.SelectedItem.ToString()}");
 
-                // switch case for day of week?
-                // ex: checks day of week, then sets range of dates to select based on the day of the week 
-                if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    DateTime today = DateTime.Now;
-                    DateTime startDate = today.AddDays(0);
-                    DateTime endDate = today.AddDays(6);
+                // Bold current week only. Use GetWeekDates() to grab the dates. 
+                
+                Helper.GetWeekDates(todaysDate, this); 
 
-                    //testing this 
-                    for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
-                    {
-                        boldedSelection.Add(selectedDates);
-                    }
-                    apptCalendar.BoldedDates = boldedSelection.ToArray();
-                    apptCalendar.UpdateBoldedDates();
-
-                }
-                else if (DateTime.Today.DayOfWeek != DayOfWeek.Monday)
-                {
-                    DateTime today = DateTime.Now;
-                    DateTime startDate = today.AddDays(-1);
-                    DateTime endDate = today.AddDays(5);
-
-                    //testing this 
-                    for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
-                    {
-                        boldedSelection.Add(selectedDates);
-                    }
-                    apptCalendar.BoldedDates = boldedSelection.ToArray();
-                    apptCalendar.UpdateBoldedDates();
-                }
-                else if (DateTime.Today.DayOfWeek != DayOfWeek.Tuesday)
-                {
-                    DateTime today = DateTime.Now;
-                    DateTime startDate = today.AddDays(-2);
-                    DateTime endDate = today.AddDays(4);
-
-                    //testing this 
-                    for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
-                    {
-                        boldedSelection.Add(selectedDates);
-                    }
-                    apptCalendar.BoldedDates = boldedSelection.ToArray();
-                    apptCalendar.UpdateBoldedDates();
-                }
-                else if (DateTime.Today.DayOfWeek != DayOfWeek.Wednesday)
-                {
-                    DateTime today = DateTime.Now;
-                    DateTime startDate = today.AddDays(-3);
-                    DateTime endDate = today.AddDays(3);
-
-                    //testing this 
-                    for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
-                    {
-                        boldedSelection.Add(selectedDates);
-                    }
-                    apptCalendar.BoldedDates = boldedSelection.ToArray();
-                    apptCalendar.UpdateBoldedDates();
-                }
-                else if (DateTime.Today.DayOfWeek != DayOfWeek.Thursday)
-                {
-                    DateTime today = DateTime.Now;
-                    DateTime startDate = today.AddDays(-4);
-                    DateTime endDate = today.AddDays(2);
-
-                    //testing this 
-                    for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
-                    {
-                        boldedSelection.Add(selectedDates);
-                    }
-                    apptCalendar.BoldedDates = boldedSelection.ToArray();
-                    apptCalendar.UpdateBoldedDates();
-                }
-                else if (DateTime.Today.DayOfWeek != DayOfWeek.Friday)
-                {
-                    DateTime today = DateTime.Now;
-                    DateTime startDate = today.AddDays(-5);
-                    DateTime endDate = today.AddDays(1);
-
-                    //testing this 
-                    for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
-                    {
-                        boldedSelection.Add(selectedDates);
-                    }
-                    apptCalendar.BoldedDates = boldedSelection.ToArray();
-                    apptCalendar.UpdateBoldedDates();
-                }
-                else
-                {
-                    // this would be saturday 
-                    DateTime today = DateTime.Now;
-                    DateTime startDate = today.AddDays(-6);
-                    DateTime endDate = today.AddDays(0);
-
-                    //testing this 
-                    for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
-                    {
-                        boldedSelection.Add(selectedDates);
-                    }
-                    apptCalendar.BoldedDates = boldedSelection.ToArray();
-                    apptCalendar.UpdateBoldedDates();
-                }
+                // FIX ME: Check if WEEKLY is selected, then load appointment grid for that WEEKS appointment that is selected on the calendar control
 
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Monthly")
             {
                 // FIX ME: Check if MONTHLY is selected, then load appointment grid for that MONTHS appointment that is selected on the calendar control
-                MessageBox.Show($"Selected is {cbTimePeriod.SelectedItem.ToString()}");
+                
+                int monthNum = todaysDate.Month;
+                int yearNum = todaysDate.Year;    
+                int daysNum = DateTime.DaysInMonth(yearNum, monthNum);
+
+                string startOfMonth = yearNum.ToString() + "-" + monthNum.ToString() + "-01";
+                string endOfMonth = yearNum.ToString() + "-" + monthNum.ToString() + "-" + daysNum;
+
             }
             else
             {
@@ -283,7 +190,35 @@ namespace C969___Scheduler
 
         private void apptCalendar_DateSelected(object sender, DateRangeEventArgs e)
         {
-            // FIX ME: needs to clear all previously bolded dates, then call the function to bold dates based on the selection in the time period drop down. 
+
+            DateTime selectedDay = apptCalendar.SelectionStart;
+            // FIX ME: Should call different versions of the BoldDates() function depending on if the selection is daily, monthly, or weekly. 
+            // FIX ME: LoadAppointmentGrid() needs rewriting to account for different versions of the grid ex day week or month. the only change will be in the SQL statement. figure out how to implement this maybe pass in an int, which corresponds to the version ex 1 = daily, 2 = weekly, 3 = monthly, then in LoadAppointmentGrid(), just check for that number and use the appropriate version  
+            if (cbTimePeriod.SelectedItem.ToString() == "Daily")
+            {
+                Helper.BoldDates(selectedDay, this);
+
+                //FIX ME: LoadAppointmentGrid for the DAY SELECTED only 
+            }
+            else if (cbTimePeriod.SelectedItem.ToString() == "Weekly")
+            {
+                Helper.GetWeekDates(selectedDay, this);
+
+                //FIX ME: LoadAppointmentGrid for the WEEK SELECTED only 
+            }
+            else if (cbTimePeriod.SelectedItem.ToString() == "Monthly")
+            {
+                //FIX ME: Make the BoldDates(month) function, then call it here
+                // will need to get current month, and daysinmonth, then assign those to selectionstart/selection end. pass in start, end, mainform 
+
+                //FIX ME: LoadAppointmentGrid for the MONTH SELECTED only 
+            }
+            else
+            {
+                //Remove all bold dates and simply show all appointments in the grid. 
+                apptCalendar.RemoveAllBoldedDates();
+            }
         }
+
     }
 }

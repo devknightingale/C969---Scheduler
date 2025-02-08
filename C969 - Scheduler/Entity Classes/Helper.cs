@@ -19,6 +19,8 @@ namespace C969___Scheduler.Entity_Classes
         public static int userIdValue { get; set; }
 
         public static int apptIdValue { get; set; }
+
+        public static List<DateTime> boldedSelection = new List<DateTime>();
         /**********************/
         /***** DATA  GRID *****/
         /**********************/
@@ -148,7 +150,129 @@ namespace C969___Scheduler.Entity_Classes
 
         // CUSTOMER PROCEDURES 
 
+        // CALENDAR PROCEDURES 
 
+        
+        public static void BoldDates(DateTime dayToBold, MainForm mainForm)
+        {
+            // Bolds a single day 
+            mainForm.apptCalendar.RemoveAllBoldedDates();
+            boldedSelection.Clear();
+            boldedSelection.Add(dayToBold);
+            mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+            
+        }
+
+
+
+        // Get Week 
+        public static void GetWeekDates(DateTime selectedDate, MainForm mainForm)
+        {
+            // could use some cleaning perhaps 
+            mainForm.apptCalendar.RemoveAllBoldedDates();
+            boldedSelection.Clear();
+
+            if (selectedDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+               
+                DateTime startDate = selectedDate.AddDays(0);
+                DateTime endDate = selectedDate.AddDays(6);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Monday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-1);
+                DateTime endDate = selectedDate.AddDays(5);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Tuesday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-2);
+                DateTime endDate = selectedDate.AddDays(4);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Wednesday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-3);
+                DateTime endDate = selectedDate.AddDays(3);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Thursday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-4);
+                DateTime endDate = selectedDate.AddDays(2);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Friday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-5);
+                DateTime endDate = selectedDate.AddDays(1);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else
+            {
+                // this would be saturday 
+               
+                DateTime startDate = selectedDate.AddDays(-7);
+                DateTime endDate = selectedDate;
+                MessageBox.Show($"Start date is {startDate.ToString()}\n End date is {endDate.ToString()}");
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+        }
     }
 
     

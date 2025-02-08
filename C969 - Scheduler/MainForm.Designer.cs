@@ -112,7 +112,7 @@ namespace C969___Scheduler
             this.dgvAppointments.AllowUserToDeleteRows = false;
             this.dgvAppointments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAppointments.Location = new System.Drawing.Point(267, 30);
+            this.dgvAppointments.Location = new System.Drawing.Point(279, 30);
             this.dgvAppointments.MultiSelect = false;
             this.dgvAppointments.Name = "dgvAppointments";
             this.dgvAppointments.ReadOnly = true;
@@ -132,7 +132,7 @@ namespace C969___Scheduler
             this.comboBox1.BackColor = System.Drawing.SystemColors.Window;
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(175, 3);
+            this.comboBox1.Location = new System.Drawing.Point(279, 3);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(118, 21);
             this.comboBox1.TabIndex = 2;
@@ -192,12 +192,13 @@ namespace C969___Scheduler
             this.apptCalendar.Name = "apptCalendar";
             this.apptCalendar.ShowWeekNumbers = true;
             this.apptCalendar.TabIndex = 8;
+        
             this.apptCalendar.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.apptCalendar_DateSelected);
             // 
             // cbTimePeriod
             // 
             this.cbTimePeriod.FormattingEnabled = true;
-            this.cbTimePeriod.Location = new System.Drawing.Point(73, 49);
+            this.cbTimePeriod.Location = new System.Drawing.Point(70, 30);
             this.cbTimePeriod.Name = "cbTimePeriod";
             this.cbTimePeriod.Size = new System.Drawing.Size(121, 21);
             this.cbTimePeriod.TabIndex = 9;
@@ -247,7 +248,7 @@ namespace C969___Scheduler
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Label lblLoggedInMessage;
         private System.Windows.Forms.Label lblUsername;
-        private System.Windows.Forms.MonthCalendar apptCalendar;
         private System.Windows.Forms.ComboBox cbTimePeriod;
+        public System.Windows.Forms.MonthCalendar apptCalendar;
     }
 }
