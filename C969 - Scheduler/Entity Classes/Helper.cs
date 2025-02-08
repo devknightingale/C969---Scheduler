@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
@@ -32,10 +33,10 @@ namespace C969___Scheduler.Entity_Classes
         {
             string apptQuery = "";
             
-            // fix me: need to pass in startDate and endDate instead of a code 
+            
             try
             {
-                // should update this query to a join to grab customer name instead of customer id 
+                
                 apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
@@ -61,7 +62,7 @@ namespace C969___Scheduler.Entity_Classes
             }
             catch (Exception ex)
             {
-                // for some reason this throws an exception when enabled despite the grid working? 
+                
                 MessageBox.Show($"Error when filling data grid: {ex}", "ERROR", MessageBoxButtons.OK);
             }
         }
@@ -69,10 +70,8 @@ namespace C969___Scheduler.Entity_Classes
         public static void LoadAppointmentGrid(DataGridView dgv, string startDate, string endDate)
         {
             string apptQuery = "";
-            // FIX ME: extract just the date, then change the time to 12:00:00 PM for start and 11:59:00 PM for end respectively 
             
-
-            // fix me: need to pass in startDate and endDate instead of a code 
+            
             try
             {
                 DateTime startDateTime = Convert.ToDateTime(startDate);
@@ -209,6 +208,18 @@ namespace C969___Scheduler.Entity_Classes
             boldedSelection.Add(dayToBold);
             mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
             
+        }
+
+        public static void BoldMonthDates(DateTime startMonth, DateTime endMonth, MainForm mainForm)
+        {
+            mainForm.apptCalendar.RemoveAllBoldedDates();
+            boldedSelection.Clear();
+            for (DateTime selectedDates = startMonth; selectedDates <= endMonth; selectedDates = selectedDates.AddDays(1))
+            {
+                boldedSelection.Add(selectedDates);
+            }
+            mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+            mainForm.apptCalendar.UpdateBoldedDates();
         }
 
 

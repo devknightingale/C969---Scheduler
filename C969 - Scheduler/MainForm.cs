@@ -183,14 +183,22 @@ namespace C969___Scheduler
                 int yearNum = todaysDate.Year;    
                 int daysNum = DateTime.DaysInMonth(yearNum, monthNum);
 
-                string startOfMonth = yearNum.ToString() + "-" + monthNum.ToString() + "-01";
-                string endOfMonth = yearNum.ToString() + "-" + monthNum.ToString() + "-" + daysNum;
+                DateTime startOfMonth = Convert.ToDateTime(yearNum.ToString() + "-" + monthNum.ToString() + "-01");
+                DateTime endOfMonth = Convert.ToDateTime(yearNum.ToString() + "-" + monthNum.ToString() + "-" + daysNum);
+                //MessageBox.Show($"MONTHLY selected\n startOfMonth = {startOfMonth}\nendOfMonth = {endOfMonth}");
+
+                Helper.BoldMonthDates(startOfMonth, endOfMonth, this);
+                string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd") + " 00:00:00";
+                string endDate = apptCalendar.BoldedDates[apptCalendar.BoldedDates.Length - 1].ToString("yyyy-MM-dd") + " 23:59:59";
+                Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
 
             }
             else
             {
-                // FIX ME: this is the default grid that shows all appointments. 
-                MessageBox.Show($"Selected is {cbTimePeriod.SelectedItem.ToString()}");
+                apptCalendar.RemoveAllBoldedDates();
+                // have to call the refresh in order to actually update it for this one 
+                apptCalendar.UpdateBoldedDates();
+                Helper.LoadAppointmentGrid(dgvAppointments); 
             }
         }
 
@@ -238,11 +246,25 @@ namespace C969___Scheduler
                 // will need to get current month, and daysinmonth, then assign those to selectionstart/selection end. pass in start, end, mainform 
                 //Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
                 //FIX ME: LoadAppointmentGrid for the MONTH SELECTED only 
+                int monthNum = apptCalendar.SelectionStart.Month;
+                int yearNum = apptCalendar.SelectionStart.Year;
+                int daysNum = DateTime.DaysInMonth(yearNum, monthNum);
+
+                DateTime startOfMonth = Convert.ToDateTime(yearNum.ToString() + "-" + monthNum.ToString() + "-01 00:00:00");
+                DateTime endOfMonth = Convert.ToDateTime(yearNum.ToString() + "-" + monthNum.ToString() + "-" + daysNum + " 23:59:59");
+                
+
+                Helper.BoldMonthDates(startOfMonth, endOfMonth, this);
+                string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd") + " 00:00:00";
+                string endDate = apptCalendar.BoldedDates[apptCalendar.BoldedDates.Length - 1].ToString("yyyy-MM-dd") + " 23:59:59";
+                //MessageBox.Show($"MONTHLY selected\n startOfMonth = {startDate}\nendOfMonth = {endDate}");
+                Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
             }
             else
             {
                 //Remove all bold dates and simply show all appointments in the grid. 
                 apptCalendar.RemoveAllBoldedDates();
+                apptCalendar.UpdateBoldedDates(); 
             }
         }
 
