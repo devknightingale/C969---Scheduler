@@ -51,10 +51,11 @@ namespace C969___Scheduler.Supplementary_Forms
 
             // need to convert the local time to EST time, then restrict times in the timepicker to est time
             // local time to est conversion 
+            // Probably move this bit to the Helper file to clean up 
             TimeZoneInfo localTime = TimeZoneInfo.Local;
             TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
-            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("17:00:00"), estTimeZone);
+            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("16:30:00"), estTimeZone);
             DateTime startBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("09:00:00"), estTimeZone);
             
             DateTime endBusinessHoursLocal = TimeZoneInfo.ConvertTime(endBusinessHoursEST, localTime);
@@ -283,7 +284,11 @@ namespace C969___Scheduler.Supplementary_Forms
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
+
+            // first check for overlapping appointments 
+
         {
+            
             if (isExistingAppointment == true)
             {
                 //MessageBox.Show("This is for the update only.");
@@ -369,11 +374,21 @@ namespace C969___Scheduler.Supplementary_Forms
                 string createdBy = Helper.userNameValue;
                 string lastUpdateBy = Helper.userNameValue;
 
+                DateTime startTime = Convert.ToDateTime(appt.start.ToString("yyyy-MM-dd hh:mm:ss"));
+                DateTime endTime = Convert.ToDateTime(appt.end.ToString("yyyy-MM-dd hh:mm:ss"));
 
+                if (Helper.checkOverlapAppt(startTime, endTime))
+                {
+                    MessageBox.Show("Selected user has prior engagement during the selected timeframe. Please double check the user's schedule and try again.");
+                }
+                else
+                {
+                    Helper.addAppointment(appt);
+                    this.Close();
+                }
 
-
-                Helper.addAppointment(appt);
-                this.Close();
+                    
+                
             }
 
         }

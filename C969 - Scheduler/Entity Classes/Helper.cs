@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
@@ -173,7 +174,41 @@ namespace C969___Scheduler.Entity_Classes
             return apptId;
 
         }
+        public static bool checkOverlapAppt(DateTime apptStartTime, DateTime apptEndTime)
+        {
+            // checks for overlapping appointments 
+
+            string queryCheckOverlap = $"SELECT * FROM appointment WHERE '{apptStartTime}' OR '{apptEndTime}' BETWEEN start AND end";
+            MySqlCommand cmdCheckOverlap = new MySqlCommand(queryCheckOverlap, DBConnection.conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmdCheckOverlap);
+            DataTable dtCheckOverlap = new DataTable();
+            adapter.Fill(dtCheckOverlap);
+
+            if (dtCheckOverlap.Rows.Count > 0)
+            {
+                return true; 
+            }
+            
+            return false; 
+        }
         
+        public static bool ApptAlert()
+            
+        {
+            string currentTime = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss");
+            string currentAdd15 = DateTime.Now.ToUniversalTime().AddMinutes(15).ToString("yyyy-MM-dd HH:mm:ss");
+            string queryAlert = $"SELECT * FROM appointment WHERE start BETWEEN '{currentTime}' AND '{currentAdd15}'";
+            MySqlCommand alertCmd = new MySqlCommand(queryAlert, DBConnection.conn);
+            MySqlDataAdapter alertAdapter = new MySqlDataAdapter(alertCmd); 
+            DataTable dtAlert = new DataTable();
+            alertAdapter.Fill(dtAlert);
+
+            if (dtAlert.Rows.Count > 0)
+            {
+                return true; 
+            }
+            return false; 
+        }
         public static int deleteAppointment(int apptId)
         {
             
