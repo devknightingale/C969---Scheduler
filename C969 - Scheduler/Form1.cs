@@ -81,21 +81,61 @@ namespace C969___Scheduler
 
                 if (dtable.Rows.Count > 0)
                 {
+                    Helper.userNameValue = logUser;
+                    
+
+                    
                     //MessageBox.Show("match found");
                     if (Helper.ApptAlert())
-                    {
-                        string currTime = DateTime.Now.ToUniversalTime().ToString(); 
-                        string currTimePlus15 = DateTime.Now.AddMinutes(15).ToUniversalTime().ToString();
-                        // need to join appointment and user 
-                        string queryNextAppt = $"SELECT appointment.start FROM appointment WHERE user.userName = {Helper.userNameValue} AND appointment.start BETWEEN '{currTime}' AND '{currTimePlus15}' LEFT JOIN user ON appointment.userId = user.userId ";
-                        MySqlCommand cmdNextAppt = new MySqlCommand(queryNextAppt, DBConnection.conn); 
-                        DateTime apptTime = (DateTime)cmdNextAppt.ExecuteScalar(); 
 
-                        MessageBox.Show($"You have an appointment at {apptTime.ToLocalTime().ToString("hh:mm tt")}.");
+                    {
+                        List<Appointment> appts = new List<Appointment>();
+                        DateTime currentUtc = DateTime.UtcNow;
+                        MySqlCommand cmdNextAppt = DBConnection.conn.CreateCommand();
+                        // need to join appointment and user 
+                        cmdNextAppt.CommandText = $"SELECT * FROM appointment LEFT JOIN user ON appointment.userId = user.userId WHERE userName = @userName and TIMESTAMPDIFF(MINUTE, start, @currentTime) < 15";
+                        cmdNextAppt.Parameters.AddWithValue("@userName", Helper.userNameValue);
+                        cmdNextAppt.Parameters.AddWithValue("@currentTime", currentUtc);
+                        cmdNextAppt.ExecuteNonQuery(); 
+
+                        try
+                        {
+                            MySqlDataReader readerApptCheck = cmdNextAppt.ExecuteReader();
+
+                            while (readerApptCheck.Read()) {
+                                appts.Add(new Appointment()
+                                {
+                                    customerId = (int)readerApptCheck["customerId"],
+                                    title = readerApptCheck["title"].ToString(),
+                                    description = readerApptCheck["description"].ToString(),
+                                    location = readerApptCheck["location"].ToString(),
+                                    contact = readerApptCheck["contact"].ToString(),
+                                    type = readerApptCheck["type"].ToString(),
+                                    url = readerApptCheck["url"].ToString(),
+                                    start = Convert.ToDateTime(readerApptCheck["start"].ToString()).ToLocalTime(),
+                                    end = Convert.ToDateTime(readerApptCheck["end"].ToString()).ToLocalTime()
+                                });
+                            }
+
+
+                            foreach (Appointment appt in appts)
+                            {
+                                MessageBox.Show($"You have an appointment at {appt.start.ToString("hh:mm tt")}.");
+                            }
+                        }
+                            
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error fetching time of upcoming appointment: {ex}");
+                        }
+
+                        
+
+                        
                     }
                     File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
                     
-                    Helper.userNameValue = logUser; 
+                    
                     // load next form here
                     MainForm mainForm = new MainForm();
                    
@@ -123,11 +163,11 @@ namespace C969___Scheduler
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
                 //display error message if login is invalid, DEPENDENT UPON LANGUAGE
             
-                MessageBox.Show("Error on login form");
+                MessageBox.Show($"Error on login form: {ex}");
             }
 
         }

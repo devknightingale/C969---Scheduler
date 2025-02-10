@@ -48,6 +48,7 @@ namespace C969___Scheduler.Supplementary_Forms
             // TIME PICKER 
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.CustomFormat = "hh:mm tt";
+            // possible to change minute step for the time picker to 30 minutes?
 
             // need to convert the local time to EST time, then restrict times in the timepicker to est time
             // local time to est conversion 
@@ -55,7 +56,7 @@ namespace C969___Scheduler.Supplementary_Forms
             TimeZoneInfo localTime = TimeZoneInfo.Local;
             TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
-            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("16:30:00"), estTimeZone);
+            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("23:30:00"), estTimeZone);
             DateTime startBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("09:00:00"), estTimeZone);
             
             DateTime endBusinessHoursLocal = TimeZoneInfo.ConvertTime(endBusinessHoursEST, localTime);
@@ -374,8 +375,8 @@ namespace C969___Scheduler.Supplementary_Forms
                 string createdBy = Helper.userNameValue;
                 string lastUpdateBy = Helper.userNameValue;
 
-                DateTime startTime = Convert.ToDateTime(appt.start.ToString("yyyy-MM-dd hh:mm:ss"));
-                DateTime endTime = Convert.ToDateTime(appt.end.ToString("yyyy-MM-dd hh:mm:ss"));
+                string startTime = appt.start.ToString("yyyy-MM-dd hh:mm:ss");
+                string endTime = appt.end.ToString("yyyy-MM-dd hh:mm:ss");
 
                 if (Helper.checkOverlapAppt(startTime, endTime))
                 {

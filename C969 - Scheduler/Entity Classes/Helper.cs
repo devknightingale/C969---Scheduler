@@ -174,11 +174,12 @@ namespace C969___Scheduler.Entity_Classes
             return apptId;
 
         }
-        public static bool checkOverlapAppt(DateTime apptStartTime, DateTime apptEndTime)
+        public static bool checkOverlapAppt(string apptStartTime, string apptEndTime)
         {
             // checks for overlapping appointments 
+            
 
-            string queryCheckOverlap = $"SELECT * FROM appointment WHERE '{apptStartTime}' OR '{apptEndTime}' BETWEEN start AND end";
+            string queryCheckOverlap = $"SELECT * FROM appointment WHERE end >= '{apptStartTime}' and start <= '{apptEndTime}'";
             MySqlCommand cmdCheckOverlap = new MySqlCommand(queryCheckOverlap, DBConnection.conn);
             MySqlDataAdapter adapter = new MySqlDataAdapter(cmdCheckOverlap);
             DataTable dtCheckOverlap = new DataTable();
