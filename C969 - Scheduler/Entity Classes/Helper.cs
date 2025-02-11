@@ -193,22 +193,25 @@ namespace C969___Scheduler.Entity_Classes
             return false; 
         }
         
-        public static bool ApptAlert()
+        public static void ApptAlert(DataGridView dgvAppointments, string username)
             
         {
-            string currentTime = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss");
-            string currentAdd15 = DateTime.Now.ToUniversalTime().AddMinutes(15).ToString("yyyy-MM-dd HH:mm:ss");
-            string queryAlert = $"SELECT * FROM appointment WHERE start BETWEEN '{currentTime}' AND '{currentAdd15}'";
-            MySqlCommand alertCmd = new MySqlCommand(queryAlert, DBConnection.conn);
-            MySqlDataAdapter alertAdapter = new MySqlDataAdapter(alertCmd); 
-            DataTable dtAlert = new DataTable();
-            alertAdapter.Fill(dtAlert);
+            // test
 
-            if (dtAlert.Rows.Count > 0)
+            foreach (DataGridViewRow row in dgvAppointments.Rows)
             {
-                return true; 
+                DateTime currentTime = DateTime.UtcNow;
+                DateTime apptStartTime = DateTime.Parse(row.Cells[4].Value.ToString()).ToUniversalTime();
+
+                TimeSpan checkDiff = currentTime - apptStartTime;
+                if (checkDiff.TotalMinutes >= -15 && checkDiff.TotalMinutes < 1)
+                {
+                    string apptTime = Convert.ToDateTime(row.Cells[4].Value).ToString("hh:mm tt");
+                    string apptCustomer = row.Cells[5].Value.ToString(); 
+                    MessageBox.Show($"You have an appointment at {apptTime} with {apptCustomer}.", "Appointment Reminder", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                } 
             }
-            return false; 
+            
         }
         public static int deleteAppointment(int apptId)
         {

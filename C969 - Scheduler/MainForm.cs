@@ -52,7 +52,7 @@ namespace C969___Scheduler
             //testing that user log in works 
             lblUsername.Text = Helper.userNameValue;
             // MessageBox.Show($"Logged in user is currently {Helper.userNameValue}");
-
+            Helper.ApptAlert(dgvAppointments, Helper.userNameValue); 
 
         }
 
