@@ -20,6 +20,7 @@ namespace C969___Scheduler.Supplementary_Forms
 {
     public partial class AddAppointment : Form
     {
+        public bool isExistingAppointment = false; 
         public AddAppointment(DataGridView dgv)
         {
             InitializeComponent();
@@ -28,7 +29,7 @@ namespace C969___Scheduler.Supplementary_Forms
             /***** FORM CONTROLS *****/
             /*************************/
 
-
+            
             // CUSTOMER COMBO BOX 
             string queryCustomers = "SELECT customerName FROM customer ORDER BY customerName ASC";
             MySqlCommand cmdCustomers = new MySqlCommand(queryCustomers, DBConnection.conn);
@@ -47,7 +48,28 @@ namespace C969___Scheduler.Supplementary_Forms
             // TIME PICKER 
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.CustomFormat = "hh:mm tt";
+            // possible to change minute step for the time picker to 30 minutes?
+
+            // need to convert the local time to EST time, then restrict times in the timepicker to est time
+            // local time to est conversion 
+            // Probably move this bit to the Helper file to clean up 
+            TimeZoneInfo localTime = TimeZoneInfo.Local;
+            TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+
+            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("23:30:00"), estTimeZone);
+            DateTime startBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("09:00:00"), estTimeZone);
+            
+            DateTime endBusinessHoursLocal = TimeZoneInfo.ConvertTime(endBusinessHoursEST, localTime);
+            DateTime startBusinessHoursLocal = TimeZoneInfo.ConvertTime(startBusinessHoursEST, localTime); 
+            
+           
+
+            // time picker formatting 
             timePicker.ShowUpDown = true;
+            timePicker.MinDate = startBusinessHoursLocal;
+            timePicker.MaxDate = endBusinessHoursLocal;
+
+            
 
 
             List<string> apptTypeList = new List<string>()
@@ -110,7 +132,7 @@ namespace C969___Scheduler.Supplementary_Forms
         public AddAppointment(DataGridView dgv, int apptId)
         {
             InitializeComponent();
-
+            isExistingAppointment = true; 
             /*************************/
             /***** FORM CONTROLS *****/
             /*************************/
@@ -231,6 +253,9 @@ namespace C969___Scheduler.Supplementary_Forms
                 txtDescription.Text = apptToUpdate.description.ToString();
                 txtTitle.Text = apptToUpdate.title.ToString();
 
+                // Set the ID value to be called for the Submit button 
+                Helper.apptIdValue = apptId;
+
             }
             catch (Exception ex)
             {
@@ -260,48 +285,113 @@ namespace C969___Scheduler.Supplementary_Forms
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
+
+            // first check for overlapping appointments 
+
         {
-            Appointment appt = new Appointment();
-
-            // GET CUSTOMER ID
-            string queryCustomerId = $"SELECT customerId FROM customer WHERE customerName = '{cbCustomerList.SelectedItem.ToString()}'";
-            MySqlCommand customerIdCmd = new MySqlCommand(queryCustomerId, DBConnection.conn);
-            appt.customerId = (int)customerIdCmd.ExecuteScalar();
-
-            // GET USER ID FROM LOGGED IN USER 
-            // THIS IS INCORRECT: it is grabbing the currently logged in user instead of the user that is selected in the combo box. 
-            string query = $"SELECT userId FROM user WHERE userName = '{cbApptUser.SelectedItem.ToString()}'";
-            MySqlCommand userIdCmd = new MySqlCommand(query, DBConnection.conn);
-            appt.userId = (int)userIdCmd.ExecuteScalar();
-
-
-            // ALL OTHER APPOINTMENT INFO 
-
-            appt.title = txtTitle.Text;
-            appt.description = txtDescription.Text;
-            appt.location = cbApptLocation.SelectedItem.ToString();
-            appt.contact = "not needed"; 
-            appt.type = cbApptType.SelectedItem.ToString();
-            appt.url = "www.example.com"; 
-            string startTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.ToString("hh:mm tt");
-            appt.start = DateTime.Parse(startTimeString).ToUniversalTime();
-            appt.end = timePicker.Value.AddMinutes(30).ToUniversalTime();
             
-            // these arent in the class definition so they can be set this way instead
-            DateTime createDate = DateTime.Now.ToUniversalTime();
-            string createdBy = Helper.userNameValue;
-            string lastUpdateBy = Helper.userNameValue;
+            if (isExistingAppointment == true)
+            {
+                //MessageBox.Show("This is for the update only.");
+                // need to maybe use Helper to create an appointment i can reference? 
+
+                
+                // get customer Id 
+                string queryGetCustomerId = $"SELECT customer.customerId FROM customer WHERE customerName = '{cbCustomerList.SelectedItem.ToString()}'";
+                MySqlCommand cmdGetCustomerId = new MySqlCommand(queryGetCustomerId, DBConnection.conn);
+                int custId = (int)cmdGetCustomerId.ExecuteScalar();
+
+                // get userId 
+                string queryUserId = $"SELECT user.userId FROM user WHERE userName = '{cbApptUser.SelectedItem.ToString()}'";
+                MySqlCommand cmdGetUserId = new MySqlCommand(queryUserId, DBConnection.conn);
+                int userId = (int)cmdGetUserId.ExecuteScalar();
+
+                // set up the DateTime for the start parameter 
+                string updateTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.ToString("hh:mm tt");
+                string updateEndTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.AddMinutes(30).ToString("hh:mm tt");
+                DateTime updateStartTime = DateTime.Parse(updateTimeString).ToUniversalTime(); 
+                DateTime updateEndTime = DateTime.Parse(updateEndTimeString).ToUniversalTime();
+                string queryUpdateAppointmentSubmit = $"UPDATE appointment SET customerId = @custId, userId = {userId}, title = '{txtTitle.Text.ToString()}', description = '{txtDescription.Text.ToString()}', location = '{cbApptLocation.SelectedItem.ToString()}', type = '{cbApptType.SelectedItem.ToString()}', start = {updateStartTime}, end = {updateEndTime}, lastUpdate = NOW(), lastUpdateBy = '{Helper.userNameValue}' WHERE appointmentId = {Helper.apptIdValue}";
 
 
-            
 
-            Helper.addAppointment(appt);
-            this.Close(); 
-            // how to force datagridview to update when add appointment is done?
-            
+                // Parameters.. 
+
+                try
+                {
+                    MySqlCommand cmdUpdateAppt = DBConnection.conn.CreateCommand();
+                    cmdUpdateAppt.CommandText = $"UPDATE appointment SET customerId = @custId, userId = @userId, title = @title, description = @description, location = @location, type = @type, start = @start, end = @end, lastUpdate = @lastUpdate, lastUpdateBy = @lastUpdateBy WHERE appointmentId = @apptId;" + "SELECT appointmentId FROM appointment ORDER BY appointmentId DESC LIMIT 1";
+                    cmdUpdateAppt.Parameters.AddWithValue("@apptId", Helper.apptIdValue);
+                    cmdUpdateAppt.Parameters.AddWithValue("@custId", custId);
+                    cmdUpdateAppt.Parameters.AddWithValue("@userId", userId);
+                    cmdUpdateAppt.Parameters.AddWithValue("@title", txtTitle.Text);
+                    cmdUpdateAppt.Parameters.AddWithValue("@description", txtDescription.Text);
+                    cmdUpdateAppt.Parameters.AddWithValue("@location", cbApptLocation.SelectedItem.ToString());
+                    cmdUpdateAppt.Parameters.AddWithValue("@type", cbApptType.SelectedItem.ToString());
+                    cmdUpdateAppt.Parameters.AddWithValue("@start", updateStartTime);
+                    cmdUpdateAppt.Parameters.AddWithValue("@end", updateEndTime);
+                    cmdUpdateAppt.Parameters.AddWithValue("@lastUpdate", DateTime.Now.ToUniversalTime());
+                    cmdUpdateAppt.Parameters.AddWithValue("@lastUpdateBy", Helper.userNameValue);
+                    cmdUpdateAppt.ExecuteScalar();
+
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error with updating appointment: {ex}", "Error", MessageBoxButtons.OK);
+                }
+            }
+            else
+            {
+                Appointment appt = new Appointment();
+
+                // GET CUSTOMER ID
+                string queryCustomerId = $"SELECT customerId FROM customer WHERE customerName = '{cbCustomerList.SelectedItem.ToString()}'";
+                MySqlCommand customerIdCmd = new MySqlCommand(queryCustomerId, DBConnection.conn);
+                appt.customerId = (int)customerIdCmd.ExecuteScalar();
+
+                // GET USER ID FROM LOGGED IN USER 
+                // THIS IS INCORRECT: it is grabbing the currently logged in user instead of the user that is selected in the combo box. 
+                string query = $"SELECT userId FROM user WHERE userName = '{cbApptUser.SelectedItem.ToString()}'";
+                MySqlCommand userIdCmd = new MySqlCommand(query, DBConnection.conn);
+                appt.userId = (int)userIdCmd.ExecuteScalar();
 
 
-            // Seems like the controls display in local time but can be converted to UTC for storing in the database 
+                // ALL OTHER APPOINTMENT INFO 
+
+                appt.title = txtTitle.Text;
+                appt.description = txtDescription.Text;
+                appt.location = cbApptLocation.SelectedItem.ToString();
+                appt.contact = "not needed";
+                appt.type = cbApptType.SelectedItem.ToString();
+                appt.url = "www.example.com";
+                string startTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.ToString("hh:mm tt");
+                appt.start = DateTime.Parse(startTimeString).ToUniversalTime();
+                string endTimeString = datePicker.Value.ToString("yyyy-MM-dd") + ' ' + timePicker.Value.AddMinutes(30).ToString("hh:mm tt");
+                appt.end = DateTime.Parse(endTimeString).ToUniversalTime();
+
+                // these arent in the class definition so they can be set this way instead
+                DateTime createDate = DateTime.Now.ToUniversalTime();
+                string createdBy = Helper.userNameValue;
+                string lastUpdateBy = Helper.userNameValue;
+
+                string startTime = appt.start.ToString("yyyy-MM-dd hh:mm:ss");
+                string endTime = appt.end.ToString("yyyy-MM-dd hh:mm:ss");
+
+                if (Helper.checkOverlapAppt(startTime, endTime))
+                {
+                    MessageBox.Show("Selected user has prior engagement during the selected timeframe. Please double check the user's schedule and try again.");
+                }
+                else
+                {
+                    Helper.addAppointment(appt);
+                    this.Close();
+                }
+
+                    
+                
+            }
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

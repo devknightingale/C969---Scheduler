@@ -3,7 +3,9 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
@@ -18,17 +20,25 @@ namespace C969___Scheduler.Entity_Classes
 
         public static int userIdValue { get; set; }
 
+        public static int apptIdValue { get; set; }
 
+        public static List<DateTime> boldedSelection = new List<DateTime>();
         /**********************/
         /***** DATA  GRID *****/
         /**********************/
-
+        public static string GetLocalZone()
+        {
+            return TimeZone.CurrentTimeZone.StandardName;
+        }
         public static void LoadAppointmentGrid(DataGridView dgv)
         {
+            string apptQuery = "";
+            
+            
             try
             {
-                // should update this query to a join to grab customer name instead of customer id 
-                string apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
+                
+                apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
@@ -50,6 +60,46 @@ namespace C969___Scheduler.Entity_Classes
                 }
                 
                 
+            }
+            catch (Exception ex)
+            {
+                
+                MessageBox.Show($"Error when filling data grid: {ex}", "ERROR", MessageBoxButtons.OK);
+            }
+        }
+
+        public static void LoadAppointmentGrid(DataGridView dgv, string startDate, string endDate)
+        {
+            string apptQuery = "";
+            
+            
+            try
+            {
+                DateTime startDateTime = Convert.ToDateTime(startDate);
+                DateTime endDateTime = Convert.ToDateTime(endDate); 
+                // should update this query to a join to grab customer name instead of customer id 
+                apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId WHERE appointment.start BETWEEN '{startDate}' AND '{endDate}'";
+
+                MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
+                MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
+                DataTable apptTable = new DataTable();
+                appAdapter.Fill(apptTable);
+
+                // Converts time displays on appointment grid to local timezone 
+
+                BindingSource apptBindingSource = new BindingSource();
+                apptBindingSource.DataSource = apptTable;
+                dgv.DataSource = apptBindingSource;
+
+                dgv.Columns[4].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
+
+                int columnIndex = 4;
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    dgv[columnIndex, i].Value = Convert.ToDateTime(dgv[columnIndex, i].Value.ToString()).ToLocalTime();
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -124,7 +174,45 @@ namespace C969___Scheduler.Entity_Classes
             return apptId;
 
         }
+        public static bool checkOverlapAppt(string apptStartTime, string apptEndTime)
+        {
+            // checks for overlapping appointments 
+            
 
+            string queryCheckOverlap = $"SELECT * FROM appointment WHERE end >= '{apptStartTime}' and start <= '{apptEndTime}'";
+            MySqlCommand cmdCheckOverlap = new MySqlCommand(queryCheckOverlap, DBConnection.conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmdCheckOverlap);
+            DataTable dtCheckOverlap = new DataTable();
+            adapter.Fill(dtCheckOverlap);
+
+            if (dtCheckOverlap.Rows.Count > 0)
+            {
+                return true; 
+            }
+            
+            return false; 
+        }
+        
+        public static void ApptAlert(DataGridView dgvAppointments, string username)
+            
+        {
+            // test
+
+            foreach (DataGridViewRow row in dgvAppointments.Rows)
+            {
+                DateTime currentTime = DateTime.UtcNow;
+                DateTime apptStartTime = DateTime.Parse(row.Cells[4].Value.ToString()).ToUniversalTime();
+
+                TimeSpan checkDiff = currentTime - apptStartTime;
+                if (checkDiff.TotalMinutes >= -15 && checkDiff.TotalMinutes < 1)
+                {
+                    string apptTime = Convert.ToDateTime(row.Cells[4].Value).ToString("hh:mm tt");
+                    string apptCustomer = row.Cells[5].Value.ToString(); 
+                    MessageBox.Show($"You have an appointment at {apptTime} with {apptCustomer}.", "Appointment Reminder", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                } 
+            }
+            
+        }
         public static int deleteAppointment(int apptId)
         {
             
@@ -147,6 +235,142 @@ namespace C969___Scheduler.Entity_Classes
        
 
         // CUSTOMER PROCEDURES 
+
+        // CALENDAR PROCEDURES 
+
+        
+        public static void BoldDates(DateTime dayToBold, MainForm mainForm)
+        {
+            // Bolds a single day 
+            mainForm.apptCalendar.RemoveAllBoldedDates();
+            boldedSelection.Clear();
+            boldedSelection.Add(dayToBold);
+            mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+            
+        }
+
+        public static void BoldMonthDates(DateTime startMonth, DateTime endMonth, MainForm mainForm)
+        {
+            mainForm.apptCalendar.RemoveAllBoldedDates();
+            boldedSelection.Clear();
+            for (DateTime selectedDates = startMonth; selectedDates <= endMonth; selectedDates = selectedDates.AddDays(1))
+            {
+                boldedSelection.Add(selectedDates);
+            }
+            mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+            mainForm.apptCalendar.UpdateBoldedDates();
+        }
+
+
+
+        // Get Week 
+        public static void GetWeekDates(DateTime selectedDate, MainForm mainForm)
+        {
+            // could use some cleaning perhaps 
+            mainForm.apptCalendar.RemoveAllBoldedDates();
+            boldedSelection.Clear();
+
+            if (selectedDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+               
+                DateTime startDate = selectedDate.AddDays(0);
+                DateTime endDate = selectedDate.AddDays(6);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+
+                
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Monday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-1);
+                DateTime endDate = selectedDate.AddDays(5);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Tuesday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-2);
+                DateTime endDate = selectedDate.AddDays(4);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Wednesday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-3);
+                DateTime endDate = selectedDate.AddDays(3);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Thursday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-4);
+                DateTime endDate = selectedDate.AddDays(2);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else if (selectedDate.DayOfWeek == DayOfWeek.Friday)
+            {
+                
+                DateTime startDate = selectedDate.AddDays(-5);
+                DateTime endDate = selectedDate.AddDays(1);
+
+                //testing this 
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+            else
+            {
+                // this would be saturday 
+               
+                DateTime startDate = selectedDate.AddDays(-6);
+                DateTime endDate = selectedDate;
+                
+                for (DateTime selectedDates = startDate; selectedDates <= endDate; selectedDates = selectedDates.AddDays(1))
+                {
+                    boldedSelection.Add(selectedDates);
+                }
+                mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
+                mainForm.apptCalendar.UpdateBoldedDates();
+            }
+        }
     }
 
     

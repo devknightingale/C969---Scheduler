@@ -30,7 +30,7 @@ namespace C969___Scheduler
 
             // Get the timezone of the application - is this even needed here or do only on appointment section?
             // May move this elsewhere later 
-            string localZone = TimeZone.CurrentTimeZone.StandardName;
+            string localZone = Helper.GetLocalZone();
 
 
             // sets language of login form to spanish if detected
@@ -81,11 +81,17 @@ namespace C969___Scheduler
 
                 if (dtable.Rows.Count > 0)
                 {
-                    //MessageBox.Show("match found");
+                    Helper.userNameValue = logUser;
+                    
 
+                    
+                    
+
+                        
+                    
                     File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
                     
-                    Helper.userNameValue = logUser; 
+                    
                     // load next form here
                     MainForm mainForm = new MainForm();
                    
@@ -113,11 +119,11 @@ namespace C969___Scheduler
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
                 //display error message if login is invalid, DEPENDENT UPON LANGUAGE
             
-                MessageBox.Show("Error on login form");
+                MessageBox.Show($"Error on login form: {ex}");
             }
 
         }
