@@ -1,4 +1,5 @@
 ﻿using C969___Scheduler.Database;
+using C969___Scheduler.Supplementary_Forms;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -33,11 +34,11 @@ namespace C969___Scheduler.Entity_Classes
         public static void LoadAppointmentGrid(DataGridView dgv)
         {
             string apptQuery = "";
-            
-            
+
+
             try
             {
-                
+
                 apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
@@ -53,17 +54,17 @@ namespace C969___Scheduler.Entity_Classes
 
                 dgv.Columns[4].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
 
-                int columnIndex = 4; 
+                int columnIndex = 4;
                 for (int i = 0; i < dgv.Rows.Count; i++)
                 {
                     dgv[columnIndex, i].Value = Convert.ToDateTime(dgv[columnIndex, i].Value.ToString()).ToLocalTime();
                 }
-                
-                
+
+
             }
             catch (Exception ex)
             {
-                
+
                 MessageBox.Show($"Error when filling data grid: {ex}", "ERROR", MessageBoxButtons.OK);
             }
         }
@@ -71,12 +72,12 @@ namespace C969___Scheduler.Entity_Classes
         public static void LoadAppointmentGrid(DataGridView dgv, string startDate, string endDate)
         {
             string apptQuery = "";
-            
-            
+
+
             try
             {
                 DateTime startDateTime = Convert.ToDateTime(startDate);
-                DateTime endDateTime = Convert.ToDateTime(endDate); 
+                DateTime endDateTime = Convert.ToDateTime(endDate);
                 // should update this query to a join to grab customer name instead of customer id 
                 apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId WHERE appointment.start BETWEEN '{startDate}' AND '{endDate}'";
 
@@ -140,12 +141,12 @@ namespace C969___Scheduler.Entity_Classes
 
         public static int addAppointment(Appointment appt)
         {
-            
-            int apptId = -1; 
+
+            int apptId = -1;
 
             try
             {
-                MySqlCommand cmd = DBConnection.conn.CreateCommand(); 
+                MySqlCommand cmd = DBConnection.conn.CreateCommand();
 
                 cmd.CommandText = $"INSERT INTO appointment(customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdateBy) VALUES(@customerId, @userId, @title, @description, @location, @contact, @type, @url, @start, @end, @createDate, @createdBy, @lastUpdateBy);" + "SELECT appointmentId FROM appointment ORDER BY appointmentId DESC LIMIT 1";
                 cmd.Parameters.AddWithValue("@customerId", appt.customerId);
@@ -161,7 +162,7 @@ namespace C969___Scheduler.Entity_Classes
                 cmd.Parameters.AddWithValue("@createDate", DateTime.Now.ToUniversalTime());
                 cmd.Parameters.AddWithValue("@createdBy", Helper.userNameValue);
                 cmd.Parameters.AddWithValue("@lastUpdateBy", Helper.userNameValue);
-                apptId = (int)cmd.ExecuteScalar(); 
+                apptId = (int)cmd.ExecuteScalar();
 
 
             }
@@ -177,7 +178,7 @@ namespace C969___Scheduler.Entity_Classes
         public static bool checkOverlapAppt(string apptStartTime, string apptEndTime)
         {
             // checks for overlapping appointments 
-            
+
 
             string queryCheckOverlap = $"SELECT * FROM appointment WHERE end >= '{apptStartTime}' and start <= '{apptEndTime}'";
             MySqlCommand cmdCheckOverlap = new MySqlCommand(queryCheckOverlap, DBConnection.conn);
@@ -187,14 +188,14 @@ namespace C969___Scheduler.Entity_Classes
 
             if (dtCheckOverlap.Rows.Count > 0)
             {
-                return true; 
+                return true;
             }
-            
-            return false; 
+
+            return false;
         }
-        
+
         public static void ApptAlert(DataGridView dgvAppointments, string username)
-            
+
         {
             // test
 
@@ -207,15 +208,15 @@ namespace C969___Scheduler.Entity_Classes
                 if (checkDiff.TotalMinutes >= -15 && checkDiff.TotalMinutes < 1)
                 {
                     string apptTime = Convert.ToDateTime(row.Cells[4].Value).ToString("hh:mm tt");
-                    string apptCustomer = row.Cells[5].Value.ToString(); 
+                    string apptCustomer = row.Cells[5].Value.ToString();
                     MessageBox.Show($"You have an appointment at {apptTime} with {apptCustomer}.", "Appointment Reminder", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                } 
+                }
             }
-            
+
         }
         public static int deleteAppointment(int apptId)
         {
-            
+
             try
             {
                 MySqlCommand cmd = DBConnection.conn.CreateCommand();
@@ -226,15 +227,105 @@ namespace C969___Scheduler.Entity_Classes
             catch (Exception ex)
             {
                 MessageBox.Show($"Error when deleting appointment: {ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return -1; 
+                return -1;
             }
 
             return 0;
         }
 
-       
+
 
         // CUSTOMER PROCEDURES 
+
+
+        public static int addCity()
+        {
+            // FIX ME: Add city to database, return city id 
+            return 0;
+        }
+        public static int addCountry()
+        {
+            // FIX ME: Add country to database, return country id
+            return 0;
+        }
+        public static int addAddress()
+        {
+            // FIX ME: add address to database, return address id 
+            // note: must use country/city id for this 
+            return 0;
+        }
+        public static int addCustomer(Customer customer)
+        {
+            // FIX ME: add customer to database. Must be done LAST after city/country/address 
+            // return customer id 
+            return 0;
+        }
+
+        public static void updateCustomer()
+        {
+            // FIX ME: Update customer function goes here 
+        }
+
+        public static void deleteCustomer()
+        {
+            // FIX ME: Delete customer function goes here 
+        }
+
+        public static bool validateTextboxes(AddCustomer customerForm)
+        {
+            bool textValidated; 
+            
+            if (string.IsNullOrWhiteSpace(customerForm.txtLastName.Text))
+            {
+                textValidated = false; 
+            }
+            else if (string.IsNullOrWhiteSpace(customerForm.txtFirstName.Text))
+            {
+                textValidated = false; 
+            }
+            else if (string.IsNullOrWhiteSpace(customerForm.txtAddress1.Text))
+            {
+                textValidated = false;
+            }
+            else if (string.IsNullOrWhiteSpace(customerForm.txtCity.Text))
+            {
+                textValidated = false;
+            }
+            else if (string.IsNullOrWhiteSpace(customerForm.txtState.Text))
+            {
+                textValidated = false;
+            }
+            else if (string.IsNullOrWhiteSpace(customerForm.txtZip.Text) || !customerForm.txtZip.MaskFull)
+            {
+                
+                textValidated = false;
+            }
+            else if (string.IsNullOrWhiteSpace(customerForm.txtCountry.Text))
+            {
+                textValidated = false;
+            }            
+            else if (string.IsNullOrWhiteSpace(customerForm.txtPhone.Text) || !customerForm.txtPhone.MaskFull)
+            {
+
+                textValidated = false;
+            }
+            else
+            {
+                textValidated = true;
+            }
+
+            if (textValidated == true)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("One or more textboxes failed to validate. Please try again.", "Error", MessageBoxButtons.OK);
+                return false;
+
+            }
+            
+        }
 
         // CALENDAR PROCEDURES 
 

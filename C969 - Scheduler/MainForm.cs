@@ -77,10 +77,20 @@ namespace C969___Scheduler
         }
 
         private void btnAddNew_Click(object sender, EventArgs e)
-        {
 
-            AddAppointment addAppt = new AddAppointment(dgvAppointments);
-            addAppt.Show();
+
+        {
+            if (comboBox1.SelectedIndex == 0)
+            {
+                AddAppointment addAppt = new AddAppointment(dgvAppointments);
+                addAppt.Show();
+            }
+            else
+            {
+                AddCustomer addCustomer = new AddCustomer(dgvAppointments);
+                addCustomer.Show(); 
+            }
+            
 
         }
 

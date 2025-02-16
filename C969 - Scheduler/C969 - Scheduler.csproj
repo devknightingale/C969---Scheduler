@@ -100,6 +100,9 @@
   <ItemGroup>
     <Compile Include="Database\DBConnection.cs" />
     <Compile Include="Entity Classes\Appointment.cs" />
+    <Compile Include="Entity Classes\City.cs" />
+    <Compile Include="Entity Classes\Country.cs" />
+    <Compile Include="Entity Classes\Customer.cs" />
     <Compile Include="Entity Classes\User.cs" />
     <Compile Include="Entity Classes\Helper.cs" />
     <Compile Include="Form1.cs">
