@@ -266,9 +266,22 @@ namespace C969___Scheduler.Entity_Classes
             // FIX ME: Update customer function goes here 
         }
 
-        public static void deleteCustomer()
+        public static int deleteCustomer(int customerId)
         {
-            // FIX ME: Delete customer function goes here 
+            
+            try
+            {
+                MySqlCommand cmd = DBConnection.conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM appointment WHERE customerId = @customerId;" + "DELETE FROM customer WHERE customerId = @customerId";
+                cmd.Parameters.AddWithValue("@customerId", customerId);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error when deleting customer: {ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return -1;
+            }
+            return 0;
         }
 
         public static bool validateTextboxes(AddCustomer customerForm)
