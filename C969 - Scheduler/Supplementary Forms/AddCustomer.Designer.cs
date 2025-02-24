@@ -46,6 +46,8 @@
             this.txtZip = new System.Windows.Forms.MaskedTextBox();
             this.btnSubmitCustomer = new System.Windows.Forms.Button();
             this.btnCancelCustomer = new System.Windows.Forms.Button();
+            this.txtAddress2 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtLastName
@@ -98,14 +100,14 @@
             // 
             // txtState
             // 
-            this.txtState.Location = new System.Drawing.Point(170, 113);
+            this.txtState.Location = new System.Drawing.Point(170, 155);
             this.txtState.Name = "txtState";
             this.txtState.Size = new System.Drawing.Size(100, 20);
             this.txtState.TabIndex = 4;
             // 
             // txtCity
             // 
-            this.txtCity.Location = new System.Drawing.Point(64, 113);
+            this.txtCity.Location = new System.Drawing.Point(64, 155);
             this.txtCity.Name = "txtCity";
             this.txtCity.Size = new System.Drawing.Size(100, 20);
             this.txtCity.TabIndex = 3;
@@ -113,7 +115,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(64, 136);
+            this.label6.Location = new System.Drawing.Point(64, 178);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(22, 13);
             this.label6.TabIndex = 13;
@@ -122,7 +124,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(168, 97);
+            this.label7.Location = new System.Drawing.Point(168, 139);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(32, 13);
             this.label7.TabIndex = 14;
@@ -131,7 +133,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(62, 97);
+            this.label8.Location = new System.Drawing.Point(62, 139);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(24, 13);
             this.label8.TabIndex = 15;
@@ -139,7 +141,7 @@
             // 
             // txtCountry
             // 
-            this.txtCountry.Location = new System.Drawing.Point(123, 152);
+            this.txtCountry.Location = new System.Drawing.Point(124, 194);
             this.txtCountry.Name = "txtCountry";
             this.txtCountry.Size = new System.Drawing.Size(147, 20);
             this.txtCountry.TabIndex = 6;
@@ -147,7 +149,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(121, 136);
+            this.label9.Location = new System.Drawing.Point(121, 178);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(43, 13);
             this.label9.TabIndex = 17;
@@ -156,7 +158,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(61, 175);
+            this.label10.Location = new System.Drawing.Point(61, 217);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(98, 13);
             this.label10.TabIndex = 21;
@@ -164,7 +166,7 @@
             // 
             // txtPhone
             // 
-            this.txtPhone.Location = new System.Drawing.Point(64, 191);
+            this.txtPhone.Location = new System.Drawing.Point(64, 233);
             this.txtPhone.Mask = "(999) 000-0000";
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Size = new System.Drawing.Size(100, 20);
@@ -173,13 +175,12 @@
             // txtZip
             // 
             this.txtZip.AllowPromptAsInput = false;
-            this.txtZip.Location = new System.Drawing.Point(65, 152);
+            this.txtZip.Location = new System.Drawing.Point(65, 194);
             this.txtZip.Mask = "00000";
             this.txtZip.Name = "txtZip";
             this.txtZip.Size = new System.Drawing.Size(53, 20);
             this.txtZip.TabIndex = 5;
             this.txtZip.ValidatingType = typeof(int);
-            
             // 
             // btnSubmitCustomer
             // 
@@ -201,11 +202,29 @@
             this.btnCancelCustomer.UseVisualStyleBackColor = true;
             this.btnCancelCustomer.Click += new System.EventHandler(this.btnCancelCustomer_Click);
             // 
+            // txtAddress2
+            // 
+            this.txtAddress2.Location = new System.Drawing.Point(64, 116);
+            this.txtAddress2.Name = "txtAddress2";
+            this.txtAddress2.Size = new System.Drawing.Size(206, 20);
+            this.txtAddress2.TabIndex = 26;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(64, 97);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(77, 13);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Address Line 2";
+            // 
             // AddCustomer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(365, 326);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtAddress2);
             this.Controls.Add(this.btnCancelCustomer);
             this.Controls.Add(this.btnSubmitCustomer);
             this.Controls.Add(this.txtZip);
@@ -250,5 +269,7 @@
         public System.Windows.Forms.TextBox txtCountry;
         public System.Windows.Forms.MaskedTextBox txtPhone;
         public System.Windows.Forms.MaskedTextBox txtZip;
+        public System.Windows.Forms.TextBox txtAddress2;
+        private System.Windows.Forms.Label label2;
     }
 }

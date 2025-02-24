@@ -37,19 +37,49 @@ namespace C969___Scheduler.Supplementary_Forms
 
         private void btnSubmitCustomer_Click(object sender, EventArgs e)
         {
-            Helper.validateTextboxes(this);
+            Helper.validateTextboxes(this);            
 
-            //FIX ME: Put the add customer function here 
+            // FIX BEFORE SUBMISSION - should change the add___ functions to take in addCustomer form as an argument so I can set all the variables inside the function instead of doing it here, Would be cleaner 
+            
+            // Add the country first since city/address is dependent upon it (countryId as foreign key) 
+            Country country = new Country();
+            country.country = txtCountry.Text;
+            country.createDate = DateTime.UtcNow;
+            country.createdBy = Helper.userNameValue;
+            country.lastUpdate = DateTime.UtcNow;
+            country.lastUpdateBy = Helper.userNameValue;            
+            country.countryId = Helper.addCountry(country);
+
+            
+            // Add city to database 
+            City city = new City(); 
+            city.city = txtCity.Text;
+            city.countryId = country.countryId;
+            city.createDate = DateTime.UtcNow;
+            city.createdBy = Helper.userNameValue;
+            city.lastUpdate = DateTime.UtcNow; 
+            city.lastUpdateBy = Helper.userNameValue;             
+            city.cityId = Helper.addCity(city);
+
+            //FIX ME: Put the add address here - depends on city 
+            Address address = new Address(); 
+            address.address1 = txtAddress1.Text;
+            //FIX ME: should address2 be optional? 
+            address.address2 = txtAddress2.Text;
+            address.cityId = city.cityId;
+            address.postalCode = txtZip.Text;
+            address.phoneNumber = txtPhone.Text;
+            address.createDate = DateTime.UtcNow;
+            address.createdBy = Helper.userNameValue;
+            address.lastUpdate = DateTime.UtcNow;
+            address.lastUpdateBy = Helper.userNameValue;
+            address.addressId = Helper.addAddress(address); 
+
+            //FIX ME: Put the add customer function here - depends on address 
             Customer newCustomer = new Customer();
 
             // set all the variables for customer 
 
-            // Add city to database 
-            Helper.addCity();
-            // Add country to database 
-            Helper.addCountry();
-            // Add address to database 
-            Helper.addAddress(); 
             // Add customer to database 
             Helper.addCustomer(newCustomer);
 

@@ -1,9 +1,11 @@
 ﻿using C969___Scheduler.Database;
 using C969___Scheduler.Supplementary_Forms;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -238,21 +240,59 @@ namespace C969___Scheduler.Entity_Classes
         // CUSTOMER PROCEDURES 
 
 
-        public static int addCity()
+        public static int addCity(City city)
         {
-            // FIX ME: Add city to database, return city id 
-            return 0;
+            // Adds city to database, returns city id to use for address function
+            int cityId = -1; 
+            try
+            {
+                MySqlCommand cmd = DBConnection.conn.CreateCommand();
+                cmd.CommandText = $"INSERT INTO city(city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES(@city, @countryId, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)" + "SELECT cityId FROM city ORDER BY cityId DESC LIMIT 1";
+                cmd.Parameters.AddWithValue("@city", city.city);
+                cmd.Parameters.AddWithValue("@countryId", city.countryId);
+                cmd.Parameters.AddWithValue("@createDate", city.createDate);
+                cmd.Parameters.AddWithValue("@createdBy", city.createdBy);
+                cmd.Parameters.AddWithValue("@lastUpdate", city.lastUpdate);
+                cmd.Parameters.AddWithValue("@lastUpdateBy", city.lastUpdateBy);
+                cityId = (int)cmd.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {                
+                MessageBox.Show($"Error when adding city: {ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+            return cityId;
         }
-        public static int addCountry()
+        public static int addCountry(Country country)
         {
-            // FIX ME: Add country to database, return country id
-            return 0;
+            // Adds country to database, returns country id for use in other functions 
+            int countryId = -1;
+
+            try
+            {
+                MySqlCommand cmd = DBConnection.conn.CreateCommand();
+                cmd.CommandText = $"INSERT INTO country(country, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES(@country, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)" + "SELECT countryId FROM country ORDER BY countryId DESC LIMIT 1";
+                cmd.Parameters.AddWithValue("@country", country.country);
+                cmd.Parameters.AddWithValue("@createDate", country.createDate);
+                cmd.Parameters.AddWithValue("@createdBy", country.createdBy);
+                cmd.Parameters.AddWithValue("@lastUpdate", country.lastUpdate);
+                cmd.Parameters.AddWithValue("@lastUpdateBy", country.lastUpdateBy);
+                countryId = (int)cmd.ExecuteScalar();
+            }
+            
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error when adding country: {ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return countryId;
         }
-        public static int addAddress()
+        public static int addAddress(Address address)
         {
             // FIX ME: add address to database, return address id 
             // note: must use country/city id for this 
-            return 0;
+            int addressId = -1; 
+
+            return addressId;
         }
         public static int addCustomer(Customer customer)
         {
