@@ -11,9 +11,10 @@ namespace C969___Scheduler.Entity_Classes
         public int customerId { get; set; }
         public string customerName { get; set; }
         public int addressId { get ; set; }
-        public bool active { get; set; }
-        public string createdby { get; set; }
+        public int active { get; set; }
+        public string createdBy { get; set; }
         public DateTime createDate { get; set; }
         public DateTime lastUpdate { get; set; }
+        public string lastUpdateBy {  get; set; }
     }
 }

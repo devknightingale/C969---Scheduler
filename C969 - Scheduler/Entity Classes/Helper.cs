@@ -247,7 +247,7 @@ namespace C969___Scheduler.Entity_Classes
             try
             {
                 MySqlCommand cmd = DBConnection.conn.CreateCommand();
-                cmd.CommandText = $"INSERT INTO city(city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES(@city, @countryId, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)" + "SELECT cityId FROM city ORDER BY cityId DESC LIMIT 1";
+                cmd.CommandText = $"INSERT INTO city(city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES(@city, @countryId, @createDate, @createdBy, @lastUpdate, @lastUpdateBy);" + "SELECT cityId FROM city ORDER BY cityId DESC LIMIT 1";
                 cmd.Parameters.AddWithValue("@city", city.city);
                 cmd.Parameters.AddWithValue("@countryId", city.countryId);
                 cmd.Parameters.AddWithValue("@createDate", city.createDate);
@@ -271,13 +271,14 @@ namespace C969___Scheduler.Entity_Classes
             try
             {
                 MySqlCommand cmd = DBConnection.conn.CreateCommand();
-                cmd.CommandText = $"INSERT INTO country(country, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES(@country, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)" + "SELECT countryId FROM country ORDER BY countryId DESC LIMIT 1";
+                cmd.CommandText = $"INSERT INTO country(country, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES(@country, @createDate, @createdBy, @lastUpdate, @lastUpdateBy);" + "SELECT countryId FROM country ORDER BY countryId DESC LIMIT 1";
                 cmd.Parameters.AddWithValue("@country", country.country);
                 cmd.Parameters.AddWithValue("@createDate", country.createDate);
                 cmd.Parameters.AddWithValue("@createdBy", country.createdBy);
                 cmd.Parameters.AddWithValue("@lastUpdate", country.lastUpdate);
                 cmd.Parameters.AddWithValue("@lastUpdateBy", country.lastUpdateBy);
                 countryId = (int)cmd.ExecuteScalar();
+                country.countryId = countryId;
             }
             
             catch (Exception ex)
@@ -291,14 +292,55 @@ namespace C969___Scheduler.Entity_Classes
             // FIX ME: add address to database, return address id 
             // note: must use country/city id for this 
             int addressId = -1; 
+            try
+            {
+                MySqlCommand cmd = DBConnection.conn.CreateCommand();
+                cmd.CommandText = $"INSERT INTO address(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES(@address, @address2, @cityId, @postalCode, @phone, @createDate, @createdBy, @lastUpdate, @lastUpdateBy);" + "SELECT addressId FROM address ORDER BY addressId DESC LIMIT 1";
+                cmd.Parameters.AddWithValue("@address", address.address1);
+                cmd.Parameters.AddWithValue("@address2", address.address2);
+                cmd.Parameters.AddWithValue("@cityId", address.cityId);
+                cmd.Parameters.AddWithValue("@postalCode", address.postalCode);
+                cmd.Parameters.AddWithValue("@phone", address.phoneNumber);
+                cmd.Parameters.AddWithValue("@createDate", address.createDate); 
+                cmd.Parameters.AddWithValue("@createdBy", address.createdBy);
+                cmd.Parameters.AddWithValue("@lastUpdate", address.lastUpdate);
+                cmd.Parameters.AddWithValue("@lastUpdateBy", address.lastUpdateBy);
+                addressId = (int)cmd.ExecuteScalar();
+            }
 
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error when adding address: {ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
             return addressId;
         }
         public static int addCustomer(Customer customer)
         {
             // FIX ME: add customer to database. Must be done LAST after city/country/address 
             // return customer id 
-            return 0;
+            int customerId = -1;
+            try
+            {
+                MySqlCommand cmd = DBConnection.conn.CreateCommand();
+                cmd.CommandText = $"INSERT INTO customer(customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES(@customerName, @addressId, @active, @createDate, @createdBy, @lastUpdate, @lastUpdateBy);" + "SELECT customerId FROM customer ORDER BY customerId DESC LIMIT 1";
+                cmd.Parameters.AddWithValue("@customerName", customer.customerName);
+                cmd.Parameters.AddWithValue("@addressId", customer.addressId);
+                cmd.Parameters.AddWithValue("@active", customer.active);                
+                cmd.Parameters.AddWithValue("@createDate", customer.createDate);
+                cmd.Parameters.AddWithValue("@createdBy", customer.createdBy);
+                cmd.Parameters.AddWithValue("@lastUpdate", customer.lastUpdate);
+                cmd.Parameters.AddWithValue("@lastUpdateBy", customer.lastUpdateBy);
+                customerId = (int)cmd.ExecuteScalar();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error when adding customer: {ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return customerId;
+            
         }
 
         public static void updateCustomer()

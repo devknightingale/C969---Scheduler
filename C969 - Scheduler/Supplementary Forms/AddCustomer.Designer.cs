@@ -52,7 +52,7 @@
             // 
             // txtLastName
             // 
-            this.txtLastName.Location = new System.Drawing.Point(64, 33);
+            this.txtLastName.Location = new System.Drawing.Point(171, 33);
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(100, 20);
             this.txtLastName.TabIndex = 0;
@@ -66,7 +66,7 @@
             // 
             // txtFirstName
             // 
-            this.txtFirstName.Location = new System.Drawing.Point(171, 33);
+            this.txtFirstName.Location = new System.Drawing.Point(64, 33);
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.Size = new System.Drawing.Size(100, 20);
             this.txtFirstName.TabIndex = 1;
@@ -74,7 +74,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(62, 17);
+            this.label1.Location = new System.Drawing.Point(168, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 13);
             this.label1.TabIndex = 4;
@@ -83,7 +83,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(171, 17);
+            this.label3.Location = new System.Drawing.Point(64, 17);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(26, 13);
             this.label3.TabIndex = 6;
@@ -103,14 +103,14 @@
             this.txtState.Location = new System.Drawing.Point(170, 155);
             this.txtState.Name = "txtState";
             this.txtState.Size = new System.Drawing.Size(100, 20);
-            this.txtState.TabIndex = 4;
+            this.txtState.TabIndex = 5;
             // 
             // txtCity
             // 
             this.txtCity.Location = new System.Drawing.Point(64, 155);
             this.txtCity.Name = "txtCity";
             this.txtCity.Size = new System.Drawing.Size(100, 20);
-            this.txtCity.TabIndex = 3;
+            this.txtCity.TabIndex = 4;
             // 
             // label6
             // 
@@ -144,7 +144,7 @@
             this.txtCountry.Location = new System.Drawing.Point(124, 194);
             this.txtCountry.Name = "txtCountry";
             this.txtCountry.Size = new System.Drawing.Size(147, 20);
-            this.txtCountry.TabIndex = 6;
+            this.txtCountry.TabIndex = 7;
             // 
             // label9
             // 
@@ -170,7 +170,7 @@
             this.txtPhone.Mask = "(999) 000-0000";
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Size = new System.Drawing.Size(100, 20);
-            this.txtPhone.TabIndex = 7;
+            this.txtPhone.TabIndex = 8;
             // 
             // txtZip
             // 
@@ -179,7 +179,7 @@
             this.txtZip.Mask = "00000";
             this.txtZip.Name = "txtZip";
             this.txtZip.Size = new System.Drawing.Size(53, 20);
-            this.txtZip.TabIndex = 5;
+            this.txtZip.TabIndex = 6;
             this.txtZip.ValidatingType = typeof(int);
             // 
             // btnSubmitCustomer
@@ -187,7 +187,7 @@
             this.btnSubmitCustomer.Location = new System.Drawing.Point(228, 278);
             this.btnSubmitCustomer.Name = "btnSubmitCustomer";
             this.btnSubmitCustomer.Size = new System.Drawing.Size(75, 23);
-            this.btnSubmitCustomer.TabIndex = 24;
+            this.btnSubmitCustomer.TabIndex = 10;
             this.btnSubmitCustomer.Text = "Submit";
             this.btnSubmitCustomer.UseVisualStyleBackColor = true;
             this.btnSubmitCustomer.Click += new System.EventHandler(this.btnSubmitCustomer_Click);
@@ -197,7 +197,7 @@
             this.btnCancelCustomer.Location = new System.Drawing.Point(65, 278);
             this.btnCancelCustomer.Name = "btnCancelCustomer";
             this.btnCancelCustomer.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelCustomer.TabIndex = 25;
+            this.btnCancelCustomer.TabIndex = 9;
             this.btnCancelCustomer.Text = "Cancel";
             this.btnCancelCustomer.UseVisualStyleBackColor = true;
             this.btnCancelCustomer.Click += new System.EventHandler(this.btnCancelCustomer_Click);
@@ -207,7 +207,7 @@
             this.txtAddress2.Location = new System.Drawing.Point(64, 116);
             this.txtAddress2.Name = "txtAddress2";
             this.txtAddress2.Size = new System.Drawing.Size(206, 20);
-            this.txtAddress2.TabIndex = 26;
+            this.txtAddress2.TabIndex = 3;
             // 
             // label2
             // 

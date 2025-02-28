@@ -17,16 +17,7 @@ namespace C969___Scheduler.Supplementary_Forms
         {
             InitializeComponent();
 
-            //setup the variables ahead of time
-            string lastName;
-            string firstName;
-            string address; 
-            string city;
-            string country;
-            string state;
-            int zipcode; 
-            string phoneNumber;  
-
+            
 
         }
 
@@ -38,9 +29,7 @@ namespace C969___Scheduler.Supplementary_Forms
         private void btnSubmitCustomer_Click(object sender, EventArgs e)
         {
             Helper.validateTextboxes(this);            
-
-            // FIX BEFORE SUBMISSION - should change the add___ functions to take in addCustomer form as an argument so I can set all the variables inside the function instead of doing it here, Would be cleaner 
-            
+                        
             // Add the country first since city/address is dependent upon it (countryId as foreign key) 
             Country country = new Country();
             country.country = txtCountry.Text;
@@ -49,7 +38,6 @@ namespace C969___Scheduler.Supplementary_Forms
             country.lastUpdate = DateTime.UtcNow;
             country.lastUpdateBy = Helper.userNameValue;            
             country.countryId = Helper.addCountry(country);
-
             
             // Add city to database 
             City city = new City(); 
@@ -65,7 +53,13 @@ namespace C969___Scheduler.Supplementary_Forms
             Address address = new Address(); 
             address.address1 = txtAddress1.Text;
             //FIX ME: should address2 be optional? 
-            address.address2 = txtAddress2.Text;
+            if (String.IsNullOrWhiteSpace(txtAddress2.Text.ToString())) {
+                address.address2 = "N/A"; 
+            }
+            else
+            {
+                address.address2 = txtAddress2.Text;
+            } 
             address.cityId = city.cityId;
             address.postalCode = txtZip.Text;
             address.phoneNumber = txtPhone.Text;
@@ -77,21 +71,28 @@ namespace C969___Scheduler.Supplementary_Forms
 
             //FIX ME: Put the add customer function here - depends on address 
             Customer newCustomer = new Customer();
-
+            newCustomer.customerName = txtFirstName.Text + " " + txtLastName.Text;
+            newCustomer.addressId = address.addressId;
+            newCustomer.active = 1;
+            newCustomer.createDate = DateTime.UtcNow;
+            newCustomer.createdBy = Helper.userNameValue;
+            newCustomer.lastUpdate = DateTime.UtcNow;
+            newCustomer.lastUpdateBy = Helper.userNameValue;
+            newCustomer.customerId = Helper.addCustomer(newCustomer);
             // set all the variables for customer 
 
             // Add customer to database 
-            Helper.addCustomer(newCustomer);
+
 
             // Debug stuff 
             // For future me: 
             // The masked textboxes appear to count the "prompt" characters as input by default 
-            
+
             MessageBox.Show($"Length of zip is now {txtZip.Text.Length}\n Zip mask completed is {txtZip.MaskCompleted}\nZip mask full is {txtZip.MaskFull}\nLength of phone number is {txtPhone.Text.Length}");
 
             
         }
 
-        
+       
     }
 }
