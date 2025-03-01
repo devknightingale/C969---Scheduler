@@ -314,8 +314,19 @@ namespace C969___Scheduler.Supplementary_Forms
                 string queryUpdateAppointmentSubmit = $"UPDATE appointment SET customerId = @custId, userId = {userId}, title = '{txtTitle.Text.ToString()}', description = '{txtDescription.Text.ToString()}', location = '{cbApptLocation.SelectedItem.ToString()}', type = '{cbApptType.SelectedItem.ToString()}', start = {updateStartTime}, end = {updateEndTime}, lastUpdate = NOW(), lastUpdateBy = '{Helper.userNameValue}' WHERE appointmentId = {Helper.apptIdValue}";
 
 
+                /// for overlap checker 
+                string checkStart = updateStartTime.ToString("yyyy-MM-dd hh:mm:ss");
+                string checkEnd = updateEndTime.ToString("yyyy-MM-dd hh:mm:ss"); 
 
-                // Parameters.. 
+                
+
+                if (Helper.checkOverlapAppt(checkStart, checkEnd))
+                {
+                    MessageBox.Show("Selected user has prior engagement during the selected timeframe. Please double check the user's schedule and try again.");
+                }
+                else
+                {
+                    // Parameters.. 
 
                 try
                 {
@@ -340,6 +351,12 @@ namespace C969___Scheduler.Supplementary_Forms
                 {
                     MessageBox.Show($"Error with updating appointment: {ex}", "Error", MessageBoxButtons.OK);
                 }
+                }
+                
+                
+                
+
+                
             }
             else
             {

@@ -77,69 +77,145 @@ namespace C969___Scheduler
         }
 
         private void btnAddNew_Click(object sender, EventArgs e)
-        {
 
-            AddAppointment addAppt = new AddAppointment(dgvAppointments);
-            addAppt.Show();
+
+        {
+            if (comboBox1.SelectedIndex == 0)
+            {
+                AddAppointment addAppt = new AddAppointment(dgvAppointments);
+                addAppt.Show();
+            }
+            else
+            {
+                AddCustomer addCustomer = new AddCustomer(dgvAppointments);
+                addCustomer.Show(); 
+            }
+            
 
         }
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            Helper.LoadAppointmentGrid(dgvAppointments);
+            if (comboBox1.SelectedIndex == 0)
+            {
+                Helper.LoadAppointmentGrid(dgvAppointments);
+            }
+            else
+            {
+                Helper.LoadCustomerGrid(dgvAppointments); 
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             // technically it should not be possible to not have a row selected since the application starts with a row selected automatically, but just in case... 
-            if (!dgvAppointments.CurrentRow.Selected)
-            {
-                MessageBox.Show("Please select an appointment to delete.");
-            }
-            else
-            {
 
-                try
+            // This needs to be separated into two branches - one for if Appointments is selected in the dropdown and the other for customers. 
+            if (comboBox1.SelectedIndex == 0)
+            {// Appointments is selected 
+                if (!dgvAppointments.CurrentRow.Selected)
                 {
-                    int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+                    MessageBox.Show("Please select an appointment to delete.");
+                }
+                else
+                {
 
-                    // confirmation window 
-                    DialogResult result = MessageBox.Show("Are you sure you want to delete the selected appointment? This action cannot be undone.", "Confirm Deletion", MessageBoxButtons.YesNo);
-
-                    if (result == DialogResult.Yes)
+                    try
                     {
-                        Helper.deleteAppointment(apptId);
+                        int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
 
-                        // refreshes data grid
-                        Helper.LoadAppointmentGrid(dgvAppointments);
+                        // confirmation window 
+                        DialogResult result = MessageBox.Show("Are you sure you want to delete the selected appointment? This action cannot be undone.", "Confirm Deletion", MessageBoxButtons.YesNo);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            Helper.deleteAppointment(apptId);
+
+                            // refreshes data grid
+                            Helper.LoadAppointmentGrid(dgvAppointments);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error when deleting appointment: {ex}", "Error", MessageBoxButtons.OK);
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error when deleting appointment: {ex}", "Error", MessageBoxButtons.OK);
-                }
 
             }
+            else
+            {// Customers is selected 
+                if (!dgvAppointments.CurrentRow.Selected)
+                {
+                    MessageBox.Show("Please select a customer to delete.");
+                }
+                else
+                {
+
+                    try
+                    {
+                        int customerId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+
+                        // confirmation window 
+                        DialogResult result = MessageBox.Show("Are you sure you want to delete the selected customer and their associated appointments? This action cannot be undone.", "Confirm Deletion", MessageBoxButtons.YesNo);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            Helper.deleteCustomer(customerId);
+
+                            // refreshes data grid
+                            Helper.LoadCustomerGrid(dgvAppointments);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error when deleting customer: {ex}", "Error", MessageBoxButtons.OK);
+                    }
+
+                }
+            }
+            
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (!dgvAppointments.CurrentRow.Selected)
+            if (comboBox1.SelectedIndex == 0)
             {
-                MessageBox.Show("Please select an appointment to modify.");
+                if (!dgvAppointments.CurrentRow.Selected)
+                {
+                    MessageBox.Show("Please select an appointment to modify.");
+                }
+                else
+                {
+
+                    int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+
+
+
+                    // pull up add appointment form here but need to fill text boxes first? 
+                    AddAppointment addAppt = new AddAppointment(dgvAppointments, apptId);
+                    //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
+                    addAppt.Show();
+                }
             }
             else
             {
+                if (!dgvAppointments.CurrentRow.Selected)
+                {
+                    MessageBox.Show("Please select a customer to modify.");
+                }
+                else
+                {
 
-                int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+                    int customerId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
 
-
-
-                // pull up add appointment form here but need to fill text boxes first? 
-                AddAppointment addAppt = new AddAppointment(dgvAppointments, apptId);
-                //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
-                addAppt.Show();
+                    // pull up add appointment form here but need to fill text boxes first? 
+                    AddCustomer addCustomer = new AddCustomer(dgvAppointments, customerId);
+                    
+                    //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
+                    addCustomer.Show();
+                }
             }
+                
         }
 
         private void cbTimePeriod_SelectionChangeCommitted(object sender, EventArgs e)

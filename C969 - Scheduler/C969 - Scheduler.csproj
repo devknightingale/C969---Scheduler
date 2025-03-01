@@ -99,7 +99,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DBConnection.cs" />
+    <Compile Include="Entity Classes\Address.cs" />
     <Compile Include="Entity Classes\Appointment.cs" />
+    <Compile Include="Entity Classes\City.cs" />
+    <Compile Include="Entity Classes\Country.cs" />
+    <Compile Include="Entity Classes\Customer.cs" />
     <Compile Include="Entity Classes\User.cs" />
     <Compile Include="Entity Classes\Helper.cs" />
     <Compile Include="Form1.cs">
@@ -122,6 +126,12 @@
     <Compile Include="Supplementary Forms\AddAppointment.Designer.cs">
       <DependentUpon>AddAppointment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Supplementary Forms\AddCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Supplementary Forms\AddCustomer.Designer.cs">
+      <DependentUpon>AddCustomer.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -139,6 +149,9 @@
     </Compile>
     <EmbeddedResource Include="Supplementary Forms\AddAppointment.resx">
       <DependentUpon>AddAppointment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Supplementary Forms\AddCustomer.resx">
+      <DependentUpon>AddCustomer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
