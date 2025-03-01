@@ -96,7 +96,14 @@ namespace C969___Scheduler
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            Helper.LoadAppointmentGrid(dgvAppointments);
+            if (comboBox1.SelectedIndex == 0)
+            {
+                Helper.LoadAppointmentGrid(dgvAppointments);
+            }
+            else
+            {
+                Helper.LoadCustomerGrid(dgvAppointments); 
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
