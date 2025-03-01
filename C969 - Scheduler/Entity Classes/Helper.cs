@@ -34,6 +34,15 @@ namespace C969___Scheduler.Entity_Classes
         {
             return TimeZone.CurrentTimeZone.StandardName;
         }
+        public static int GetUserID()
+        {
+            MySqlCommand cmd = DBConnection.conn.CreateCommand();
+            cmd.CommandText = "SELECT userId FROM user WHERE userName = @userName";
+            cmd.Parameters.AddWithValue("@userName", userNameValue);
+            userIdValue = (int)cmd.ExecuteScalar();
+
+            return userIdValue;
+        }
         public static void LoadAppointmentGrid(DataGridView dgv)
         {
             string apptQuery = "";
@@ -628,6 +637,29 @@ namespace C969___Scheduler.Entity_Classes
                 mainForm.apptCalendar.BoldedDates = boldedSelection.ToArray();
                 mainForm.apptCalendar.UpdateBoldedDates();
             }
+        }
+
+        public static List<Appointment> GetSchedule()
+        {
+            int userId = GetUserID();
+
+            List<Appointment> apptList = new List<Appointment>();
+            MySqlCommand cmd = DBConnection.conn.CreateCommand();
+            cmd.CommandText = "SELECT customer.customerName as 'Customer Name', appointment.title as 'Title', appointment.start as 'Start' FROM appointment  LEFT JOIN customer ON customer.customerId = appointment.customerId WHERE appointment.userId = @userId";
+            cmd.Parameters.AddWithValue("@userId", userId);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+
+                apptList.Add(new Appointment() {
+                    start = Convert.ToDateTime(reader["start"])
+                });
+
+            }
+            reader.Close();
+            return apptList;
+            
+
         }
     }
 

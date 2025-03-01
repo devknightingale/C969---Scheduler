@@ -344,5 +344,10 @@ namespace C969___Scheduler
             }
         }
 
+        private void addTestUsersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReportForm reports = new ReportForm(Helper.userNameValue);
+            reports.Show(); 
+        }
     }
 }
