@@ -171,22 +171,44 @@ namespace C969___Scheduler
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (!dgvAppointments.CurrentRow.Selected)
+            if (comboBox1.SelectedIndex == 0)
             {
-                MessageBox.Show("Please select an appointment to modify.");
+                if (!dgvAppointments.CurrentRow.Selected)
+                {
+                    MessageBox.Show("Please select an appointment to modify.");
+                }
+                else
+                {
+
+                    int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+
+
+
+                    // pull up add appointment form here but need to fill text boxes first? 
+                    AddAppointment addAppt = new AddAppointment(dgvAppointments, apptId);
+                    //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
+                    addAppt.Show();
+                }
             }
             else
             {
+                if (!dgvAppointments.CurrentRow.Selected)
+                {
+                    MessageBox.Show("Please select a customer to modify.");
+                }
+                else
+                {
 
-                int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+                    int customerId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
 
-
-
-                // pull up add appointment form here but need to fill text boxes first? 
-                AddAppointment addAppt = new AddAppointment(dgvAppointments, apptId);
-                //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
-                addAppt.Show();
+                    // pull up add appointment form here but need to fill text boxes first? 
+                    AddCustomer addCustomer = new AddCustomer(dgvAppointments, customerId);
+                    
+                    //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
+                    addCustomer.Show();
+                }
             }
+                
         }
 
         private void cbTimePeriod_SelectionChangeCommitted(object sender, EventArgs e)

@@ -24,6 +24,7 @@ namespace C969___Scheduler.Entity_Classes
         public static int userIdValue { get; set; }
 
         public static int apptIdValue { get; set; }
+        public static int customerIdValue {  get; set; }
 
         public static List<DateTime> boldedSelection = new List<DateTime>();
         /**********************/
@@ -343,9 +344,83 @@ namespace C969___Scheduler.Entity_Classes
             
         }
 
-        public static void updateCustomer()
+        public static void UpdateCountry(int countryId, AddCustomer form)
         {
+            // updates country 
+            MySqlCommand cmd = DBConnection.conn.CreateCommand();
+            cmd.CommandText = "UPDATE country SET country = @country, lastUpdate = @lastUpdate, lastUpdateBy = @lastUpdateBy WHERE countryId = @countryId;";
+            cmd.Parameters.AddWithValue("@countryId", countryId);
+            cmd.Parameters.AddWithValue("@country", form.txtCountry.Text);
+            cmd.Parameters.AddWithValue("@lastUpdate", DateTime.UtcNow);
+            cmd.Parameters.AddWithValue("@lastUpdateBy", Helper.userNameValue);
+            cmd.ExecuteNonQuery(); 
+        }
+        public static void UpdateCity(int cityId, AddCustomer form)
+        {
+
+            // first update the country
+            MySqlCommand getCountryId = DBConnection.conn.CreateCommand();
+            getCountryId.CommandText = "SELECT countryId FROM city WHERE cityId = @cityId";
+            getCountryId.Parameters.AddWithValue("@cityId", cityId);
+            int countryId = (int)getCountryId.ExecuteScalar();
+            UpdateCountry(countryId, form);
+
+
+            // updates city
+            MySqlCommand cmd = DBConnection.conn.CreateCommand();
+            cmd.CommandText = "UPDATE city SET city = @city, lastUpdate = @lastUpdate, lastUpdateBy = @lastUpdateBy WHERE cityId = @cityId;";
+            cmd.Parameters.AddWithValue("@cityId", cityId);
+            cmd.Parameters.AddWithValue("@city", form.txtCity.Text);
+            cmd.Parameters.AddWithValue("@lastUpdate", DateTime.UtcNow);
+            cmd.Parameters.AddWithValue("@lastUpdateBy", Helper.userNameValue);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void UpdateAddress(int addressId, AddCustomer form)
+        {
+            // first update the city
+            MySqlCommand getCityId = DBConnection.conn.CreateCommand();
+            getCityId.CommandText = "SELECT cityId FROM address WHERE addressId = @addressId";
+            getCityId.Parameters.AddWithValue("@addressId", addressId);
+            int cityId = (int)getCityId.ExecuteScalar();
+            UpdateCity(cityId, form);
+
+            //updates address 
+            MySqlCommand cmd = DBConnection.conn.CreateCommand();
+            cmd.CommandText = "UPDATE address SET address = @address, address2 = @address2, postalCode = @postalCode, phone = @phone, lastUpdate = @lastUpdate, lastUpdateBy = @lastUpdateBy WHERE addressId = @addressId;";
+            cmd.Parameters.AddWithValue("@addressId", addressId);
+            cmd.Parameters.AddWithValue("@address", form.txtAddress1.Text);
+            if (String.IsNullOrWhiteSpace(form.txtAddress2.Text)) {
+                cmd.Parameters.AddWithValue("@address2", "N/A");
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@address2", form.txtAddress2.Text);
+            }
+            cmd.Parameters.AddWithValue("@postalCode", form.txtZip.Text);
+            cmd.Parameters.AddWithValue("@phone", form.txtPhone.Text);
+            cmd.Parameters.AddWithValue("@lastUpdate", DateTime.UtcNow);
+            cmd.Parameters.AddWithValue("@lastUpdateBy", Helper.userNameValue);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void UpdateCustomer(int customerId, AddCustomer form)
+        {
+            // first update the address
+            MySqlCommand getAddressId = DBConnection.conn.CreateCommand();
+            getAddressId.CommandText = "SELECT addressId FROM customer WHERE customerId = @customerId";
+            getAddressId.Parameters.AddWithValue("@customerId", customerId);
+            int addressId = (int)getAddressId.ExecuteScalar();
+            UpdateAddress(addressId, form);
+
             // FIX ME: Update customer function goes here 
+            MySqlCommand cmd = DBConnection.conn.CreateCommand();
+            cmd.CommandText = "UPDATE customer SET customerName = @customerName, lastUpdate = @lastUpdate, lastUpdateBy = @lastUpdateBy WHERE customerId = @customerId;";
+            cmd.Parameters.AddWithValue("@customerId", customerId); 
+            cmd.Parameters.AddWithValue("@customerName", form.txtFirstName.Text + " " + form.txtLastName.Text);
+            cmd.Parameters.AddWithValue("@lastUpdate", DateTime.UtcNow);
+            cmd.Parameters.AddWithValue("@lastUpdateBy", Helper.userNameValue);
+            cmd.ExecuteNonQuery();
         }
 
         public static int deleteCustomer(int customerId)
@@ -386,10 +461,7 @@ namespace C969___Scheduler.Entity_Classes
             {
                 textValidated = false;
             }
-            else if (string.IsNullOrWhiteSpace(customerForm.txtState.Text))
-            {
-                textValidated = false;
-            }
+            
             else if (string.IsNullOrWhiteSpace(customerForm.txtZip.Text) || !customerForm.txtZip.MaskFull)
             {
                 

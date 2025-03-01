@@ -34,10 +34,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtState = new System.Windows.Forms.TextBox();
             this.txtCity = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.txtCountry = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -98,13 +96,6 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Address Line 1";
             // 
-            // txtState
-            // 
-            this.txtState.Location = new System.Drawing.Point(170, 155);
-            this.txtState.Name = "txtState";
-            this.txtState.Size = new System.Drawing.Size(100, 20);
-            this.txtState.TabIndex = 5;
-            // 
             // txtCity
             // 
             this.txtCity.Location = new System.Drawing.Point(64, 155);
@@ -120,15 +111,6 @@
             this.label6.Size = new System.Drawing.Size(22, 13);
             this.label6.TabIndex = 13;
             this.label6.Text = "Zip";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(168, 139);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(32, 13);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "State";
             // 
             // label8
             // 
@@ -167,7 +149,7 @@
             // txtPhone
             // 
             this.txtPhone.Location = new System.Drawing.Point(64, 233);
-            this.txtPhone.Mask = "(999) 000-0000";
+            this.txtPhone.Mask = "000-0000";
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Size = new System.Drawing.Size(100, 20);
             this.txtPhone.TabIndex = 8;
@@ -233,10 +215,8 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.txtCountry);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtCity);
-            this.Controls.Add(this.txtState);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
@@ -255,7 +235,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
@@ -264,7 +243,6 @@
         public System.Windows.Forms.TextBox txtLastName;
         public System.Windows.Forms.TextBox txtAddress1;
         public System.Windows.Forms.TextBox txtFirstName;
-        public System.Windows.Forms.TextBox txtState;
         public System.Windows.Forms.TextBox txtCity;
         public System.Windows.Forms.TextBox txtCountry;
         public System.Windows.Forms.MaskedTextBox txtPhone;
