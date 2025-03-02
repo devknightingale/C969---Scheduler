@@ -488,6 +488,7 @@ namespace C969___Scheduler.Entity_Classes
             }
             else
             {
+
                 textValidated = true;
             }
 
@@ -692,6 +693,32 @@ namespace C969___Scheduler.Entity_Classes
             }
             reader.Close(); 
             return monthlyAppts;
+        }
+
+        public static List<Appointment> GetCustomerAppointments(string name)
+        {
+            List<Appointment> customerAppts = new List<Appointment>();
+
+            MySqlCommand cmd = DBConnection.conn.CreateCommand();
+            cmd.CommandText = "SELECT customerId FROM customer WHERE customerName = @name";
+            cmd.Parameters.AddWithValue("@name", name);
+            int customerId = (int)cmd.ExecuteScalar();
+
+            cmd.CommandText = "SELECT * FROM appointment WHERE customerId = @customerId";
+            cmd.Parameters.AddWithValue("@customerId", customerId);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                customerAppts.Add(new Appointment()
+                {
+                    start = Convert.ToDateTime(reader["start"]),
+                    type = reader["type"].ToString(),
+                    title = reader["title"].ToString(),
+                });
+            }
+            reader.Close(); 
+
+            return customerAppts; 
         }
     }
 

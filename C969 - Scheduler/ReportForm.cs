@@ -87,7 +87,6 @@ namespace C969___Scheduler
             }
             else
             {
-                // take in month, this? 
                 string month = cbMonths.SelectedItem.ToString();
                 List<Appointment> monthlyAppts = Helper.GetMonthlyAppointments(month, this);
 
@@ -102,10 +101,29 @@ namespace C969___Scheduler
                 txtReport.Text = reportString;
 
             }
-
-            
         }
 
-        
+        private void btnCustomerAppts_Click(object sender, EventArgs e)
+        {
+            if (cbCustomers.SelectedItem == null)
+            {
+                MessageBox.Show("You must select a customer first.");
+            }
+            else
+            {
+                string name = cbCustomers.SelectedItem.ToString();
+                List<Appointment> customerAppts = Helper.GetCustomerAppointments(name);
+
+                string reportString = $"{name} Appointments:" + Environment.NewLine + Environment.NewLine;
+
+                // lambda to simplify foreach statement
+                customerAppts.ForEach(appt =>
+                {
+                    reportString += "\n\nStart: " + appt.start + "  Type: " + appt.type + "  Title: " + appt.title + Environment.NewLine;
+
+                });
+                txtReport.Text = reportString;
+            }
+        }
     }
 }

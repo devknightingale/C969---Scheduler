@@ -69,7 +69,7 @@ namespace C969___Scheduler.Supplementary_Forms
                 {
                     // Adds country to database 
                     Country country = new Country();
-                    country.country = txtCountry.Text;
+                    country.country = txtCountry.Text.Trim();
                     country.createDate = DateTime.UtcNow;
                     country.createdBy = Helper.userNameValue;
                     country.lastUpdate = DateTime.UtcNow;
@@ -78,7 +78,7 @@ namespace C969___Scheduler.Supplementary_Forms
 
                     // Add city to database 
                     City city = new City();
-                    city.city = txtCity.Text;
+                    city.city = txtCity.Text.Trim();
                     city.countryId = country.countryId;
                     city.createDate = DateTime.UtcNow;
                     city.createdBy = Helper.userNameValue;
@@ -88,19 +88,19 @@ namespace C969___Scheduler.Supplementary_Forms
 
 
                     Address address = new Address();
-                    address.address1 = txtAddress1.Text;
+                    address.address1 = txtAddress1.Text.Trim();
 
-                    if (String.IsNullOrWhiteSpace(txtAddress2.Text.ToString()))
+                    if (String.IsNullOrWhiteSpace(txtAddress2.Text.ToString().Trim()))
                     {
                         address.address2 = "N/A";
                     }
                     else
                     {
-                        address.address2 = txtAddress2.Text;
+                        address.address2 = txtAddress2.Text.Trim();
                     }
                     address.cityId = city.cityId;
-                    address.postalCode = txtZip.Text;
-                    address.phoneNumber = txtPhone.Text;
+                    address.postalCode = txtZip.Text.Trim();
+                    address.phoneNumber = txtPhone.Text.Trim();
                     address.createDate = DateTime.UtcNow;
                     address.createdBy = Helper.userNameValue;
                     address.lastUpdate = DateTime.UtcNow;
@@ -109,7 +109,7 @@ namespace C969___Scheduler.Supplementary_Forms
 
                     //FIX ME: Put the add customer function here - depends on address 
                     Customer newCustomer = new Customer();
-                    newCustomer.customerName = txtFirstName.Text + " " + txtLastName.Text;
+                    newCustomer.customerName = txtFirstName.Text.Trim() + " " + txtLastName.Text.Trim();
                     newCustomer.addressId = address.addressId;
                     newCustomer.active = 1;
                     newCustomer.createDate = DateTime.UtcNow;

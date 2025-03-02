@@ -53,7 +53,7 @@
             this.txtLastName.Location = new System.Drawing.Point(171, 33);
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(100, 20);
-            this.txtLastName.TabIndex = 0;
+            this.txtLastName.TabIndex = 1;
             // 
             // txtAddress1
             // 
@@ -67,7 +67,7 @@
             this.txtFirstName.Location = new System.Drawing.Point(64, 33);
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.Size = new System.Drawing.Size(100, 20);
-            this.txtFirstName.TabIndex = 1;
+            this.txtFirstName.TabIndex = 0;
             // 
             // label1
             // 

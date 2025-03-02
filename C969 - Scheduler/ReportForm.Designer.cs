@@ -31,7 +31,7 @@
             this.reportGroupBoxLabel = new System.Windows.Forms.GroupBox();
             this.txtReport = new System.Windows.Forms.TextBox();
             this.btnAppointmentType = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnCustomerAppts = new System.Windows.Forms.Button();
             this.cbMonths = new System.Windows.Forms.ComboBox();
             this.cbCustomers = new System.Windows.Forms.ComboBox();
             this.cbUsers = new System.Windows.Forms.ComboBox();
@@ -48,9 +48,9 @@
             // reportGroupBoxLabel
             // 
             this.reportGroupBoxLabel.Controls.Add(this.txtReport);
-            this.reportGroupBoxLabel.Location = new System.Drawing.Point(290, 43);
+            this.reportGroupBoxLabel.Location = new System.Drawing.Point(234, 50);
             this.reportGroupBoxLabel.Name = "reportGroupBoxLabel";
-            this.reportGroupBoxLabel.Size = new System.Drawing.Size(459, 251);
+            this.reportGroupBoxLabel.Size = new System.Drawing.Size(435, 251);
             this.reportGroupBoxLabel.TabIndex = 0;
             this.reportGroupBoxLabel.TabStop = false;
             this.reportGroupBoxLabel.Text = "Reports";
@@ -73,14 +73,15 @@
             this.btnAppointmentType.UseVisualStyleBackColor = true;
             this.btnAppointmentType.Click += new System.EventHandler(this.btnAppointmentType_Click);
             // 
-            // button3
+            // btnCustomerAppts
             // 
-            this.button3.Location = new System.Drawing.Point(131, 19);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(65, 21);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Run";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnCustomerAppts.Location = new System.Drawing.Point(133, 18);
+            this.btnCustomerAppts.Name = "btnCustomerAppts";
+            this.btnCustomerAppts.Size = new System.Drawing.Size(65, 21);
+            this.btnCustomerAppts.TabIndex = 3;
+            this.btnCustomerAppts.Text = "Run";
+            this.btnCustomerAppts.UseVisualStyleBackColor = true;
+            this.btnCustomerAppts.Click += new System.EventHandler(this.btnCustomerAppts_Click);
             // 
             // cbMonths
             // 
@@ -141,7 +142,7 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.cbCustomers);
-            this.groupBox3.Controls.Add(this.button3);
+            this.groupBox3.Controls.Add(this.btnCustomerAppts);
             this.groupBox3.Location = new System.Drawing.Point(26, 195);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(202, 53);
@@ -153,13 +154,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(679, 317);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.reportGroupBoxLabel);
             this.Name = "ReportForm";
-            this.Text = "ReportForm";
+            this.Text = "Reports";
             this.reportGroupBoxLabel.ResumeLayout(false);
             this.reportGroupBoxLabel.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -173,7 +174,7 @@
 
         private System.Windows.Forms.GroupBox reportGroupBoxLabel;
         private System.Windows.Forms.Button btnAppointmentType;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnCustomerAppts;
         private System.Windows.Forms.TextBox txtReport;
         private System.Windows.Forms.ComboBox cbCustomers;
         private System.Windows.Forms.ComboBox cbUsers;
