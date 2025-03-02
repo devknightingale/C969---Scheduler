@@ -27,6 +27,7 @@ namespace C969___Scheduler.Entity_Classes
         public static int customerIdValue {  get; set; }
 
         public static List<DateTime> boldedSelection = new List<DateTime>();
+        
         /**********************/
         /***** DATA  GRID *****/
         /**********************/
@@ -34,11 +35,11 @@ namespace C969___Scheduler.Entity_Classes
         {
             return TimeZone.CurrentTimeZone.StandardName;
         }
-        public static int GetUserID()
+        public static int GetUserID(string name)
         {
             MySqlCommand cmd = DBConnection.conn.CreateCommand();
             cmd.CommandText = "SELECT userId FROM user WHERE userName = @userName";
-            cmd.Parameters.AddWithValue("@userName", userNameValue);
+            cmd.Parameters.AddWithValue("@userName", name);
             userIdValue = (int)cmd.ExecuteScalar();
 
             return userIdValue;
@@ -639,27 +640,58 @@ namespace C969___Scheduler.Entity_Classes
             }
         }
 
-        public static List<Appointment> GetSchedule()
+        public static List<Appointment> GetSchedule(string name)
         {
-            int userId = GetUserID();
+            int userId = GetUserID(name);
 
             List<Appointment> apptList = new List<Appointment>();
             MySqlCommand cmd = DBConnection.conn.CreateCommand();
-            cmd.CommandText = "SELECT customer.customerName as 'Customer Name', appointment.title as 'Title', appointment.start as 'Start' FROM appointment  LEFT JOIN customer ON customer.customerId = appointment.customerId WHERE appointment.userId = @userId";
+            cmd.CommandText = "SELECT customer.customerName as 'Customer Name', appointment.title as 'Title', appointment.start as 'Start', appointment.type as 'Type' FROM appointment  LEFT JOIN customer ON customer.customerId = appointment.customerId WHERE appointment.userId = @userId";
             cmd.Parameters.AddWithValue("@userId", userId);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
 
-                apptList.Add(new Appointment() {
-                    start = Convert.ToDateTime(reader["start"])
-                });
+                apptList.Add(new Appointment()
+                {
+                    start = Convert.ToDateTime(reader["start"]),
+                    type = reader["type"].ToString(),
+                    title = reader["title"].ToString()
+                }); 
 
             }
             reader.Close();
             return apptList;
             
 
+        }
+        public static List<Appointment> GetMonthlyAppointments(string month, ReportForm form)
+        {
+            List<Appointment> monthlyAppts = new List<Appointment>();
+            
+            int endDay = DateTime.DaysInMonth(DateTime.Now.Year, form.cbMonths.SelectedIndex + 1);
+            DateTime startOfMonth = DateTime.Parse(month + " 1," + " " + DateTime.Now.Year).ToUniversalTime();
+            DateTime endOfMonth = DateTime.Parse(month + " " + endDay + ", " + DateTime.Now.Year + " 23:59:59").ToUniversalTime();
+
+
+            MySqlCommand cmd = DBConnection.conn.CreateCommand();
+            cmd.CommandText = "SELECT * FROM appointment WHERE start > @firstOfMonth AND start < @endOfMonth";
+            cmd.Parameters.AddWithValue("@firstOfMonth", startOfMonth.ToString("yyyy-MM-dd hh:mm:ss"));
+            cmd.Parameters.AddWithValue("@endOfMonth", endOfMonth.ToString("yyyy-MM-dd hh:mm:ss"));
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                monthlyAppts.Add(new Appointment()
+                {
+                    start = Convert.ToDateTime(reader["start"]),
+                    type = reader["type"].ToString(),
+                    title = reader["title"].ToString(),
+
+                }); 
+            }
+            reader.Close(); 
+            return monthlyAppts;
         }
     }
 
