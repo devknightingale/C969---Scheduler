@@ -27,9 +27,7 @@ namespace C969___Scheduler
             InitializeComponent();
             // centers login form 
             StartPosition = FormStartPosition.CenterScreen;
-
-            // Get the timezone of the application - is this even needed here or do only on appointment section?
-            // May move this elsewhere later 
+            
             string localZone = Helper.GetLocalZone();
 
 
@@ -40,18 +38,7 @@ namespace C969___Scheduler
                 lblPassword.Text = "Contraseña:";
             }
 
-
-
-            // DEBUG MESSAGEBOX
-            //MessageBox.Show($"Current culture is {CultureInfo.CurrentCulture.Name}"); //for culture info
-            //MessageBox.Show($"Current timezone is {localZone}\n Time is currently {currentTime}"); // for timezone
         }
-
-        // testing username retrieval option here
-        public static string testUsername { get; set; }
-
-        // end testing 
-
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -61,7 +48,7 @@ namespace C969___Scheduler
                 //check user & password for a match in database 
                 string query = $"SELECT * FROM user WHERE userName = '{txtUsername.Text}' AND password = '{txtPassword.Text}'";
                 
-                // MySqlConnection conn = DBConnection.conn;
+                
                 MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
 
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -69,32 +56,18 @@ namespace C969___Scheduler
                 adapter.Fill(dtable);
 
 
-                // log file?
-                string path = @"C:\Users\Public\Documents\Login_History.txt";
-                // need timestamp and username 
-                // how do i send this user to the next form???
+                
+                string path = @"C:\Users\Public\Documents\Login_History.txt";                
                 string logUser = txtUsername.Text;
-                string currentTime = DateTime.Now.ToString(); 
-                
-
-                
-
+                string currentTime = DateTime.Now.ToString();               
+                                
                 if (dtable.Rows.Count > 0)
                 {
-                    Helper.userNameValue = logUser;
-                    
-
-                    
-                    
-
-                        
-                    
-                    File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");
-                    
+                    Helper.userNameValue = logUser;                    
+                    File.AppendAllText(path, $"User {logUser} logged in successfully at {currentTime}\n");                
                     
                     // load next form here
-                    MainForm mainForm = new MainForm();
-                   
+                    MainForm mainForm = new MainForm();                   
 
                     //will close entire application when main form is closed
                     mainForm.FormClosed += (s, args) => this.Close(); 
@@ -121,7 +94,7 @@ namespace C969___Scheduler
             }
             catch (Exception ex)
             {
-                //display error message if login is invalid, DEPENDENT UPON LANGUAGE
+                //display error message if login is invalid
             
                 MessageBox.Show($"Error on login form: {ex}");
             }
