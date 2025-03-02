@@ -33,10 +33,8 @@ namespace C969___Scheduler
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.evaluatorShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Reports = new System.Windows.Forms.ToolStripMenuItem();
             this.addTestUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.valerieVolkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.josephFeltonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvAppointments = new System.Windows.Forms.DataGridView();
             this.mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -55,7 +53,7 @@ namespace C969___Scheduler
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuFile,
-            this.evaluatorShortcutsToolStripMenuItem});
+            this.Reports});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1008, 24);
@@ -77,34 +75,20 @@ namespace C969___Scheduler
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // evaluatorShortcutsToolStripMenuItem
+            // Reports
             // 
-            this.evaluatorShortcutsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Reports.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addTestUsersToolStripMenuItem});
-            this.evaluatorShortcutsToolStripMenuItem.Name = "evaluatorShortcutsToolStripMenuItem";
-            this.evaluatorShortcutsToolStripMenuItem.Size = new System.Drawing.Size(121, 20);
-            this.evaluatorShortcutsToolStripMenuItem.Text = "Evaluator Shortcuts";
+            this.Reports.Name = "Reports";
+            this.Reports.Size = new System.Drawing.Size(59, 20);
+            this.Reports.Text = "Reports";
             // 
             // addTestUsersToolStripMenuItem
             // 
-            this.addTestUsersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.valerieVolkToolStripMenuItem,
-            this.josephFeltonToolStripMenuItem});
             this.addTestUsersToolStripMenuItem.Name = "addTestUsersToolStripMenuItem";
-            this.addTestUsersToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-            this.addTestUsersToolStripMenuItem.Text = "Add Test Users";
-            // 
-            // valerieVolkToolStripMenuItem
-            // 
-            this.valerieVolkToolStripMenuItem.Name = "valerieVolkToolStripMenuItem";
-            this.valerieVolkToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-            this.valerieVolkToolStripMenuItem.Text = "Valerie Volk";
-            // 
-            // josephFeltonToolStripMenuItem
-            // 
-            this.josephFeltonToolStripMenuItem.Name = "josephFeltonToolStripMenuItem";
-            this.josephFeltonToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-            this.josephFeltonToolStripMenuItem.Text = "Joseph Felton";
+            this.addTestUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addTestUsersToolStripMenuItem.Text = "Open Report View";
+            this.addTestUsersToolStripMenuItem.Click += new System.EventHandler(this.addTestUsersToolStripMenuItem_Click);
             // 
             // dgvAppointments
             // 
@@ -192,7 +176,6 @@ namespace C969___Scheduler
             this.apptCalendar.Name = "apptCalendar";
             this.apptCalendar.ShowWeekNumbers = true;
             this.apptCalendar.TabIndex = 8;
-        
             this.apptCalendar.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.apptCalendar_DateSelected);
             // 
             // cbTimePeriod
@@ -237,10 +220,8 @@ namespace C969___Scheduler
         private System.Windows.Forms.ToolStripMenuItem menuFile;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private MySql.Data.MySqlClient.MySqlCommand mySqlCommand1;
-        private System.Windows.Forms.ToolStripMenuItem evaluatorShortcutsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Reports;
         private System.Windows.Forms.ToolStripMenuItem addTestUsersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem valerieVolkToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem josephFeltonToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBox1;
         public System.Windows.Forms.DataGridView dgvAppointments;
         private System.Windows.Forms.Button btnAddNew;
