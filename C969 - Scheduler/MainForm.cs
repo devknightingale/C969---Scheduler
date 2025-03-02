@@ -68,10 +68,14 @@ namespace C969___Scheduler
             if (comboBox1.SelectedIndex == 0)
             {
                 Helper.LoadAppointmentGrid(dgvAppointments);
+                cbTimePeriod.Enabled = true;
+                apptCalendar.Enabled = true; 
             }
             else
             {
                 Helper.LoadCustomerGrid(dgvAppointments);
+                cbTimePeriod.Enabled = false;
+                apptCalendar.Enabled = false; 
             }
 
         }

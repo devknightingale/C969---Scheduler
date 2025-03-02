@@ -56,7 +56,7 @@ namespace C969___Scheduler.Supplementary_Forms
             TimeZoneInfo localTime = TimeZoneInfo.Local;
             TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
-            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("23:30:00"), estTimeZone);
+            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("17:00:00"), estTimeZone);
             DateTime startBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("09:00:00"), estTimeZone);
             
             DateTime endBusinessHoursLocal = TimeZoneInfo.ConvertTime(endBusinessHoursEST, localTime);
@@ -65,7 +65,7 @@ namespace C969___Scheduler.Supplementary_Forms
            
 
             // time picker formatting 
-            timePicker.ShowUpDown = true;
+            timePicker.ShowUpDown = true;            
             timePicker.MinDate = startBusinessHoursLocal;
             timePicker.MaxDate = endBusinessHoursLocal;
 
