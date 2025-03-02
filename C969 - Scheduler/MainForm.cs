@@ -112,9 +112,7 @@ namespace C969___Scheduler
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            // technically it should not be possible to not have a row selected since the application starts with a row selected automatically, but just in case... 
-
-            // This needs to be separated into two branches - one for if Appointments is selected in the dropdown and the other for customers. 
+            
             if (comboBox1.SelectedIndex == 0)
             {// Appointments is selected 
                 if (!dgvAppointments.CurrentRow.Selected)
@@ -192,12 +190,7 @@ namespace C969___Scheduler
                 {
 
                     int apptId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
-
-
-
-                    // pull up add appointment form here but need to fill text boxes first? 
-                    AddAppointment addAppt = new AddAppointment(dgvAppointments, apptId);
-                    //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
+                    AddAppointment addAppt = new AddAppointment(dgvAppointments, apptId);                    
                     addAppt.Show();
                 }
             }
@@ -210,12 +203,8 @@ namespace C969___Scheduler
                 else
                 {
 
-                    int customerId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
-
-                    // pull up add appointment form here but need to fill text boxes first? 
-                    AddCustomer addCustomer = new AddCustomer(dgvAppointments, customerId);
-                    
-                    //need to create an addAppt form with a constructor taking an Appointment as an argument in order to prefill the textboxes 
+                    int customerId = (int)dgvAppointments.CurrentRow.Cells[0].Value;                    
+                    AddCustomer addCustomer = new AddCustomer(dgvAppointments, customerId);                  
                     addCustomer.Show();
                 }
             }
@@ -231,9 +220,7 @@ namespace C969___Scheduler
             // Have the calendar default to current day/week/month depending on which is selected here 
 
             if (cbTimePeriod.SelectedItem.ToString() == "Daily")
-            {
-                // FIX ME: Default to select current day. 
-                
+            {                
                 Helper.BoldDates(todaysDate, this);
                 string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd") + " 00:00:00";
                 string endDate = apptCalendar.BoldedDates[apptCalendar.BoldedDates.Length - 1].ToString("yyyy-MM-dd 23:59:59");
@@ -242,30 +229,22 @@ namespace C969___Scheduler
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Weekly")
             {
-                              
-                
-
-                // Bold current week only. Use GetWeekDates() to grab the dates. 
                 
                 Helper.GetWeekDates(todaysDate, this);
                 string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd") + " 00:00:00";
                 string endDate = apptCalendar.BoldedDates[apptCalendar.BoldedDates.Length - 1].ToString("yyyy-MM-dd 23:59:59");
-                // FIX ME: Check if WEEKLY is selected, then load appointment grid for that WEEKS appointment that is selected on the calendar control
 
                 Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
 
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Monthly")
             {
-                // FIX ME: Check if MONTHLY is selected, then load appointment grid for that MONTHS appointment that is selected on the calendar control
-                
                 int monthNum = todaysDate.Month;
                 int yearNum = todaysDate.Year;    
                 int daysNum = DateTime.DaysInMonth(yearNum, monthNum);
 
                 DateTime startOfMonth = Convert.ToDateTime(yearNum.ToString() + "-" + monthNum.ToString() + "-01");
                 DateTime endOfMonth = Convert.ToDateTime(yearNum.ToString() + "-" + monthNum.ToString() + "-" + daysNum);
-                //MessageBox.Show($"MONTHLY selected\n startOfMonth = {startOfMonth}\nendOfMonth = {endOfMonth}");
 
                 Helper.BoldMonthDates(startOfMonth, endOfMonth, this);
                 string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd") + " 00:00:00";
@@ -286,10 +265,7 @@ namespace C969___Scheduler
         {
 
             DateTime selectedDay = apptCalendar.SelectionStart;
-            
 
-            // FIX ME: Should call different versions of the BoldDates() function depending on if the selection is daily, monthly, or weekly. 
-            // FIX ME: LoadAppointmentGrid() needs rewriting to account for different versions of the grid ex day week or month. the only change will be in the SQL statement. figure out how to implement this maybe pass in an int, which corresponds to the version ex 1 = daily, 2 = weekly, 3 = monthly, then in LoadAppointmentGrid(), just check for that number and use the appropriate version  
             if (cbTimePeriod.SelectedItem.ToString() == "Daily")
             {
                 Helper.BoldDates(selectedDay, this);
@@ -299,7 +275,6 @@ namespace C969___Scheduler
                 string monthNum = selectedDay.ToString("yyyy-MM-dd HH:mm:ss").Substring(5, 2);
                 string startDate =  yearNum + "-" + monthNum + "-" + dayNum + " 00:00:00";
                 string endDate = yearNum + "-" + monthNum + "-" + dayNum + " 23:59:59";
-                //FIX ME: LoadAppointmentGrid for the DAY SELECTED only 
 
                 Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
 
@@ -318,14 +293,9 @@ namespace C969___Scheduler
                 startDate = yearNum + "-" + monthNum + "-" + dayNum + " 00:00:00";
                 endDate = yearNum + "-" + endDate.Substring(5,2) + "-" + endDate.Substring(8,2) + " 23:59:59";
                 Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
-                //FIX ME: LoadAppointmentGrid for the WEEK SELECTED only 
             }
             else if (cbTimePeriod.SelectedItem.ToString() == "Monthly")
             {
-                //FIX ME: Make the BoldDates(month) function, then call it here
-                // will need to get current month, and daysinmonth, then assign those to selectionstart/selection end. pass in start, end, mainform 
-                //Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
-                //FIX ME: LoadAppointmentGrid for the MONTH SELECTED only 
                 int monthNum = apptCalendar.SelectionStart.Month;
                 int yearNum = apptCalendar.SelectionStart.Year;
                 int daysNum = DateTime.DaysInMonth(yearNum, monthNum);
@@ -337,7 +307,7 @@ namespace C969___Scheduler
                 Helper.BoldMonthDates(startOfMonth, endOfMonth, this);
                 string startDate = apptCalendar.BoldedDates[0].ToString("yyyy-MM-dd") + " 00:00:00";
                 string endDate = apptCalendar.BoldedDates[apptCalendar.BoldedDates.Length - 1].ToString("yyyy-MM-dd") + " 23:59:59";
-                //MessageBox.Show($"MONTHLY selected\n startOfMonth = {startDate}\nendOfMonth = {endDate}");
+                
                 Helper.LoadAppointmentGrid(dgvAppointments, startDate, endDate);
             }
             else

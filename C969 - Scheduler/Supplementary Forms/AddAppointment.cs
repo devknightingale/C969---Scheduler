@@ -41,18 +41,12 @@ namespace C969___Scheduler.Supplementary_Forms
                 
             }
             reader.Close();
-            //cbCustomerList.SelectedIndex = 0; 
-
 
 
             // TIME PICKER 
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.CustomFormat = "hh:mm tt";
-            // possible to change minute step for the time picker to 30 minutes?
-
-            // need to convert the local time to EST time, then restrict times in the timepicker to est time
-            // local time to est conversion 
-            // Probably move this bit to the Helper file to clean up 
+            
             TimeZoneInfo localTime = TimeZoneInfo.Local;
             TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
@@ -69,8 +63,7 @@ namespace C969___Scheduler.Supplementary_Forms
             timePicker.MinDate = startBusinessHoursLocal;
             timePicker.MaxDate = endBusinessHoursLocal;
 
-            
-
+ 
 
             List<string> apptTypeList = new List<string>()
             {
@@ -93,7 +86,6 @@ namespace C969___Scheduler.Supplementary_Forms
             readerUsers.Close();
             cbApptUser.SelectedIndex = 0;
 
-            
 
 
             // APPOINTMENT LOCATION COMBO BOX 
@@ -103,7 +95,6 @@ namespace C969___Scheduler.Supplementary_Forms
             };
 
             cbApptLocation.DataSource = listLocation;
-//            cbApptLocation.SelectedIndex = 0;
 
 
 
@@ -209,28 +200,21 @@ namespace C969___Scheduler.Supplementary_Forms
 
                 
                 // SETTING ALL THE VALUES IN THE FORM FROM THE APPTID
-                
-                // First step: pull Date and time into separate variables for the picker boxes 
+
                 string dateString = apptToUpdate.start.ToLocalTime().ToString().Substring(0,9);
                 string timeString = apptToUpdate.start.ToLocalTime().ToString().Substring(9);
-
-                
-                //MessageBox.Show($"{dateString}\n{timeString}");
                 datePicker.Value = Convert.ToDateTime(dateString);
                 timePicker.Value = Convert.ToDateTime(timeString);
 
                 // Set appointment type to match that of appointment to update
                 cbApptType.SelectedIndex = cbApptType.FindString(apptToUpdate.type.ToString());
 
-                // Set consultant according to who is the user on the appointment 
-                // Have to grab username first 
-
+                // Set consultant according to who is the user on the appointment                 
                 string queryUsernameMatch = $"SELECT user.userName FROM appointment INNER JOIN user ON user.userId = appointment.userId WHERE appointmentId = {apptId}";
                 MySqlCommand cmdUsernameMatch = new MySqlCommand(queryUsernameMatch, DBConnection.conn);
                 string username = (string)cmdUsernameMatch.ExecuteScalar();
                 cbApptUser.SelectedIndex = (int)cbApptUser.FindStringExact(username.ToString());
 
-                // APPOINTMENT LOCATION COMBO BOX 
 
                 // APPOINTMENT LOCATION COMBO BOX 
                 string queryUpdateLocation = "SELECT DISTINCT location FROM appointment ORDER BY location ASC";
@@ -250,8 +234,8 @@ namespace C969___Scheduler.Supplementary_Forms
                 cbApptLocation.SelectedIndex = (int)cbApptLocation.FindString(apptToUpdate.location.ToString());
                 
                 // Textboxes
-                txtDescription.Text = apptToUpdate.description.ToString();
-                txtTitle.Text = apptToUpdate.title.ToString();
+                txtDescription.Text = apptToUpdate.description.ToString().Trim();
+                txtTitle.Text = apptToUpdate.title.ToString().Trim();
 
                 // Set the ID value to be called for the Submit button 
                 Helper.apptIdValue = apptId;
@@ -292,10 +276,6 @@ namespace C969___Scheduler.Supplementary_Forms
             
             if (isExistingAppointment == true)
             {
-                //MessageBox.Show("This is for the update only.");
-                // need to maybe use Helper to create an appointment i can reference? 
-
-                
                 // get customer Id 
                 string queryGetCustomerId = $"SELECT customer.customerId FROM customer WHERE customerName = '{cbCustomerList.SelectedItem.ToString()}'";
                 MySqlCommand cmdGetCustomerId = new MySqlCommand(queryGetCustomerId, DBConnection.conn);
@@ -368,7 +348,6 @@ namespace C969___Scheduler.Supplementary_Forms
                 appt.customerId = (int)customerIdCmd.ExecuteScalar();
 
                 // GET USER ID FROM LOGGED IN USER 
-                // THIS IS INCORRECT: it is grabbing the currently logged in user instead of the user that is selected in the combo box. 
                 string query = $"SELECT userId FROM user WHERE userName = '{cbApptUser.SelectedItem.ToString()}'";
                 MySqlCommand userIdCmd = new MySqlCommand(query, DBConnection.conn);
                 appt.userId = (int)userIdCmd.ExecuteScalar();
