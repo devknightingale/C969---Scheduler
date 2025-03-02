@@ -117,7 +117,7 @@ namespace C969___Scheduler.Entity_Classes
             }
             catch (Exception ex)
             {
-                // for some reason this throws an exception when enabled despite the grid working? 
+                
                 MessageBox.Show($"Error when filling data grid: {ex}", "ERROR", MessageBoxButtons.OK);
             }
         }
@@ -300,8 +300,7 @@ namespace C969___Scheduler.Entity_Classes
         }
         public static int addAddress(Address address)
         {
-            // FIX ME: add address to database, return address id 
-            // note: must use country/city id for this 
+            
             int addressId = -1; 
             try
             {
@@ -328,7 +327,7 @@ namespace C969___Scheduler.Entity_Classes
         }
         public static int addCustomer(Customer customer)
         {
-            // FIX ME: add customer to database. Must be done LAST after city/country/address 
+            
             // return customer id 
             int customerId = -1;
             try
@@ -451,6 +450,7 @@ namespace C969___Scheduler.Entity_Classes
             return 0;
         }
 
+        // ensures textboxes are not empty
         public static bool validateTextboxes(AddCustomer customerForm)
         {
             bool textValidated; 
@@ -641,6 +641,8 @@ namespace C969___Scheduler.Entity_Classes
             }
         }
 
+
+        // REPORTS FUNCTIONS
         public static List<Appointment> GetSchedule(string name)
         {
             int userId = GetUserID(name);
