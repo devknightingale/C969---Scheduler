@@ -46,23 +46,43 @@ namespace C969___Scheduler.Supplementary_Forms
             // TIME PICKER 
             timePicker.Format = DateTimePickerFormat.Custom;
             timePicker.CustomFormat = "hh:mm tt";
-            
-            TimeZoneInfo localTime = TimeZoneInfo.Local;
+            timePickerEnd.Format = DateTimePickerFormat.Custom;
+            timePickerEnd.CustomFormat = "hh:mm tt";
+
+
+            TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
+            DateTime localTime = DateTime.Now;
+            TimeSpan offset = localTimeZone.GetUtcOffset(localTime);
+            DateTimeOffset dateTimeOffSet = new DateTimeOffset(localTime, offset);
+
             TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
-            DateTime endBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("17:00:00"), estTimeZone);
-            DateTime startBusinessHoursEST = TimeZoneInfo.ConvertTime(Convert.ToDateTime("09:00:00"), estTimeZone);
+            DateTime endBusinessHoursEST = Convert.ToDateTime("17:00:00");
+            DateTime startBusinessHoursEST = Convert.ToDateTime("09:00:00");
             
-            DateTime endBusinessHoursLocal = TimeZoneInfo.ConvertTime(endBusinessHoursEST, localTime);
-            DateTime startBusinessHoursLocal = TimeZoneInfo.ConvertTime(startBusinessHoursEST, localTime); 
             
-           
+            
+            DateTime timeEst = TimeZoneInfo.ConvertTime(DateTime.Now, estTimeZone);
+            TimeSpan offsetEST = estTimeZone.GetUtcOffset(timeEst);
+
+            string offsetStr = offset.ToString().Substring(0, 3);
+            int localTimeDiff = int.Parse(offset.ToString().Substring(0, 3));
+            int estTimeDiff = int.Parse(offsetEST.ToString().Substring(0, 3));
+            int timeDiff = localTimeDiff - estTimeDiff;
+
+            DateTime startBusinessHoursLocal = startBusinessHoursEST.AddHours(timeDiff);
+            DateTime endBusinessHoursLocal = endBusinessHoursEST.AddHours(timeDiff);
+            
+            // testing for the hours restriction 
+            MessageBox.Show($"Offset is currently {offset}\noffsetStr is {offsetStr}\nlocalTimeDiff int is {localTimeDiff}\nestTimeDiff is {estTimeDiff}\ntimeDiff is {timeDiff}\nstartBusinessHoursEST is {startBusinessHoursEST}, endBusinessHoursEST is {endBusinessHoursEST}\n\nstartBusinessHoursLocal is {startBusinessHoursLocal}, endBusinessHoursLocal is {endBusinessHoursLocal}");
 
             // time picker formatting 
             timePicker.ShowUpDown = true;            
+            timePickerEnd.ShowUpDown = true;
             timePicker.MinDate = startBusinessHoursLocal;
             timePicker.MaxDate = endBusinessHoursLocal;
-
+            timePickerEnd.MinDate = startBusinessHoursLocal;
+            timePickerEnd.MaxDate = endBusinessHoursLocal;
  
 
             List<string> apptTypeList = new List<string>()
