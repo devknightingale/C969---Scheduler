@@ -56,7 +56,7 @@ namespace C969___Scheduler
             this.Reports});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1008, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1117, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -86,7 +86,7 @@ namespace C969___Scheduler
             // addTestUsersToolStripMenuItem
             // 
             this.addTestUsersToolStripMenuItem.Name = "addTestUsersToolStripMenuItem";
-            this.addTestUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addTestUsersToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.addTestUsersToolStripMenuItem.Text = "Open Report View";
             this.addTestUsersToolStripMenuItem.Click += new System.EventHandler(this.addTestUsersToolStripMenuItem_Click);
             // 
@@ -101,7 +101,7 @@ namespace C969___Scheduler
             this.dgvAppointments.Name = "dgvAppointments";
             this.dgvAppointments.ReadOnly = true;
             this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAppointments.Size = new System.Drawing.Size(707, 426);
+            this.dgvAppointments.Size = new System.Drawing.Size(811, 426);
             this.dgvAppointments.TabIndex = 1;
             // 
             // mySqlCommand1
@@ -191,7 +191,7 @@ namespace C969___Scheduler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 450);
+            this.ClientSize = new System.Drawing.Size(1117, 450);
             this.Controls.Add(this.cbTimePeriod);
             this.Controls.Add(this.apptCalendar);
             this.Controls.Add(this.lblUsername);
