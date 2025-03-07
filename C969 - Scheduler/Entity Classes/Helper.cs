@@ -52,7 +52,7 @@ namespace C969___Scheduler.Entity_Classes
             try
             {
 
-                apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
+                apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Start', appointment.end as 'Appointment End',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
@@ -66,11 +66,14 @@ namespace C969___Scheduler.Entity_Classes
                 dgv.DataSource = apptBindingSource;
 
                 dgv.Columns[4].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
+                dgv.Columns[5].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
 
                 int columnIndex = 4;
+                int endColumnIndex = 5;
                 for (int i = 0; i < dgv.Rows.Count; i++)
                 {
                     dgv[columnIndex, i].Value = Convert.ToDateTime(dgv[columnIndex, i].Value.ToString()).ToLocalTime();
+                    dgv[endColumnIndex, i].Value = Convert.ToDateTime(dgv[endColumnIndex, i].Value.ToString()).ToLocalTime();
                 }
 
 
@@ -92,7 +95,7 @@ namespace C969___Scheduler.Entity_Classes
                 DateTime startDateTime = Convert.ToDateTime(startDate);
                 DateTime endDateTime = Convert.ToDateTime(endDate);
                 // should update this query to a join to grab customer name instead of customer id 
-                apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Time',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId WHERE appointment.start BETWEEN '{startDate}' AND '{endDate}'";
+                apptQuery = $"SELECT appointment.appointmentId as 'Appointment ID', appointment.title as 'Title', appointment.location as 'Location', appointment.type as 'Type', appointment.start as 'Appointment Start', appointment.end as 'Appointment End',  customer.CustomerName as 'Customer', user.userName as 'Consultant' FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId INNER JOIN user ON appointment.userId = user.userId WHERE appointment.start BETWEEN '{startDate}' AND '{endDate}'";
 
                 MySqlCommand apptCmd = new MySqlCommand(apptQuery, DBConnection.conn);
                 MySqlDataAdapter appAdapter = new MySqlDataAdapter(apptCmd);
@@ -106,12 +109,20 @@ namespace C969___Scheduler.Entity_Classes
                 dgv.DataSource = apptBindingSource;
 
                 dgv.Columns[4].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt";
+                dgv.Columns[5].DefaultCellStyle.Format = "MM/dd/yyyy hh:mm tt"; 
 
-                int columnIndex = 4;
+                int startColumnIndex = 4;
+                int endColumnIndex = 5; 
                 for (int i = 0; i < dgv.Rows.Count; i++)
                 {
-                    dgv[columnIndex, i].Value = Convert.ToDateTime(dgv[columnIndex, i].Value.ToString()).ToLocalTime();
+                    dgv[startColumnIndex, i].Value = Convert.ToDateTime(dgv[startColumnIndex, i].Value.ToString()).ToLocalTime();
+                    
                 }
+                for (int j = 0; j < dgv.Rows.Count; j++)
+                {
+                    dgv[endColumnIndex, j].Value = Convert.ToDateTime(dgv[endColumnIndex, j].Value.ToString()).ToLocalTime();
+                }
+                
 
 
             }
@@ -203,6 +214,9 @@ namespace C969___Scheduler.Entity_Classes
             {
                 return true;
             }
+
+            
+           
 
             return false;
         }

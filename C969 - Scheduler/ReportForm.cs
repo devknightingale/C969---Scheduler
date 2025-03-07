@@ -3,6 +3,7 @@ using C969___Scheduler.Entity_Classes;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Common;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -89,15 +90,26 @@ namespace C969___Scheduler
             {
                 string month = cbMonths.SelectedItem.ToString();
                 List<Appointment> monthlyAppts = Helper.GetMonthlyAppointments(month, this);
-
-                string reportString = $"{month} Appointments:" + Environment.NewLine + Environment.NewLine;
-
-                // lambda to simplify foreach statement
+                Dictionary<string, int> typeCount = new Dictionary<string, int>();
                 monthlyAppts.ForEach(appt =>
                 {
-                    reportString += "\n\nStart: " + appt.start + "  Type: " + appt.type + "  Title: " + appt.title + Environment.NewLine;
-
+                    if (typeCount.ContainsKey(appt.type))
+                    {
+                        typeCount[appt.type] += 1;
+                    }
+                    else
+                    {
+                        typeCount.Add(appt.type, 1);
+                    }
                 });
+
+                string reportString = $"{month} Appointment Types:" + Environment.NewLine + Environment.NewLine;
+
+                foreach(KeyValuePair<string, int> type in typeCount)
+                {
+                    reportString += "\n\nType: " + type.Key + " Amount: " + type.Value + Environment.NewLine; 
+                }
+                
                 txtReport.Text = reportString;
 
             }
